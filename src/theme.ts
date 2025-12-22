@@ -50,7 +50,8 @@ function tokensToCSSVariables(tokens: DesignTokens): Record<string, string> {
   
   // Colors
   Object.entries(tokens.colors).forEach(([key, value]) => {
-    const cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+    let cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+    cssKey = cssKey.replace(/chart(\d)/, 'chart-$1');
     vars[`--${cssKey}`] = value;
   });
   
