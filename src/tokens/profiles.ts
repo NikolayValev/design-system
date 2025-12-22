@@ -63,6 +63,7 @@ export const dashboardProfile: ThemeProfile = {
       '3xl': '3rem',
       '4xl': '4rem',
     },
+    radius: baseTokens.radius,
   },
   density: 'compact',
 };
