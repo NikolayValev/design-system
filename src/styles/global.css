@@ -1,0 +1,76 @@
+/**
+ * Base global styles - minimal normalization
+ * CSS variables are injected by the theme system
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+/**
+ * Apply semantic background and text colors
+ */
+body {
+  background-color: hsl(var(--color-background));
+  color: hsl(var(--color-foreground));
+  font-family: var(--font-sans);
+}
+
+/**
+ * Density-specific adjustments
+ */
+[data-density='comfortable'] {
+  --spacing-multiplier: 1;
+}
+
+[data-density='compact'] {
+  --spacing-multiplier: 0.875;
+}
