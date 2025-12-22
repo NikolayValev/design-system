@@ -15,9 +15,14 @@ function generateThemeCSS(profile) {
 
   // Colors
   Object.entries(tokens.colors).forEach(([key, value]) => {
+    // Convert camelCase to kebab-case
     let cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-    // Handle chart colors specially (chart1 -> chart-1)
-    cssKey = cssKey.replace(/chart(\d)/, 'chart-$1');
+    // Special handling for chartOne, chartTwo, etc. -> chart-1, chart-2
+    cssKey = cssKey.replace(/chart-one/, 'chart-1');
+    cssKey = cssKey.replace(/chart-two/, 'chart-2');
+    cssKey = cssKey.replace(/chart-three/, 'chart-3');
+    cssKey = cssKey.replace(/chart-four/, 'chart-4');
+    cssKey = cssKey.replace(/chart-five/, 'chart-5');
     lines.push(`  --${cssKey}: ${value};`);
   });
 

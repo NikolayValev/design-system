@@ -23,11 +23,11 @@ export interface ColorTokens {
   border: string;
   input: string;
   ring: string;
-  chart1: string;
-  chart2: string;
-  chart3: string;
-  chart4: string;
-  chart5: string;
+  chartOne: string;
+  chartTwo: string;
+  chartThree: string;
+  chartFour: string;
+  chartFive: string;
   sidebar: string;
   sidebarForeground: string;
   sidebarPrimary: string;
