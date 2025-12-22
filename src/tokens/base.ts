@@ -21,7 +21,7 @@ export const baseTokens: DesignTokens = {
     accent: 'oklch(0.97 0 0)',
     accentForeground: 'oklch(0.205 0 0)',
     destructive: 'oklch(0.577 0.245 27.325)',
-    destructiveForeground: 'oklch(0.577 0.245 27.325)',
+    destructiveForeground: 'oklch(0.145 0 0)',
     border: 'oklch(0.922 0 0)',
     input: 'oklch(0.922 0 0)',
     ring: 'oklch(0.708 0 0)',
