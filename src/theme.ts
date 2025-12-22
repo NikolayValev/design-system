@@ -1,5 +1,6 @@
 import type { ThemeProfile, DesignTokens, DensityMode } from './tokens/types';
 import { baseTokens } from './tokens/base';
+import { tokenKeyToCSSVar } from './utils/chart-mapping';
 
 /**
  * Theme configuration options
@@ -50,8 +51,7 @@ function tokensToCSSVariables(tokens: DesignTokens): Record<string, string> {
   
   // Colors
   Object.entries(tokens.colors).forEach(([key, value]) => {
-    let cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-    cssKey = cssKey.replace(/chart(\d)/, 'chart-$1');
+    const cssKey = tokenKeyToCSSVar(key);
     vars[`--${cssKey}`] = value;
   });
   
