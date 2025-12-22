@@ -8,6 +8,19 @@ The design system provides infrastructure, not a rigid theme. Projects should fe
 
 ## Token System
 
+### OKLCH Color Space
+
+All colors use **OKLCH** (Oklch color space) instead of HSL for:
+- **Perceptual uniformity**: Equal numeric changes produce equal perceptual changes
+- **Wider gamut**: Access to more vibrant colors
+- **Better interpolation**: Smoother gradients and transitions
+
+```css
+/* OKLCH format: oklch(lightness chroma hue) */
+--primary: oklch(0.6 0.25 280);
+/* lightness: 0-1, chroma: 0-0.4, hue: 0-360 */
+```
+
 ### Semantic Naming
 
 All tokens use semantic names that describe **purpose**, not appearance:
@@ -22,9 +35,9 @@ This allows visual changes without touching application code.
 
 ```ts
 interface DesignTokens {
-  colors: ColorTokens;      // 19 semantic colors
+  colors: ColorTokens;      // 32 semantic colors (includes chart + sidebar)
   spacing: SpacingTokens;   // 8-point scale
-  radius: RadiusTokens;     // 5 sizes + full
+  radius: RadiusTokens;     // Base value + calculated variants
   typography: TypographyTokens;
 }
 ```
@@ -33,15 +46,33 @@ The contract is versioned. Breaking changes require major version bump.
 
 ### CSS Variables
 
-All tokens are exposed as CSS custom properties:
+All tokens are exposed as CSS custom properties using OKLCH:
 
 ```css
 :root {
-  --color-primary: 221.2 83.2% 53.3%;
-  --color-background: 0 0% 100%;
+  --primary: oklch(0.205 0 0);
+  --background: oklch(1 0 0);
   --spacing-md: 1rem;
-  --radius-lg: 0.75rem;
-  --font-sans: system-ui, -apple-system, sans-serif;
+  --radius: 0.625rem;
+  --font-family-sans: Geist, Geist Fallback;
+}
+
+/* Radius calculations */
+--radius-sm: calc(var(--radius) - 4px);
+--radius-md: calc(var(--radius) - 2px);
+--radius-lg: var(--radius);
+--radius-xl: calc(var(--radius) + 4px);
+```
+
+### Tailwind v4 Integration
+
+Uses modern `@theme inline` syntax to bridge CSS variables to Tailwind utilities:
+
+```css
+@theme inline {
+  --color-primary: var(--primary);
+  --color-background: var(--background);
+  --radius-lg: var(--radius);
 }
 ```
 
@@ -61,21 +92,27 @@ Profiles are named token bundles representing different use cases:
 
 ### Public Profile
 - **Use case**: Marketing sites, public-facing applications
-- **Characteristics**: Vibrant, approachable, polished
-- **Radius**: Generous (0.5rem - 1.25rem)
+- **Characteristics**: Clean, approachable, includes dark mode variant
+- **Colors**: OKLCH light mode with `.dark` class support
+- **Radius**: Comfortable (0.625rem base)
 - **Density**: Comfortable
+- **Typography**: Geist font family
 
 ### Dashboard Profile
 - **Use case**: Internal tools, data-heavy interfaces
-- **Characteristics**: Neutral, efficient, dark mode
-- **Radius**: Minimal (0.125rem - 0.5rem)
-- **Density**: Compact
+- **Characteristics**: Dark-first, efficient, high information density
+- **Colors**: OKLCH dark palette optimized for prolonged use
+- **Radius**: Comfortable (0.625rem base)
+- **Density**: Compact (reduced spacing)
+- **Typography**: Geist font family
 
 ### Experimental Profile
 - **Use case**: Prototypes, creative projects
 - **Characteristics**: Bold, unconventional, high contrast
+- **Colors**: OKLCH black background with vibrant accents
 - **Radius**: Zero (sharp corners)
 - **Density**: Comfortable
+- **Typography**: Geist font family
 
 Profiles override **values**, not logic. Component behavior remains identical.
 
@@ -109,7 +146,7 @@ import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-sys
 const theme = createTheme({
   profile: publicProfile,
   tokens: {
-    colors: { primary: 'hsl(280 100% 70%)' },
+    colors: { primary: 'oklch(0.6 0.25 280)' },
     spacing: { md: '1.25rem' },
   },
   density: 'compact',

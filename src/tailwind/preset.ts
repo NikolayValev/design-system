@@ -3,18 +3,6 @@ import type { ThemeProfile } from '../tokens/types';
 import { baseTokens } from '../tokens/base';
 
 /**
- * Convert HSL color values to Tailwind-compatible format
- */
-function hslToTailwind(hsl: string): string {
-  // Extract values from "hsl(222.2 84% 4.9%)" format
-  const match = hsl.match(/hsl\(([\d.]+)\s+([\d.]+)%\s+([\d.]+)%\)/);
-  if (match) {
-    return `${match[1]} ${match[2]}% ${match[3]}%`;
-  }
-  return hsl;
-}
-
-/**
  * Create a Tailwind preset from a theme profile
  * 
  * @example
@@ -35,68 +23,67 @@ export function createTailwindPreset(profile?: ThemeProfile): Partial<Config> {
     theme: {
       extend: {
         colors: {
-          background: `hsl(var(--color-background, ${hslToTailwind(tokens.colors.background)}))`,
-          foreground: `hsl(var(--color-foreground, ${hslToTailwind(tokens.colors.foreground)}))`,
+          background: 'var(--color-background)',
+          foreground: 'var(--color-foreground)',
           card: {
-            DEFAULT: `hsl(var(--color-card, ${hslToTailwind(tokens.colors.card)}))`,
-            foreground: `hsl(var(--color-card-foreground, ${hslToTailwind(tokens.colors.cardForeground)}))`,
+            DEFAULT: 'var(--color-card)',
+            foreground: 'var(--color-card-foreground)',
           },
           popover: {
-            DEFAULT: `hsl(var(--color-popover, ${hslToTailwind(tokens.colors.popover)}))`,
-            foreground: `hsl(var(--color-popover-foreground, ${hslToTailwind(tokens.colors.popoverForeground)}))`,
+            DEFAULT: 'var(--color-popover)',
+            foreground: 'var(--color-popover-foreground)',
           },
           primary: {
-            DEFAULT: `hsl(var(--color-primary, ${hslToTailwind(tokens.colors.primary)}))`,
-            foreground: `hsl(var(--color-primary-foreground, ${hslToTailwind(tokens.colors.primaryForeground)}))`,
+            DEFAULT: 'var(--color-primary)',
+            foreground: 'var(--color-primary-foreground)',
           },
           secondary: {
-            DEFAULT: `hsl(var(--color-secondary, ${hslToTailwind(tokens.colors.secondary)}))`,
-            foreground: `hsl(var(--color-secondary-foreground, ${hslToTailwind(tokens.colors.secondaryForeground)}))`,
+            DEFAULT: 'var(--color-secondary)',
+            foreground: 'var(--color-secondary-foreground)',
           },
           muted: {
-            DEFAULT: `hsl(var(--color-muted, ${hslToTailwind(tokens.colors.muted)}))`,
-            foreground: `hsl(var(--color-muted-foreground, ${hslToTailwind(tokens.colors.mutedForeground)}))`,
+            DEFAULT: 'var(--color-muted)',
+            foreground: 'var(--color-muted-foreground)',
           },
           accent: {
-            DEFAULT: `hsl(var(--color-accent, ${hslToTailwind(tokens.colors.accent)}))`,
-            foreground: `hsl(var(--color-accent-foreground, ${hslToTailwind(tokens.colors.accentForeground)}))`,
+            DEFAULT: 'var(--color-accent)',
+            foreground: 'var(--color-accent-foreground)',
           },
           destructive: {
-            DEFAULT: `hsl(var(--color-destructive, ${hslToTailwind(tokens.colors.destructive)}))`,
-            foreground: `hsl(var(--color-destructive-foreground, ${hslToTailwind(tokens.colors.destructiveForeground)}))`,
+            DEFAULT: 'var(--color-destructive)',
+            foreground: 'var(--color-destructive-foreground)',
           },
-          border: `hsl(var(--color-border, ${hslToTailwind(tokens.colors.border)}))`,
-          input: `hsl(var(--color-input, ${hslToTailwind(tokens.colors.input)}))`,
-          ring: `hsl(var(--color-ring, ${hslToTailwind(tokens.colors.ring)}))`,
-        },
-        spacing: {
-          xs: `var(--spacing-xs, ${tokens.spacing.xs})`,
-          sm: `var(--spacing-sm, ${tokens.spacing.sm})`,
-          md: `var(--spacing-md, ${tokens.spacing.md})`,
-          lg: `var(--spacing-lg, ${tokens.spacing.lg})`,
-          xl: `var(--spacing-xl, ${tokens.spacing.xl})`,
-          '2xl': `var(--spacing-2xl, ${tokens.spacing['2xl']})`,
-          '3xl': `var(--spacing-3xl, ${tokens.spacing['3xl']})`,
-          '4xl': `var(--spacing-4xl, ${tokens.spacing['4xl']})`,
+          border: 'var(--color-border)',
+          input: 'var(--color-input)',
+          ring: 'var(--color-ring)',
+          chart: {
+            1: 'var(--color-chart-1)',
+            2: 'var(--color-chart-2)',
+            3: 'var(--color-chart-3)',
+            4: 'var(--color-chart-4)',
+            5: 'var(--color-chart-5)',
+          },
+          sidebar: {
+            DEFAULT: 'var(--color-sidebar)',
+            foreground: 'var(--color-sidebar-foreground)',
+            primary: 'var(--color-sidebar-primary)',
+            'primary-foreground': 'var(--color-sidebar-primary-foreground)',
+            accent: 'var(--color-sidebar-accent)',
+            'accent-foreground': 'var(--color-sidebar-accent-foreground)',
+            border: 'var(--color-sidebar-border)',
+            ring: 'var(--color-sidebar-ring)',
+          },
         },
         borderRadius: {
-          sm: `var(--radius-sm, ${tokens.radius.sm})`,
-          md: `var(--radius-md, ${tokens.radius.md})`,
-          lg: `var(--radius-lg, ${tokens.radius.lg})`,
-          xl: `var(--radius-xl, ${tokens.radius.xl})`,
-          full: `var(--radius-full, ${tokens.radius.full})`,
+          sm: 'var(--radius-sm)',
+          md: 'var(--radius-md)',
+          lg: 'var(--radius-lg)',
+          xl: 'var(--radius-xl)',
         },
         fontFamily: {
           sans: tokens.typography.fontFamily.sans.split(', '),
           mono: tokens.typography.fontFamily.mono.split(', '),
         },
-        fontSize: Object.fromEntries(
-          Object.entries(tokens.typography.fontSize).map(([key, [size, config]]) => [
-            key,
-            [size, config],
-          ])
-        ),
-        fontWeight: tokens.typography.fontWeight,
       },
     },
   };
