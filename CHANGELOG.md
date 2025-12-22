@@ -26,7 +26,7 @@ The design system has been updated to use OKLCH color space and Tailwind CSS v4 
 ### 2. New Token Categories
 
 Added support for:
-- **Chart colors**: `chart1` through `chart5` for data visualization
+- **Chart colors**: `chartOne` through `chartFive` for data visualization (mapped to CSS variables like `--chart-1` through `--chart-5`)
 - **Sidebar tokens**: Dedicated tokens for sidebar components
   - `sidebar`, `sidebarForeground`
   - `sidebarPrimary`, `sidebarPrimaryForeground`
