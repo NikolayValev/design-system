@@ -48,10 +48,23 @@ function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>)
 function tokensToCSSVariables(tokens: DesignTokens): Record<string, string> {
   const vars: Record<string, string> = {};
   
+  // Chart number word to digit mapping
+  const chartMapping: Record<string, string> = {
+    'chartOne': 'chart-1',
+    'chartTwo': 'chart-2',
+    'chartThree': 'chart-3',
+    'chartFour': 'chart-4',
+    'chartFive': 'chart-5',
+  };
+  
   // Colors
   Object.entries(tokens.colors).forEach(([key, value]) => {
-    let cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-    cssKey = cssKey.replace(/chart(\d)/, 'chart-$1');
+    let cssKey;
+    if (chartMapping[key]) {
+      cssKey = chartMapping[key];
+    } else {
+      cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+    }
     vars[`--${cssKey}`] = value;
   });
   
