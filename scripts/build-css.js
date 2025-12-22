@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { publicProfile, dashboardProfile, experimentalProfile } from '../dist/tokens/index.js';
+import { tokenKeyToCSSVar } from '../dist/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,23 +14,9 @@ function generateThemeCSS(profile) {
   const { tokens } = profile;
   const lines = [':root {'];
 
-  // Chart number word to digit mapping
-  const chartMapping = {
-    'chartOne': 'chart-1',
-    'chartTwo': 'chart-2',
-    'chartThree': 'chart-3',
-    'chartFour': 'chart-4',
-    'chartFive': 'chart-5',
-  };
-
   // Colors
   Object.entries(tokens.colors).forEach(([key, value]) => {
-    let cssKey;
-    if (chartMapping[key]) {
-      cssKey = chartMapping[key];
-    } else {
-      cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-    }
+    const cssKey = tokenKeyToCSSVar(key);
     lines.push(`  --${cssKey}: ${value};`);
   });
 
@@ -56,23 +43,9 @@ function generateDarkModeCSS() {
   const { tokens } = dashboardProfile;
   const lines = ['.dark {'];
 
-  // Chart number word to digit mapping
-  const chartMapping = {
-    'chartOne': 'chart-1',
-    'chartTwo': 'chart-2',
-    'chartThree': 'chart-3',
-    'chartFour': 'chart-4',
-    'chartFive': 'chart-5',
-  };
-
   // Colors - dynamically generated from dashboardProfile
   Object.entries(tokens.colors).forEach(([key, value]) => {
-    let cssKey;
-    if (chartMapping[key]) {
-      cssKey = chartMapping[key];
-    } else {
-      cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-    }
+    const cssKey = tokenKeyToCSSVar(key);
     lines.push(`  --${cssKey}: ${value};`);
   });
 
