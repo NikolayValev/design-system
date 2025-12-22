@@ -18,11 +18,9 @@ function generateThemeCSS(profile) {
     // Convert camelCase to kebab-case
     let cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
     // Special handling for chartOne, chartTwo, etc. -> chart-1, chart-2
-    cssKey = cssKey.replace(/chart-one/, 'chart-1');
-    cssKey = cssKey.replace(/chart-two/, 'chart-2');
-    cssKey = cssKey.replace(/chart-three/, 'chart-3');
-    cssKey = cssKey.replace(/chart-four/, 'chart-4');
-    cssKey = cssKey.replace(/chart-five/, 'chart-5');
+    // Convert number words to digits (e.g., chart-one -> chart-1)
+    const numberMap = { one: '1', two: '2', three: '3', four: '4', five: '5' };
+    cssKey = cssKey.replace(/chart-(one|two|three|four|five)/, (match, word) => `chart-${numberMap[word]}`);
     lines.push(`  --${cssKey}: ${value};`);
   });
 
