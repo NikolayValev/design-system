@@ -110,12 +110,12 @@ export const experimentalProfile: ThemeProfile = {
       sidebarBorder: 'oklch(0.16 0 0)',
       sidebarRing: 'oklch(0.75 0.19 85)',
     },
+    // Note: This profile intentionally uses a zero-radius, sharp-cornered design.
+    // Setting base to 0 means that any CSS using calc(var(--radius) - Npx)
+    // may produce negative border-radius values, which browsers clamp to 0.
+    // This behavior is acceptable and intentional for the experimental profile.
     radius: {
       base: '0rem',
-      sm: '0rem',
-      md: '0rem',
-      lg: '0rem',
-      xl: '0rem',
       full: '0rem',
     },
   },
