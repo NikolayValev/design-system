@@ -51,10 +51,6 @@ export interface SpacingTokens {
 
 export interface RadiusTokens {
   base: string;
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
   full: string;
 }
 
