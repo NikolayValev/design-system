@@ -81,6 +81,8 @@ export default function HomePage() {
 
 ## Runtime Configuration Override
 
+Override specific tokens at runtime using OKLCH color values:
+
 ```tsx
 // app/layout.tsx
 'use client';
@@ -95,11 +97,11 @@ export default function RootLayout({ children }) {
       profile: publicProfile,
       tokens: {
         colors: {
-          primary: 'hsl(280 100% 70%)',
-          primaryForeground: 'hsl(0 0% 0%)',
+          primary: 'oklch(0.6 0.25 280)',
+          primaryForeground: 'oklch(1 0 0)',
         },
         radius: {
-          lg: '2rem',
+          base: '1rem',
         },
       },
       density: 'compact',
@@ -171,6 +173,8 @@ import { createTailwindPreset, experimentalProfile } from '@nikolayvalev/design-
 
 ## Custom Profile
 
+Create a custom profile with OKLCH colors:
+
 ```ts
 // lib/custom-theme.ts
 import type { ThemeProfile } from '@nikolayvalev/design-system/tokens';
@@ -182,8 +186,8 @@ export const customProfile: ThemeProfile = {
     ...baseTokens,
     colors: {
       ...baseTokens.colors,
-      primary: 'hsl(340 82% 52%)',
-      secondary: 'hsl(291 64% 42%)',
+      primary: 'oklch(0.6 0.28 340)',
+      secondary: 'oklch(0.55 0.22 290)',
     },
   },
   density: 'comfortable',

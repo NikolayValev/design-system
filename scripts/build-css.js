@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { publicProfile, dashboardProfile, experimentalProfile } from '../dist/tokens/index.js';
+import { tokenKeyToCSSVar } from '../dist/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,9 +16,8 @@ function generateThemeCSS(profile) {
 
   // Colors
   Object.entries(tokens.colors).forEach(([key, value]) => {
-    const cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-    const hslValue = value.match(/hsl\((.*)\)/)?.[1] || value;
-    lines.push(`  --color-${cssKey}: ${hslValue};`);
+    const cssKey = tokenKeyToCSSVar(key);
+    lines.push(`  --${cssKey}: ${value};`);
   });
 
   // Spacing
@@ -25,14 +25,29 @@ function generateThemeCSS(profile) {
     lines.push(`  --spacing-${key}: ${value};`);
   });
 
-  // Radius
-  Object.entries(tokens.radius).forEach(([key, value]) => {
-    lines.push(`  --radius-${key}: ${value};`);
-  });
+  // Radius (base value)
+  lines.push(`  --radius: ${tokens.radius.base};`);
 
   // Typography
-  lines.push(`  --font-sans: ${tokens.typography.fontFamily.sans};`);
-  lines.push(`  --font-mono: ${tokens.typography.fontFamily.mono};`);
+  lines.push(`  --font-family-sans: ${tokens.typography.fontFamily.sans};`);
+  lines.push(`  --font-family-mono: ${tokens.typography.fontFamily.mono};`);
+
+  lines.push('}');
+  return lines.join('\n');
+}
+
+/**
+ * Generate dark mode variant dynamically from dashboardProfile
+ */
+function generateDarkModeCSS() {
+  const { tokens } = dashboardProfile;
+  const lines = ['.dark {'];
+
+  // Colors - dynamically generated from dashboardProfile
+  Object.entries(tokens.colors).forEach(([key, value]) => {
+    const cssKey = tokenKeyToCSSVar(key);
+    lines.push(`  --${cssKey}: ${value};`);
+  });
 
   lines.push('}');
   return lines.join('\n');
@@ -59,7 +74,8 @@ const profiles = [
 
 profiles.forEach(({ name, profile }) => {
   const themeCSS = generateThemeCSS(profile);
-  const fullCSS = `${globalCSS}\n\n${themeCSS}`;
+  const darkModeCSS = name === 'public' ? `\n\n${generateDarkModeCSS()}` : '';
+  const fullCSS = `${globalCSS}\n\n${themeCSS}${darkModeCSS}`;
   fs.writeFileSync(path.join(distDir, `${name}.css`), fullCSS);
 });
 

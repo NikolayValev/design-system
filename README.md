@@ -57,7 +57,7 @@ import { Button, Card } from '@nikolayvalev/design-system';
 
 ### Design Tokens as Contract
 
-Colors, spacing, typography, radii defined as semantic tokens. Expressed as CSS variables + TypeScript exports.
+Colors, spacing, typography, radii defined as semantic tokens using **OKLCH color space** for perceptual uniformity. Expressed as CSS variables + TypeScript exports.
 
 ```ts
 import { baseTokens } from '@nikolayvalev/design-system/tokens';
@@ -67,9 +67,17 @@ import { baseTokens } from '@nikolayvalev/design-system/tokens';
 
 Select from predefined profiles or create custom ones:
 
-- `public` - Marketing sites (vibrant, approachable)
-- `dashboard` - Internal tools (neutral, compact)
-- `experimental` - Prototypes (bold, unconventional)
+- `public` - Marketing sites (light with dark mode, vibrant)
+- `dashboard` - Internal tools (dark mode, compact)
+- `experimental` - Prototypes (high contrast, sharp edges)
+
+### Modern CSS with Tailwind v4
+
+Built on Tailwind CSS v4 with:
+- `@import 'tailwindcss'` syntax
+- `@theme inline` for CSS variable mapping
+- `@custom-variant dark` for dark mode support
+- OKLCH color space throughout
 
 ### Runtime Configuration
 
@@ -80,7 +88,7 @@ const theme = createTheme({
   profile: publicProfile,
   tokens: {
     colors: {
-      primary: 'hsl(280 100% 70%)',
+      primary: 'oklch(0.6 0.25 280)',
     },
   },
   density: 'compact',

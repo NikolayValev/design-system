@@ -1,5 +1,6 @@
 import type { ThemeProfile, DesignTokens, DensityMode } from './tokens/types';
 import { baseTokens } from './tokens/base';
+import { tokenKeyToCSSVar } from './utils/chart-mapping';
 
 /**
  * Theme configuration options
@@ -50,8 +51,8 @@ function tokensToCSSVariables(tokens: DesignTokens): Record<string, string> {
   
   // Colors
   Object.entries(tokens.colors).forEach(([key, value]) => {
-    const cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-    vars[`--color-${cssKey}`] = value;
+    const cssKey = tokenKeyToCSSVar(key);
+    vars[`--${cssKey}`] = value;
   });
   
   // Spacing
@@ -59,14 +60,12 @@ function tokensToCSSVariables(tokens: DesignTokens): Record<string, string> {
     vars[`--spacing-${key}`] = value;
   });
   
-  // Radius
-  Object.entries(tokens.radius).forEach(([key, value]) => {
-    vars[`--radius-${key}`] = value;
-  });
+  // Radius (base value only, calculated values are in CSS)
+  vars['--radius'] = tokens.radius.base;
   
   // Typography
-  vars['--font-sans'] = tokens.typography.fontFamily.sans;
-  vars['--font-mono'] = tokens.typography.fontFamily.mono;
+  vars['--font-family-sans'] = tokens.typography.fontFamily.sans;
+  vars['--font-family-mono'] = tokens.typography.fontFamily.mono;
   
   return vars;
 }

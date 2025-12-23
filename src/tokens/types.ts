@@ -23,6 +23,19 @@ export interface ColorTokens {
   border: string;
   input: string;
   ring: string;
+  chartOne: string;
+  chartTwo: string;
+  chartThree: string;
+  chartFour: string;
+  chartFive: string;
+  sidebar: string;
+  sidebarForeground: string;
+  sidebarPrimary: string;
+  sidebarPrimaryForeground: string;
+  sidebarAccent: string;
+  sidebarAccentForeground: string;
+  sidebarBorder: string;
+  sidebarRing: string;
 }
 
 export interface SpacingTokens {
@@ -37,10 +50,7 @@ export interface SpacingTokens {
 }
 
 export interface RadiusTokens {
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
+  base: string;
   full: string;
 }
 
