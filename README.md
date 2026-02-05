@@ -148,27 +148,127 @@ export default {
 
 Extensions don't break the base system.
 
-## Exports
+## Supported Import Paths
+
+All public API is accessed through these stable entrypoints:
 
 ```ts
-// Components
-import { Button, Card, Input } from '@nikolayvalev/design-system';
+// Root - components and theme utilities
+import { Button, Card, Input, createTheme, applyTheme } from '@nikolayvalev/design-system';
 
-// Tokens
-import { publicProfile, dashboardProfile } from '@nikolayvalev/design-system/tokens';
+// Tokens - profiles and types
+import { publicProfile, dashboardProfile, experimentalProfile } from '@nikolayvalev/design-system/tokens';
+import type { ThemeProfile, ColorTokens } from '@nikolayvalev/design-system/tokens';
 
-// Theme utilities
-import { createTheme, applyTheme } from '@nikolayvalev/design-system';
+// Tailwind - preset factory and profiles
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-system/tailwind';
 
-// Tailwind preset
-import { createTailwindPreset } from '@nikolayvalev/design-system/tailwind';
+// Styles - choose one CSS file per app
+import '@nikolayvalev/design-system/styles/public.css';      // Light + dark mode
+import '@nikolayvalev/design-system/styles/dashboard.css';   // Dark mode, compact
+import '@nikolayvalev/design-system/styles/experimental.css'; // High contrast
+```
 
-// Styles
+**Do NOT import from:**
+- `@nikolayvalev/design-system/dist/*` (internals)
+- `@nikolayvalev/design-system/src/*` (source files)
+- Deep paths not listed above
+
+## DO / DON'T
+
+### ✅ DO
+
+- **Use stable import paths** as documented above
+- **Pick one CSS profile** per application
+- **Override tokens** via `createTheme()` for customization
+- **Lock major version** in package.json to control visual updates
+- **Use semantic classes** like `bg-primary` instead of hardcoded colors
+- **Import profiles** from `/tailwind` or `/tokens` entrypoints
+
+### ❌ DON'T
+
+- **Deep import** from `dist` or `src` folders
+- **Import multiple CSS profiles** in the same app (causes conflicts)
+- **Hardcode OKLCH values** in your code - use tokens instead
+- **Rely on CSS class names** as API (implementation detail)
+- **Modify node_modules** - use override patterns instead
+- **Assume monorepo paths** in your Tailwind content globs
+
+## Profile Details
+
+### `public` Profile
+
+**Use case:** Marketing sites, landing pages, public-facing apps
+
+**Characteristics:**
+- Light mode by default with dark mode support via `.dark` class
+- Vibrant, accessible color palette
+- Comfortable spacing (density: comfortable)
+- Moderate border radius
+- OKLCH colors optimized for wide gamut displays
+
+**Import:**
+```ts
 import '@nikolayvalev/design-system/styles/public.css';
+import { publicProfile } from '@nikolayvalev/design-system/tailwind';
+```
+
+### `dashboard` Profile
+
+**Use case:** Internal tools, admin panels, data-heavy interfaces
+
+**Characteristics:**
+- Dark mode only
+- Muted, professional palette
+- Compact spacing (density: compact) for information density
+- Reduced contrast for long sessions
+- Sidebar theming included
+
+**Import:**
+```ts
+import '@nikolayvalev/design-system/styles/dashboard.css';
+import { dashboardProfile } from '@nikolayvalev/design-system/tailwind';
+```
+
+### `experimental` Profile
+
+**Use case:** Prototypes, creative projects, unconventional designs
+
+**Characteristics:**
+- Pure black background
+- High contrast colors
+- Zero border radius (sharp corners)
+- Bold, neon-like accent colors
+- Comfortable spacing
+
+**Import:**
+```ts
+import '@nikolayvalev/design-system/styles/experimental.css';
+import { experimentalProfile } from '@nikolayvalev/design-system/tailwind';
 ```
 
 ## Versioning
 
-Follows semantic versioning. Breaking visual changes require major version bumps. Lock to major version to control visual updates.
+Follows **strict semantic versioning** with visual-first breaking change policy:
 
-See [USAGE.md](./USAGE.md) for detailed examples.
+- **Major (x.0.0):** Any visual change (token values, component rendering, CSS output)
+- **Minor (0.x.0):** New features, new components, new profiles (backward compatible)  
+- **Patch (0.0.x):** Fixes with zero visual impact (types, docs, internal refactoring)
+
+Lock to major version to control when visual updates happen:
+
+```json
+{
+  "dependencies": {
+    "@nikolayvalev/design-system": "~0.1.0"
+  }
+}
+```
+
+See [MIGRATION.md](./MIGRATION.md) for upgrade guides and [CONTRIBUTING.md](./CONTRIBUTING.md) for versioning details.
+
+## Getting Started
+
+- **Next.js App Router:** See [QUICKSTART.md](./QUICKSTART.md) for 5-minute setup
+- **Detailed examples:** See [USAGE.md](./USAGE.md)
+- **Contributing:** See [CONTRIBUTING.md](./CONTRIBUTING.md)
