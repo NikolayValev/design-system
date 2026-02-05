@@ -13,6 +13,15 @@
     "./styles": {
       "default": "./dist/styles/global.css"
     },
+    "./styles/public.css": {
+      "default": "./dist/styles/public.css"
+    },
+    "./styles/dashboard.css": {
+      "default": "./dist/styles/dashboard.css"
+    },
+    "./styles/experimental.css": {
+      "default": "./dist/styles/experimental.css"
+    },
     "./tailwind": {
       "types": "./dist/tailwind/index.d.ts",
       "import": "./dist/tailwind/index.js"
