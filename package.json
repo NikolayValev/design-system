@@ -40,6 +40,7 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
+    "validate": "node scripts/validate-exports.js",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish"
