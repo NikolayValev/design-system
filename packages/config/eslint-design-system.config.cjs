@@ -1,11 +1,10 @@
-import baseConfig from './eslint.config.js';
-// Use dynamic require for CommonJS plugin interop
-const designSystemPlugin = require('./eslint-plugin-design-system.js');
+const baseConfig = require('./eslint.config.cjs');
+const designSystemPlugin = require('./eslint-plugin-design-system.cjs');
 
 /**
  * ESLint config enforcing design system governance.
  */
-export default [
+module.exports = [
   ...baseConfig,
   {
     plugins: {

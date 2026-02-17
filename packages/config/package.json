@@ -6,13 +6,14 @@
   "type": "module",
   "exports": {
     "./eslint": "./eslint.config.js",
+    "./eslint.config.cjs": "./eslint.config.cjs",
     "./prettier": "./prettier.config.js",
     "./tailwind": "./tailwind.config.js",
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./tsconfig.react.json": "./tsconfig.react.json",
     "./tsconfig.node.json": "./tsconfig.node.json",
-    "./eslint-design-system.config.js": "./eslint-design-system.config.js",
-    "./eslint-plugin-design-system.js": "./eslint-plugin-design-system.js"
+    "./eslint-design-system.config.cjs": "./eslint-design-system.config.cjs",
+    "./eslint-plugin-design-system.cjs": "./eslint-plugin-design-system.cjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
