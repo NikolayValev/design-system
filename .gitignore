@@ -1,6 +1,28 @@
+# Dependencies
 node_modules
+
+# Build outputs
 dist
+.next
+out
+
+# Turbo
 .turbo
+
+# Environment
 .env
+.env.local
+.env.*.local
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Lockfiles (pnpm only)
 package-lock.json
+yarn.lock
+
+# IDE
+.idea
+*.swp
+*.swo

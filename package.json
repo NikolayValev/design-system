@@ -1,77 +1,28 @@
 {
-  "name": "@nikolayvalev/design-system",
-  "version": "0.1.1",
-  "description": "Configurable design system for Vercel projects",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./styles": {
-      "default": "./dist/styles/global.css"
-    },
-    "./styles/public.css": {
-      "default": "./dist/styles/public.css"
-    },
-    "./styles/dashboard.css": {
-      "default": "./dist/styles/dashboard.css"
-    },
-    "./styles/experimental.css": {
-      "default": "./dist/styles/experimental.css"
-    },
-    "./tailwind": {
-      "types": "./dist/tailwind/index.d.ts",
-      "import": "./dist/tailwind/index.js"
-    },
-    "./tokens": {
-      "types": "./dist/tokens/index.d.ts",
-      "import": "./dist/tokens/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
+  "name": "@repo/root",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo root — managed by TurboRepo + pnpm workspaces",
   "scripts": {
-    "build": "tsup && npm run build:css",
-    "build:css": "node scripts/build-css.js",
-    "dev": "tsup --watch",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src",
-    "validate": "node scripts/validate-exports.js",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "changeset": "changeset",
-    "version": "changeset version",
-    "release": "pnpm build && changeset publish"
-  },
-  "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=@nikolayvalev/* && changeset publish",
+    "clean": "turbo run clean && rimraf node_modules"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwindcss": "^3.4.0",
-    "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "prettier": "^3.4.0",
+    "rimraf": "^6.0.0",
+    "turbo": "^2.4.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nikolayvalev/design-system"
-  },
-  "bugs": {
-    "url": "https://github.com/nikolayvalev/design-system/issues"
-  },
-  "homepage": "https://github.com/nikolayvalev/design-system#readme",
-  "keywords": [
-    "design-system",
-    "react",
-    "typescript",
-    "tailwind",
-    "design-tokens"
-  ]
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=18"
+  }
 }
