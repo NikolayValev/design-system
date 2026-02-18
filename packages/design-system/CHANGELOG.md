@@ -1,5 +1,13 @@
 # Migration to OKLCH Color System
 
+## 1.0.0
+
+### Major Changes
+
+- Release `@nikolayvalev/design-system` as `1.0.0`.
+
+  This major marks the first stable line for the visual-first versioning policy and includes the new intent-driven styling API (`goal` / `feeling` / `purpose`) with expanded design modes (`lab`, `pop`, `zen`, `museum`, `brutal`, `immersive`).
+
 ## Summary
 
 The design system has been updated to use OKLCH color space and Tailwind CSS v4 modern syntax, providing better perceptual uniformity and access to wider color gamuts.
@@ -9,16 +17,19 @@ The design system has been updated to use OKLCH color space and Tailwind CSS v4 
 ### 1. Color Space Migration: HSL → OKLCH
 
 **Before (HSL):**
+
 ```css
 --primary: hsl(221.2 83.2% 53.3%);
 ```
 
 **After (OKLCH):**
+
 ```css
 --primary: oklch(0.205 0 0);
 ```
 
 **Benefits:**
+
 - Perceptually uniform (equal numeric changes = equal visual changes)
 - Wider color gamut (more vibrant colors available)
 - Better color interpolation for gradients and transitions
@@ -26,6 +37,7 @@ The design system has been updated to use OKLCH color space and Tailwind CSS v4 
 ### 2. New Token Categories
 
 Added support for:
+
 - **Chart colors**: `chartOne` through `chartFive` for data visualization (mapped to CSS variables like `--chart-1` through `--chart-5`)
 - **Sidebar tokens**: Dedicated tokens for sidebar components
   - `sidebar`, `sidebarForeground`
@@ -36,6 +48,7 @@ Added support for:
 ### 3. Radius System Update
 
 **Before:** Multiple fixed values
+
 ```ts
 radius: {
   sm: '0.25rem',
@@ -46,6 +59,7 @@ radius: {
 ```
 
 **After:** Base value with calculations
+
 ```ts
 radius: {
   base: '0.625rem',
@@ -59,6 +73,7 @@ radius: {
 ### 4. Typography Update
 
 **Font Family:** System fonts → Geist
+
 ```css
 --font-family-sans: Geist, Geist Fallback;
 --font-family-mono: Geist Mono, Geist Mono Fallback;
@@ -67,8 +82,9 @@ radius: {
 ### 5. Tailwind CSS v4 Integration
 
 **New global.css structure:**
+
 ```css
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -99,18 +115,21 @@ Public profile now includes automatic dark mode variant using `.dark` class:
 ## Updated Profiles
 
 ### Public Profile (Light + Dark)
+
 - Light mode with dark variant
 - OKLCH colors for better perceptual consistency
 - Geist font family
 - Base radius: 0.625rem
 
 ### Dashboard Profile (Dark-first)
+
 - Optimized for prolonged use
 - Dark OKLCH palette
 - Compact density mode
 - Chart colors optimized for dark backgrounds
 
 ### Experimental Profile
+
 - High contrast OKLCH colors
 - Sharp corners (0 radius)
 - Bold color choices
@@ -120,19 +139,21 @@ Public profile now includes automatic dark mode variant using `.dark` class:
 ### Token Overrides
 
 **Before:**
+
 ```ts
 tokens: {
   colors: {
-    primary: 'hsl(280 100% 70%)'
+    primary: "hsl(280 100% 70%)";
   }
 }
 ```
 
 **After:**
+
 ```ts
 tokens: {
   colors: {
-    primary: 'oklch(0.6 0.25 280)'
+    primary: "oklch(0.6 0.25 280)";
   }
 }
 ```
@@ -140,16 +161,18 @@ tokens: {
 ### Radius Configuration
 
 **Before:**
+
 ```ts
 radius: {
-  lg: '2rem'
+  lg: "2rem";
 }
 ```
 
 **After:**
+
 ```ts
 radius: {
-  base: '2rem'  // All variants calculated from base
+  base: "2rem"; // All variants calculated from base
 }
 ```
 
@@ -169,21 +192,27 @@ radius: {
 
 1. **Update imports** (no change needed)
 2. **Update custom colors** to OKLCH format:
+
    ```ts
    // Before
-   primary: 'hsl(220 80% 50%)'
-   
+   primary: "hsl(220 80% 50%)";
+
    // After
-   primary: 'oklch(0.55 0.18 250)'
+   primary: "oklch(0.55 0.18 250)";
    ```
 
 3. **Update radius overrides** to use base:
+
    ```ts
    // Before
-   radius: { lg: '1rem' }
-   
+   radius: {
+     lg: "1rem";
+   }
+
    // After
-   radius: { base: '1rem' }
+   radius: {
+     base: "1rem";
+   }
    ```
 
 4. **Add Geist fonts** (optional but recommended)
@@ -191,6 +220,7 @@ radius: {
 ### Converting HSL to OKLCH
 
 Quick reference for common conversions:
+
 - HSL `hsl(220 80% 50%)` ≈ OKLCH `oklch(0.55 0.18 250)`
 - HSL `hsl(0 70% 50%)` ≈ OKLCH `oklch(0.55 0.22 25)`
 - Use online converters for precise values
@@ -209,12 +239,14 @@ Quick reference for common conversions:
 ## Testing
 
 Build verified successfully:
+
 ```bash
 pnpm build
 ✅ CSS files built successfully
 ```
 
 Generated files:
+
 - `dist/styles/public.css` - Light + dark mode
 - `dist/styles/dashboard.css` - Dark-first
 - `dist/styles/experimental.css` - High contrast

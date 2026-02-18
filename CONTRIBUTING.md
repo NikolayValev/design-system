@@ -16,7 +16,7 @@ This package follows **strict semantic versioning** with visual-first breaking c
 
 **Rationale**: Consumer applications lock visual appearance. Any change that affects screenshots or visual regression tests is breaking.
 
-### Minor Version (0.x.0)
+### Minor Version (x.y.0)
 Non-breaking additions:
 - New components
 - New token keys (without changing existing ones)
@@ -25,7 +25,7 @@ Non-breaking additions:
 - New export paths
 - Documentation improvements
 
-### Patch Version (0.0.x)
+### Patch Version (x.y.z)
 Pure fixes with zero visual impact:
 - TypeScript type fixes
 - Build configuration improvements

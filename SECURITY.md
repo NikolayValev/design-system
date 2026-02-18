@@ -66,7 +66,7 @@ When consuming this package, follow these guidelines:
 
 1. **Lock versions** to control updates:
    ```json
-   "@nikolayvalev/design-system": "~0.1.0"
+   "@nikolayvalev/design-system": "~1.0.0"
    ```
 
 2. **Use documented imports only** - don't deep import from dist:

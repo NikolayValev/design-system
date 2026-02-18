@@ -7,6 +7,7 @@ Configurable design system for Vercel projects. Provides a strong visual baselin
 ```
 src/
 ├── components/          # Token-driven primitives (Button, Card, Input)
+├── intent/              # Goal/feeling/purpose style recipes (lab, pop, zen, museum, brutal, immersive)
 ├── tokens/              # Design token definitions and types
 │   ├── types.ts        # Core token contracts
 │   ├── base.ts         # Shared foundation tokens
@@ -97,6 +98,25 @@ const theme = createTheme({
 applyTheme(document.documentElement, theme);
 ```
 
+### Intent-Based Style Recipes
+
+Use intent variants through explicit design intent: `goal + feeling + purpose`.
+Supported modes: `lab`, `pop`, `zen`, `museum`, `brutal`, `immersive`.
+Common purposes: `theme-wrapper`, `active-tab`, `card`, `button-primary`, `button-secondary`, `input-field`, `surface`, `layout-container`.
+
+```ts
+import { getDesignStyle, getDesignStyleByIntent } from '@nikolayvalev/design-system';
+
+const cardClass = getDesignStyle('lab', 'card');
+const brutalInputClass = getDesignStyle('brutal', 'input-field');
+
+const primaryButtonClass = getDesignStyleByIntent({
+  goal: 'joy',
+  feeling: 'euphoria',
+  purpose: 'button-primary',
+});
+```
+
 ### Semantic Tailwind Classes
 
 ```tsx
@@ -153,8 +173,8 @@ Extensions don't break the base system.
 All public API is accessed through these stable entrypoints:
 
 ```ts
-// Root - components and theme utilities
-import { Button, Card, Input, createTheme, applyTheme } from '@nikolayvalev/design-system';
+// Root - components, theme utilities, and intent style recipes
+import { Button, Card, Input, createTheme, applyTheme, getDesignStyle } from '@nikolayvalev/design-system';
 
 // Tokens - profiles and types
 import { publicProfile, dashboardProfile, experimentalProfile } from '@nikolayvalev/design-system/tokens';
@@ -252,15 +272,15 @@ import { experimentalProfile } from '@nikolayvalev/design-system/tailwind';
 Follows **strict semantic versioning** with visual-first breaking change policy:
 
 - **Major (x.0.0):** Any visual change (token values, component rendering, CSS output)
-- **Minor (0.x.0):** New features, new components, new profiles (backward compatible)  
-- **Patch (0.0.x):** Fixes with zero visual impact (types, docs, internal refactoring)
+- **Minor (x.y.0):** New features, new components, new profiles (backward compatible)  
+- **Patch (x.y.z):** Fixes with zero visual impact (types, docs, internal refactoring)
 
 Lock to major version to control when visual updates happen:
 
 ```json
 {
   "dependencies": {
-    "@nikolayvalev/design-system": "~0.1.0"
+    "@nikolayvalev/design-system": "~1.0.0"
   }
 }
 ```

@@ -67,7 +67,7 @@ Control when visual changes happen:
 ```json
 {
   "dependencies": {
-    "@nikolayvalev/design-system": "~0.1.0"
+    "@nikolayvalev/design-system": "~1.0.0"
   }
 }
 ```
@@ -112,6 +112,10 @@ This requires careful CSS scoping but minimizes risk.
 ---
 
 ## Version History
+
+### 1.0.0
+- First major release
+- Visual-first versioning policy now in stable major stream
 
 ### 0.1.1
 - Initial stable release
