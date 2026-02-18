@@ -20,27 +20,32 @@ export interface Theme {
   cssVariables: Record<string, string>;
 }
 
+type PlainRecord = Record<string, unknown>;
+
+function isPlainRecord(value: unknown): value is PlainRecord {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
 /**
  * Deep merge utility for token overrides
  */
-function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
-  const result = { ...target };
-  
-  for (const key in source) {
+function deepMerge<T extends object>(target: T, source: Partial<T>): T {
+  const result: PlainRecord = { ...(target as PlainRecord) };
+
+  for (const key of Object.keys(source) as Array<keyof T>) {
     const sourceValue = source[key];
-    const targetValue = result[key];
-    
-    if (sourceValue && typeof sourceValue === 'object' && !Array.isArray(sourceValue)) {
-      result[key] = deepMerge(
-        targetValue || ({} as any),
-        sourceValue
-      );
+    const targetValue = result[key as string];
+
+    if (isPlainRecord(sourceValue) && isPlainRecord(targetValue)) {
+      result[key as string] = deepMerge(targetValue, sourceValue);
+    } else if (isPlainRecord(sourceValue) && targetValue === undefined) {
+      result[key as string] = deepMerge({}, sourceValue);
     } else if (sourceValue !== undefined) {
-      result[key] = sourceValue as any;
+      result[key as string] = sourceValue;
     }
   }
-  
-  return result;
+
+  return result as T;
 }
 
 /**

@@ -1,1 +1,3 @@
-module.exports = require('@repo/config/eslint-design-system.config.cjs');
+import config from '@repo/config/eslint-design-system.config.cjs';
+
+export default config;
