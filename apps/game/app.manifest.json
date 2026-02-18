@@ -1,0 +1,22 @@
+{
+  "id": "game",
+  "displayName": "Game",
+  "domain": "interactive-learning",
+  "frontend": {
+    "framework": "nextjs",
+    "path": "apps/game"
+  },
+  "backend": {
+    "framework": "fastapi",
+    "serviceName": "game-api"
+  },
+  "contracts": {
+    "designSystem": "@nikolayvalev/design-system",
+    "auth": "@repo/auth",
+    "state": "@repo/state"
+  },
+  "environments": [
+    "preview",
+    "production"
+  ]
+}

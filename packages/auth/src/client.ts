@@ -1,49 +1,72 @@
-import type { AuthConfig, AuthSession, AuthUser } from './types';
+import { AuthError } from './errors';
+import { createInMemoryAuthStorage } from './storage';
+import type { AuthClient, AuthClientDependencies, AuthConfig, AuthSession, AuthUser } from './types';
+
+const DEFAULT_SESSION_MAX_AGE_SECONDS = 30 * 24 * 60 * 60;
 
 /**
- * Create a configured authentication client.
- *
- * @example
- * ```ts
- * import { createAuthClient } from '@repo/auth';
- *
- * const auth = createAuthClient({
- *   provider: 'github',
- *   clientId: process.env.GITHUB_CLIENT_ID,
- *   clientSecret: process.env.GITHUB_CLIENT_SECRET,
- * });
- * ```
+ * Creates a standalone auth client with storage injected by the consumer.
+ * If dependencies are omitted, it falls back to in-memory storage.
  */
-export function createAuthClient(config: AuthConfig) {
-  const sessionMaxAge = config.sessionMaxAge ?? 30 * 24 * 60 * 60; // 30 days
+export function createAuthClient<Context = unknown>(
+  config: AuthConfig,
+  dependencies?: AuthClientDependencies<Context>,
+): AuthClient<Context> {
+  const storage = dependencies?.storage ?? createInMemoryAuthStorage<Context>();
+  const now = dependencies?.now ?? Date.now;
+  const sessionMaxAge = config.sessionMaxAge ?? DEFAULT_SESSION_MAX_AGE_SECONDS;
+
+  const getSession = async (context: Context): Promise<AuthSession | null> => {
+    const session = await storage.getSession(context);
+
+    if (!session) {
+      return null;
+    }
+
+    if (session.expiresAt <= now()) {
+      await storage.clearSession(context);
+      await dependencies?.onSessionExpired?.(context, session);
+      return null;
+    }
+
+    return session;
+  };
+
+  const getUser = async (context: Context): Promise<AuthUser | null> => {
+    const session = await getSession(context);
+    return session?.user ?? null;
+  };
+
+  const signIn = async (context: Context, session: AuthSession): Promise<void> => {
+    await storage.setSession(context, session);
+  };
+
+  const signOut = async (context: Context): Promise<void> => {
+    await storage.clearSession(context);
+  };
+
+  const isAuthenticated = async (context: Context): Promise<boolean> => {
+    const session = await getSession(context);
+    return session !== null;
+  };
+
+  const requireSession = async (context: Context): Promise<AuthSession> => {
+    const session = await getSession(context);
+    if (!session) {
+      throw new AuthError('UNAUTHORIZED', 'Unauthorized');
+    }
+    return session;
+  };
 
   return {
     config,
-
-    /**
-     * Get current session (placeholder — wire up your session store).
-     */
-    async getSession(): Promise<AuthSession | null> {
-      // TODO: Implement session retrieval from your preferred store
-      return null;
-    },
-
-    /**
-     * Get the current user from an active session.
-     */
-    async getUser(): Promise<AuthUser | null> {
-      const session = await this.getSession();
-      return session?.user ?? null;
-    },
-
-    /**
-     * Sign out and clear the session.
-     */
-    async signOut(): Promise<void> {
-      // TODO: Implement session invalidation
-    },
-
-    /** Max session age in seconds */
     sessionMaxAge,
+    getSession,
+    getUser,
+    signIn,
+    signOut,
+    isAuthenticated,
+    requireSession,
   };
 }
+

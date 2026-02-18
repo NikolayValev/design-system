@@ -1,0 +1,22 @@
+{
+  "id": "second-brain",
+  "displayName": "Second Brain",
+  "domain": "knowledge-management",
+  "frontend": {
+    "framework": "nextjs",
+    "path": "apps/second-brain"
+  },
+  "backend": {
+    "framework": "fastapi",
+    "serviceName": "second-brain-api"
+  },
+  "contracts": {
+    "designSystem": "@nikolayvalev/design-system",
+    "auth": "@repo/auth",
+    "state": "@repo/state"
+  },
+  "environments": [
+    "preview",
+    "production"
+  ]
+}

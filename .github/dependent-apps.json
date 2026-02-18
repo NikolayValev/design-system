@@ -1,0 +1,20 @@
+{
+  "designSystemPackage": "@nikolayvalev/design-system",
+  "apps": [
+    {
+      "id": "game",
+      "path": "apps/game",
+      "required": true
+    },
+    {
+      "id": "second-brain",
+      "path": "apps/second-brain",
+      "required": true
+    },
+    {
+      "id": "strata",
+      "path": "apps/strata",
+      "required": true
+    }
+  ]
+}

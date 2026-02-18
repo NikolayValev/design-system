@@ -1,0 +1,49 @@
+aws_region = "us-east-1"
+
+frontend_apps = {
+  "game" = {
+    root_directory = "apps/game"
+    environment_variables = {
+      NEXT_PUBLIC_API_BASE_URL = "https://api-game.example.com"
+    }
+  }
+  "second-brain" = {
+    root_directory = "apps/second-brain"
+    environment_variables = {
+      NEXT_PUBLIC_API_BASE_URL = "https://api-second-brain.example.com"
+    }
+  }
+  "strata" = {
+    root_directory = "apps/strata"
+    environment_variables = {
+      NEXT_PUBLIC_API_BASE_URL = "https://api-strata.example.com"
+    }
+  }
+}
+
+fastapi_services = {
+  "game-api" = {
+    image_tag         = "latest"
+    port              = 8000
+    health_check_path = "/health"
+    environment_variables = {
+      APP_ENV = "production"
+    }
+  }
+  "second-brain-api" = {
+    image_tag         = "latest"
+    port              = 8000
+    health_check_path = "/health"
+    environment_variables = {
+      APP_ENV = "production"
+    }
+  }
+  "strata-api" = {
+    image_tag         = "latest"
+    port              = 8000
+    health_check_path = "/health"
+    environment_variables = {
+      APP_ENV = "production"
+    }
+  }
+}

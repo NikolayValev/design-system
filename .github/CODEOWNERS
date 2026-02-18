@@ -1,0 +1,10 @@
+# Core ownership model
+* @nikolayvalev
+
+# Platform contracts
+/packages/design-system/ @nikolayvalev
+/packages/auth/ @nikolayvalev
+/packages/state/ @nikolayvalev
+/infra/ @nikolayvalev
+/docs/ @nikolayvalev
+

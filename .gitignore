@@ -26,3 +26,9 @@ yarn.lock
 .idea
 *.swp
 *.swo
+
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.*
+crash.log

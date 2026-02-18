@@ -11,6 +11,7 @@
     { "path": "packages/config" },
     { "path": "packages/design-system" },
     { "path": "packages/auth" },
+    { "path": "packages/state" },
     { "path": "packages/utils" }
   ],
   "include": [],

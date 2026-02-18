@@ -1,0 +1,25 @@
+aws_region = "us-east-1"
+
+frontend_apps = {
+  "game" = {
+    root_directory = "apps/game"
+  }
+  "second-brain" = {
+    root_directory = "apps/second-brain"
+  }
+  "strata" = {
+    root_directory = "apps/strata"
+  }
+}
+
+fastapi_services = {
+  "game-api" = {
+    image_tag = "preview"
+  }
+  "second-brain-api" = {
+    image_tag = "preview"
+  }
+  "strata-api" = {
+    image_tag = "preview"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "strata",
+  "displayName": "Strata Management",
+  "domain": "consultancy-operations",
+  "frontend": {
+    "framework": "nextjs",
+    "path": "apps/strata"
+  },
+  "backend": {
+    "framework": "fastapi",
+    "serviceName": "strata-api"
+  },
+  "contracts": {
+    "designSystem": "@nikolayvalev/design-system",
+    "auth": "@repo/auth",
+    "state": "@repo/state"
+  },
+  "environments": [
+    "preview",
+    "production"
+  ]
+}

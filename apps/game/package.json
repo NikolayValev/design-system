@@ -1,0 +1,18 @@
+{
+  "name": "@apps/game",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Game application shell",
+  "type": "module",
+  "scripts": {
+    "build": "node ../../scripts/apps/validate-app.mjs --app game --path apps/game --mode build",
+    "typecheck": "node ../../scripts/apps/validate-app.mjs --app game --path apps/game --mode typecheck",
+    "lint": "node ../../scripts/apps/validate-app.mjs --app game --path apps/game --mode lint",
+    "dev": "node ../../scripts/apps/validate-app.mjs --app game --path apps/game --mode dev"
+  },
+  "dependencies": {
+    "@nikolayvalev/design-system": "workspace:*",
+    "@repo/auth": "workspace:*",
+    "@repo/state": "workspace:*"
+  }
+}

@@ -272,3 +272,12 @@ See [MIGRATION.md](./MIGRATION.md) for upgrade guides and [CONTRIBUTING.md](./CO
 - **Next.js App Router:** See [QUICKSTART.md](./QUICKSTART.md) for 5-minute setup
 - **Detailed examples:** See [USAGE.md](./USAGE.md)
 - **Contributing:** See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## Platform Ops
+
+- **Unified pipeline + deploy setup:** See [docs/PLATFORM_PIPELINE.md](./docs/PLATFORM_PIPELINE.md)
+- **Terraform IaC for frontend/backend:** See [infra/terraform/README.md](./infra/terraform/README.md)
+- **Core project operating model:** See [docs/CORE_PROJECT_PLAYBOOK.md](./docs/CORE_PROJECT_PLAYBOOK.md)
+- **Roadmap:** See [docs/CORE_ROADMAP.md](./docs/CORE_ROADMAP.md)
+- **App bootstrap:** See [docs/APP_BOOTSTRAP.md](./docs/APP_BOOTSTRAP.md)
+- **Operating metrics:** See [docs/OPERATING_METRICS.md](./docs/OPERATING_METRICS.md)

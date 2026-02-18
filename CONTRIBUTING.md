@@ -121,3 +121,12 @@ pnpm dev
 ## Questions?
 
 Open an issue for discussion before starting work on major features.
+
+## Core Platform Workflow
+
+For app-level development across Game, Second Brain, and Strata:
+
+- Read `docs/CORE_PROJECT_PLAYBOOK.md`
+- Keep `app.manifest.json` current for each app
+- Use `node scripts/apps/new-app.mjs` for new app scaffolding
+- Validate app contracts with `node scripts/apps/validate-app.mjs`
