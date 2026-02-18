@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/config/tsconfig.react.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "types": ["node"]
+  },
+  "include": ["src", ".storybook"],
+  "exclude": ["node_modules", "dist"]
+}
+

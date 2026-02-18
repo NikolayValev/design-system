@@ -281,3 +281,4 @@ See [MIGRATION.md](./MIGRATION.md) for upgrade guides and [CONTRIBUTING.md](./CO
 - **Roadmap:** See [docs/CORE_ROADMAP.md](./docs/CORE_ROADMAP.md)
 - **App bootstrap:** See [docs/APP_BOOTSTRAP.md](./docs/APP_BOOTSTRAP.md)
 - **Operating metrics:** See [docs/OPERATING_METRICS.md](./docs/OPERATING_METRICS.md)
+- **Component workbench:** See [docs/STORYBOOK.md](./docs/STORYBOOK.md)

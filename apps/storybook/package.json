@@ -1,0 +1,36 @@
+{
+  "name": "@apps/storybook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Storybook workspace for @nikolayvalev/design-system",
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build --output-dir dist/storybook --disable-telemetry",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src .storybook"
+  },
+  "dependencies": {
+    "@nikolayvalev/design-system": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@storybook/addon-a11y": "^8.6.16",
+    "@storybook/addon-essentials": "^8.6.16",
+    "@storybook/addon-interactions": "^8.6.16",
+    "@storybook/react": "^8.6.16",
+    "@storybook/react-vite": "^8.6.16",
+    "@storybook/test": "^8.6.16",
+    "@types/node": "^24.10.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.39.2",
+    "storybook": "^8.6.16",
+    "tailwindcss": "^3.4.19",
+    "postcss": "^8.5.6",
+    "typescript": "^5.9.3"
+  }
+}

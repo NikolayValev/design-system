@@ -10,6 +10,8 @@
     "typecheck": "turbo run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "storybook": "pnpm --filter @apps/storybook dev",
+    "storybook:build": "pnpm --filter @apps/storybook build",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build --filter=@nikolayvalev/* && changeset publish",
