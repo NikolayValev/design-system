@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vision Theme Schema",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "archetype",
+    "description",
+    "colors",
+    "artisticPillars",
+    "ornaments"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "archetype": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "colors": {
+      "type": "object",
+      "required": [
+        "background",
+        "foreground",
+        "surface",
+        "surfaceForeground",
+        "accent",
+        "accentForeground",
+        "secondary",
+        "secondaryForeground",
+        "muted",
+        "mutedForeground",
+        "border",
+        "input",
+        "ring",
+        "danger",
+        "dangerForeground",
+        "chart1",
+        "chart2",
+        "chart3",
+        "chart4",
+        "chart5"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "background": { "type": "string" },
+        "foreground": { "type": "string" },
+        "surface": { "type": "string" },
+        "surfaceForeground": { "type": "string" },
+        "accent": { "type": "string" },
+        "accentForeground": { "type": "string" },
+        "secondary": { "type": "string" },
+        "secondaryForeground": { "type": "string" },
+        "muted": { "type": "string" },
+        "mutedForeground": { "type": "string" },
+        "border": { "type": "string" },
+        "input": { "type": "string" },
+        "ring": { "type": "string" },
+        "danger": { "type": "string" },
+        "dangerForeground": { "type": "string" },
+        "chart1": { "type": "string" },
+        "chart2": { "type": "string" },
+        "chart3": { "type": "string" },
+        "chart4": { "type": "string" },
+        "chart5": { "type": "string" }
+      }
+    },
+    "artisticPillars": {
+      "type": "object",
+      "required": [
+        "typographyArchitecture",
+        "surfacePhysics",
+        "boundaryLogic",
+        "shadowLightEngine",
+        "motionSignature"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "typographyArchitecture": {
+          "type": "object",
+          "required": ["scale", "lineHeight", "fontStack", "letterSpacing"]
+        },
+        "surfacePhysics": {
+          "type": "object",
+          "required": ["transparency", "blur", "texture", "grain"]
+        },
+        "boundaryLogic": {
+          "type": "object",
+          "required": ["borderWeight", "radius", "sharpness"]
+        },
+        "shadowLightEngine": {
+          "type": "object",
+          "required": ["hardOffset", "neonGlow", "ambientOcclusion"]
+        },
+        "motionSignature": {
+          "type": "object",
+          "required": ["duration", "easing", "physics"]
+        }
+      }
+    },
+    "ornaments": {
+      "type": "object",
+      "required": ["grain", "glow", "texture"],
+      "additionalProperties": false,
+      "properties": {
+        "grain": { "type": "boolean" },
+        "glow": { "type": "boolean" },
+        "texture": { "type": "boolean" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -27,6 +27,24 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
+export const Museum: Story = {
+  parameters: {
+    forcedVision: 'museum',
+  },
+};
+
+export const Brutalist: Story = {
+  parameters: {
+    forcedVision: 'brutalist',
+  },
+};
+
+export const Immersive: Story = {
+  parameters: {
+    forcedVision: 'immersive',
+  },
+};
+
 export const VariantSet: Story = {
   render: args => (
     <div className="flex flex-wrap gap-3">
@@ -47,4 +65,25 @@ export const VariantSet: Story = {
       </Button>
     </div>
   ),
+};
+
+export const VariantSetMuseum: Story = {
+  ...VariantSet,
+  parameters: {
+    forcedVision: 'museum',
+  },
+};
+
+export const VariantSetBrutalist: Story = {
+  ...VariantSet,
+  parameters: {
+    forcedVision: 'brutalist',
+  },
+};
+
+export const VariantSetImmersive: Story = {
+  ...VariantSet,
+  parameters: {
+    forcedVision: 'immersive',
+  },
 };

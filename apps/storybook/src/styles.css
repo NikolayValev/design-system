@@ -8,3 +8,33 @@
   }
 }
 
+@layer utilities {
+  .pattern-grid-lg {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.18) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .museum-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.22) 0.6px, transparent 0.6px);
+    background-size: 3px 3px;
+    opacity: 0.08;
+  }
+
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

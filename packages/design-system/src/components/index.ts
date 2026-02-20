@@ -6,3 +6,9 @@ export type { CardProps, CardHeaderProps, CardTitleProps, CardContentProps } fro
 
 export { Input } from './Input';
 export type { InputProps } from './Input';
+
+export { Layout } from './Layout';
+export type { LayoutProps } from './Layout';
+
+export { AestheticOrnaments } from './AestheticOrnaments';
+export type { AestheticOrnamentsProps } from './AestheticOrnaments';

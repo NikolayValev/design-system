@@ -2,6 +2,51 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --vde-color-background: hsl(0 0% 100%);
+  --vde-color-foreground: hsl(222.2 84% 4.9%);
+  --vde-color-surface: hsl(0 0% 100%);
+  --vde-color-surface-foreground: hsl(222.2 84% 4.9%);
+  --vde-color-accent: hsl(221.2 83.2% 53.3%);
+  --vde-color-accent-foreground: hsl(210 40% 98%);
+  --vde-color-secondary: hsl(210 40% 96.1%);
+  --vde-color-secondary-foreground: hsl(222.2 47.4% 11.2%);
+  --vde-color-muted: hsl(210 40% 96.1%);
+  --vde-color-muted-foreground: hsl(215.4 16.3% 46.9%);
+  --vde-color-border: hsl(214.3 31.8% 91.4%);
+  --vde-color-input: hsl(214.3 31.8% 91.4%);
+  --vde-color-ring: hsl(221.2 83.2% 53.3%);
+  --vde-color-danger: hsl(0 84.2% 60.2%);
+  --vde-color-danger-foreground: hsl(210 40% 98%);
+  --vde-font-body: var(--font-family-sans, system-ui, sans-serif);
+  --vde-font-display: var(--font-family-sans, system-ui, sans-serif);
+  --vde-font-mono: var(--font-family-mono, monospace);
+  --vde-typography-scale-body: 1;
+  --vde-typography-scale-display: 1;
+  --vde-line-height-tight: 1.25;
+  --vde-line-height-normal: 1.5;
+  --vde-line-height-relaxed: 1.75;
+  --vde-letter-spacing-tight: -0.01em;
+  --vde-letter-spacing-normal: 0em;
+  --vde-letter-spacing-wide: 0.03em;
+  --vde-surface-transparency: 1;
+  --vde-surface-blur: 0px;
+  --vde-surface-texture: none;
+  --vde-surface-grain: 0;
+  --vde-border-width: 1px;
+  --vde-boundary-radius: 0.5rem;
+  --vde-boundary-sharpness: 0.5;
+  --vde-shadow-hard: none;
+  --vde-shadow-neon: none;
+  --vde-shadow-ambient: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --vde-motion-duration-fast: 120ms;
+  --vde-motion-duration-normal: 220ms;
+  --vde-motion-duration-slow: 340ms;
+  --vde-motion-easing-standard: ease-out;
+  --vde-motion-easing-emphatic: ease-out;
+  --vde-motion-physics: soft;
+}
+
 @theme inline {
   --font-sans: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
