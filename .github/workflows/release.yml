@@ -31,6 +31,39 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Prepare npm auth token
+        shell: bash
+        env:
+          RAW_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$RAW_NPM_TOKEN" ]; then
+            echo "::error::Missing NPM_TOKEN secret. Configure repository secret NPM_TOKEN for release publishing."
+            exit 1
+          fi
+
+          CLEAN_NPM_TOKEN="$(printf '%s' "$RAW_NPM_TOKEN" | tr -d '\r\n')"
+          if [ -z "$CLEAN_NPM_TOKEN" ]; then
+            echo "::error::NPM_TOKEN became empty after trimming line breaks. Recreate the secret."
+            exit 1
+          fi
+
+          if [ "$RAW_NPM_TOKEN" != "$CLEAN_NPM_TOKEN" ]; then
+            echo "::warning::NPM_TOKEN contained line breaks. Sanitized token will be used for this run."
+          fi
+
+          echo "::add-mask::$CLEAN_NPM_TOKEN"
+          echo "NPM_TOKEN=$CLEAN_NPM_TOKEN" >> "$GITHUB_ENV"
+          echo "NODE_AUTH_TOKEN=$CLEAN_NPM_TOKEN" >> "$GITHUB_ENV"
+
+      - name: Release diagnostics
+        shell: bash
+        run: |
+          echo "npm registry: $(npm config get registry)"
+          pnpm changeset status || echo "No pending changesets (or no changeset metadata to report)."
+
+      - name: Verify npm authentication
+        run: npm whoami --registry=https://registry.npmjs.org
+
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
@@ -41,4 +74,5 @@ jobs:
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ env.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
