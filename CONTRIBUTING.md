@@ -80,6 +80,13 @@ On merge to `main`:
 2. When merged, packages are automatically published to npm
 3. GitHub release is created with changelog
 
+### Release Pipeline Contract
+
+- Publishing is handled only by `.github/workflows/release.yml`.
+- Repository secret `NPM_TOKEN` is required for publish runs.
+- The workflow validates npm auth (`npm whoami`) before `changeset publish`.
+- If no changesets are present, the workflow attempts to publish any unpublished packages.
+
 ## Development
 
 ### Setup
