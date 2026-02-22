@@ -1,4 +1,5 @@
 import { VisionRegistry } from '../vde-core';
+import type { VisionTheme } from '../vde-core';
 import { auroraTheme } from './aurora.theme';
 import { brutalistTheme } from './brutalist.theme';
 import { editorialTheme } from './editorial.theme';
@@ -38,5 +39,13 @@ export const visionThemes = [
   parchmentTheme,
   terminalTheme,
 ];
+
+export function getVisionThemeById(themeId: string): VisionTheme | undefined {
+  return visionThemes.find(theme => theme.id === themeId);
+}
+
+export function getVisionThemeIds(): string[] {
+  return visionThemes.map(theme => theme.id);
+}
 
 export const defaultVisionRegistry = new VisionRegistry(visionThemes);
