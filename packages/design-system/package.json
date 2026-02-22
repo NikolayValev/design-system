@@ -41,6 +41,7 @@
   "scripts": {
     "build": "tsup && pnpm run build:css",
     "build:css": "node scripts/build-css.js",
+    "test:vision-registry": "pnpm run build && node scripts/verify-expanded-visions.mjs",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",

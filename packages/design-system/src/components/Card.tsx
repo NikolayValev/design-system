@@ -1,4 +1,5 @@
 import React from 'react';
+import { useOptionalVision } from '../vde-core';
 import { AestheticOrnaments } from './AestheticOrnaments';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -9,7 +10,12 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * Card component - semantic container with token-driven styling
  */
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className = '', children, ...props }, ref) => {
+  ({ className = '', children, style, ...props }, ref) => {
+    const vision = useOptionalVision();
+    const activeVisionId = vision?.activeVision.id;
+    const isClaySoft = activeVisionId === 'clay_soft';
+    const isDeconstruct = activeVisionId === 'deconstruct';
+
     const classes = [
       'relative',
       'overflow-hidden',
@@ -24,11 +30,22 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       'transition-all',
       '[transition-duration:var(--vde-motion-duration-normal)]',
       '[transition-timing-function:var(--vde-motion-easing-standard)]',
+      isClaySoft ? '[animation:var(--vde-card-bob-animation)]' : '',
       className,
     ].join(' ');
 
     return (
-      <div ref={ref} className={classes} {...props}>
+      <div
+        ref={ref}
+        className={classes}
+        data-vde-component="card"
+        style={{
+          transform: isDeconstruct ? 'rotate(var(--vde-component-tilt, -1deg))' : undefined,
+          zIndex: isDeconstruct ? 2 : undefined,
+          ...style,
+        }}
+        {...props}
+      >
         <AestheticOrnaments />
         <div className="relative z-10">{children}</div>
       </div>

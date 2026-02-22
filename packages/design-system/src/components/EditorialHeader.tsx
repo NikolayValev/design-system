@@ -18,15 +18,20 @@ const sizeMap: Record<NonNullable<EditorialHeaderProps['size']>, string> = {
 export const EditorialHeader = React.forwardRef<HTMLHeadingElement, EditorialHeaderProps>(
   ({ as = 'h1', size = 'lg', writingMode = 'horizontal', className = '', style, ...props }, ref) => {
     const { activeVision } = useVision();
-    const isMuseum = activeVision.id === 'museum';
-    const isBrutalist = activeVision.id === 'brutalist';
-    const isImmersive = activeVision.id === 'immersive';
+    const isMuseum = activeVision.id === 'museum' || activeVision.id === 'the_archive';
+    const isBrutalist = activeVision.id === 'brutalist' || activeVision.id === 'raw_data';
+    const isImmersive =
+      activeVision.id === 'immersive' || activeVision.id === 'the_ether' || activeVision.id === 'y2k_chrome';
+    const isMaMinimalism = activeVision.id === 'ma_minimalism';
+    const isDeconstruct = activeVision.id === 'deconstruct';
     const Tag = as;
+    const resolvedWritingMode = isMaMinimalism && writingMode === 'horizontal' ? 'vertical' : writingMode;
 
     const visionStyle: React.CSSProperties = {
       fontSize: sizeMap[size],
-      writingMode: writingMode === 'vertical' ? 'vertical-rl' : 'horizontal-tb',
-      textOrientation: writingMode === 'vertical' ? 'mixed' : 'initial',
+      writingMode: resolvedWritingMode === 'vertical' ? 'vertical-rl' : 'horizontal-tb',
+      textOrientation: resolvedWritingMode === 'vertical' ? 'mixed' : 'initial',
+      transform: isDeconstruct ? 'rotate(var(--vde-component-tilt, -1deg))' : undefined,
       ...(isMuseum
         ? {
             marginBlock: 'var(--vde-editorial-margin-block, clamp(2.5rem, 8vw, 7rem))',
@@ -48,6 +53,12 @@ export const EditorialHeader = React.forwardRef<HTMLHeadingElement, EditorialHea
             color: 'var(--vde-color-foreground)',
             letterSpacing: 'var(--vde-letter-spacing-wide)',
             textShadow: 'var(--vde-editorial-glow, 0 0 24px rgba(157, 95, 255, 0.4))',
+          }
+        : null),
+      ...(isMaMinimalism
+        ? {
+            fontWeight: 300,
+            letterSpacing: 'var(--vde-letter-spacing-wide)',
           }
         : null),
       ...style,

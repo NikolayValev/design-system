@@ -19,7 +19,16 @@ function resolveMode(visionId: string, mode: NonNullable<AtmosphereProviderProps
     return mode;
   }
 
-  return visionId === 'immersive' ? 'nexus' : 'archive';
+  const nexusVisions = new Set([
+    'immersive',
+    'aurora',
+    'the_ether',
+    'solarpunk',
+    'y2k_chrome',
+    'clay_soft',
+  ]);
+
+  return nexusVisions.has(visionId) ? 'nexus' : 'archive';
 }
 
 export const AtmosphereProvider = React.forwardRef<HTMLDivElement, AtmosphereProviderProps>(
@@ -76,6 +85,7 @@ export const AtmosphereProvider = React.forwardRef<HTMLDivElement, AtmospherePro
             style={{
               background: 'var(--vde-atmosphere-mesh-gradient, radial-gradient(circle at 12% 8%, rgba(130, 88, 255, 0.46), transparent 42%), radial-gradient(circle at 86% 18%, rgba(74, 197, 255, 0.42), transparent 47%), radial-gradient(circle at 60% 100%, rgba(58, 255, 169, 0.2), transparent 55%))',
               opacity: `calc(var(--vde-atmosphere-nexus-opacity, 0.85) * ${layerOpacity})`,
+              animation: 'var(--vde-atmosphere-motion, none)',
             }}
           />
         ) : null}

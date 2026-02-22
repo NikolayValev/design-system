@@ -129,13 +129,44 @@ No hardcoded colors. Styles adapt to active theme profile.
 
 ## Components
 
-Minimal primitive set. Extensible through composition, not exhaustive variants.
+Core primitives and atmospheric components. Extensible through composition.
 
 - `Button` - Variants: default, secondary, destructive, outline, ghost
 - `Card` - Semantic container with CardHeader, CardTitle, CardContent
 - `Input` - Form primitive
+- `Layout` - Token-driven section shell
+- `EditorialHeader` - Vision-aware display heading with `massive` size and writing mode support
+- `GalleryStage` - Material-shifting container with archetype ornaments
+- `MediaFrame` - Vision-aware image/video wrapper with atmospheric effects
+- `AtmosphereProvider` - Global archive/noise or nexus/mesh background utility
+- `NavigationOrb` - Floating navigation with vision-specific motion physics
 
-All components read from CSS variables.
+All components read from CSS variables and update through `VisionProvider`/`useVision`.
+
+## Vision Registry
+
+The registry includes legacy and expanded archetypes. New expansion IDs:
+
+- `swiss_international`
+- `raw_data`
+- `the_archive`
+- `the_ether`
+- `solarpunk`
+- `y2k_chrome`
+- `deconstruct`
+- `ma_minimalism`
+- `clay_soft`
+- `zine_collage`
+
+Runtime helpers:
+
+```ts
+import { getVisionThemeIds, getVisionThemeById, defaultVisionRegistry } from '@nikolayvalev/design-system';
+
+const allVisionIds = getVisionThemeIds();
+const archive = getVisionThemeById('the_archive');
+defaultVisionRegistry.get('raw_data');
+```
 
 ## Extending Per Project
 

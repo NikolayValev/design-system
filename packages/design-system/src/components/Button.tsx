@@ -1,4 +1,5 @@
 import React from 'react';
+import { useOptionalVision } from '../vde-core';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost';
@@ -17,6 +18,9 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'default', size = 'md', className = '', ...props }, ref) => {
+    const vision = useOptionalVision();
+    const isRawData = vision?.activeVision.id === 'raw_data';
+
     const baseClasses = [
       'inline-flex',
       'items-center',
@@ -64,6 +68,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       '[line-height:var(--vde-line-height-tight)]',
       '[transition-duration:var(--vde-motion-duration-fast)]',
       '[transition-timing-function:var(--vde-motion-easing-standard)]',
+      isRawData ? 'hover:translate-x-[2px] hover:translate-y-[2px]' : '',
       variantClasses[variant],
       variantTokenClasses[variant],
       sizeClasses[size],

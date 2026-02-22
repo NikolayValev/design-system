@@ -12,14 +12,18 @@ export interface MediaFrameProps extends React.HTMLAttributes<HTMLDivElement> {
 export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
   ({ alt = '', children, className = '', kind = 'image', poster, src, style, ...props }, ref) => {
     const { activeVision } = useVision();
-    const isMuseum = activeVision.id === 'museum';
-    const isBrutalist = activeVision.id === 'brutalist';
-    const isImmersive = activeVision.id === 'immersive';
+    const isMuseum = activeVision.id === 'museum' || activeVision.id === 'the_archive';
+    const isBrutalist = activeVision.id === 'brutalist' || activeVision.id === 'raw_data';
+    const isImmersive = activeVision.id === 'immersive' || activeVision.id === 'the_ether';
+    const isY2KChrome = activeVision.id === 'y2k_chrome';
+    const isDeconstruct = activeVision.id === 'deconstruct';
 
     const frameStyle: React.CSSProperties = {
       boxShadow: isMuseum
         ? 'var(--vde-media-passpartout-shadow, inset 0 0 0 0.6rem rgba(255, 253, 246, 0.9), inset 0 0 2.3rem rgba(38, 28, 16, 0.2))'
         : 'var(--vde-shadow-ambient)',
+      transform: isDeconstruct ? 'rotate(var(--vde-component-tilt, -1deg))' : undefined,
+      zIndex: isDeconstruct ? 4 : undefined,
       ...style,
     };
 
@@ -56,6 +60,18 @@ export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
             aria-hidden="true"
             className="pointer-events-none absolute inset-0"
             style={{ boxShadow: 'var(--vde-media-light-leak, inset 0 0 2.8rem rgba(146, 92, 255, 0.45), inset 0 0 1.4rem rgba(80, 200, 255, 0.32))' }}
+          />
+        ) : null}
+        {isY2KChrome ? (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage:
+                'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%272%27 height=%274%27 viewBox=%270 0 2 4%27%3E%3Crect width=%272%27 height=%271%27 fill=%27rgba(0,0,0,0.15)%27/%3E%3C/svg%3E")',
+              opacity: 'var(--vde-media-scanline-opacity, 0.24)',
+              mixBlendMode: 'multiply',
+            }}
           />
         ) : null}
       </figure>

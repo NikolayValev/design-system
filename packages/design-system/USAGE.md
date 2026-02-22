@@ -79,6 +79,59 @@ export default function HomePage() {
 }
 ```
 
+### 4. Use Visionary atmospheric components (optional)
+
+```tsx
+// app/page.tsx
+import {
+  AtmosphereProvider,
+  EditorialHeader,
+  GalleryStage,
+  MediaFrame,
+  NavigationOrb,
+  VisionProvider,
+  defaultVisionRegistry,
+} from '@nikolayvalev/design-system';
+
+export default function VisionaryPage() {
+  return (
+    <VisionProvider registry={defaultVisionRegistry} defaultVisionId="museum">
+      <AtmosphereProvider className="min-h-screen p-8">
+        <EditorialHeader size="massive">Atmospheric Components</EditorialHeader>
+
+        <GalleryStage className="mx-auto max-w-3xl p-6">
+          <MediaFrame
+            className="aspect-video"
+            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e"
+            alt="Atmospheric sample"
+          />
+        </GalleryStage>
+
+        <NavigationOrb
+          items={[
+            { id: 'intro', label: 'Intro' },
+            { id: 'gallery', label: 'Gallery' },
+            { id: 'contact', label: 'Contact' },
+          ]}
+        />
+      </AtmosphereProvider>
+    </VisionProvider>
+  );
+}
+```
+
+Common expanded IDs for `setVision()`:
+- `swiss_international`
+- `raw_data`
+- `the_archive`
+- `the_ether`
+- `solarpunk`
+- `y2k_chrome`
+- `deconstruct`
+- `ma_minimalism`
+- `clay_soft`
+- `zine_collage`
+
 ## Runtime Configuration Override
 
 Override specific tokens at runtime using OKLCH color values:

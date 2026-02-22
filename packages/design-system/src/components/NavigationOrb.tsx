@@ -25,7 +25,7 @@ interface OrbPhysics {
 }
 
 function resolvePhysics(visionId: string): OrbPhysics {
-  if (visionId === 'museum') {
+  if (visionId === 'museum' || visionId === 'the_archive') {
     return {
       buttonDuration: 'var(--vde-motion-duration-slow)',
       easing: 'linear',
@@ -35,7 +35,7 @@ function resolvePhysics(visionId: string): OrbPhysics {
     };
   }
 
-  if (visionId === 'brutalist') {
+  if (visionId === 'brutalist' || visionId === 'raw_data' || visionId === 'swiss_international') {
     return {
       buttonDuration: '0ms',
       easing: 'linear',

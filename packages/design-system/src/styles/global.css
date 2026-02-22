@@ -61,8 +61,14 @@
   --vde-atmosphere-nexus-opacity: 0.35;
   --vde-atmosphere-mesh-gradient: radial-gradient(circle at 18% 14%, rgba(100, 100, 100, 0.2), transparent 45%),
     radial-gradient(circle at 84% 76%, rgba(140, 140, 140, 0.14), transparent 40%);
+  --vde-atmosphere-motion: none;
+  --vde-card-bob-animation: none;
+  --vde-component-tilt: -1deg;
   --vde-nav-orb-bounce-duration: var(--vde-motion-duration-normal);
   --vde-nav-orb-bounce-easing: var(--vde-motion-easing-emphatic);
+  --vde-gallery-torn-clip-path: none;
+  --vde-gallery-tape-opacity: 0;
+  --vde-media-scanline-opacity: 0;
 }
 
 @theme inline {
@@ -113,5 +119,29 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
+  }
+}
+
+@keyframes vde-atmosphere-drift {
+  0% {
+    transform: translate3d(0%, 0%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -1%, 0) scale(1.03);
+  }
+  100% {
+    transform: translate3d(-2%, 1%, 0) scale(1.01);
+  }
+}
+
+@keyframes vde-card-bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }

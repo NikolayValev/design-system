@@ -104,6 +104,18 @@ pnpm build
 pnpm typecheck
 ```
 
+### Design System Visual + Vision Checks
+```bash
+# Storybook interaction smoke checks
+pnpm test:stories
+
+# Vision archetype behavior checks
+pnpm test:vision
+
+# Screenshot regression checks
+pnpm test:visual
+```
+
 ### Watch Mode
 ```bash
 pnpm dev

@@ -10,6 +10,7 @@
     "serve:storybook": "http-server dist/storybook -p 6006 --silent",
     "test:stories": "test-storybook --url http://127.0.0.1:6006 --maxWorkers=2",
     "test:stories:ci": "pnpm run build && start-server-and-test \"pnpm run serve:storybook\" http://127.0.0.1:6006 \"pnpm run test:stories\"",
+    "test:vision": "pnpm --filter @nikolayvalev/design-system build && playwright test tests/visual/vision-switch.spec.ts",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
     "typecheck": "tsc --noEmit",
