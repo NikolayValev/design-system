@@ -42,13 +42,16 @@ jobs:
           fi
 
           CLEAN_NPM_TOKEN="$(printf '%s' "$RAW_NPM_TOKEN" | tr -d '\r\n')"
+          CLEAN_NPM_TOKEN="$(printf '%s' "$CLEAN_NPM_TOKEN" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+          CLEAN_NPM_TOKEN="$(printf '%s' "$CLEAN_NPM_TOKEN" | sed -E "s/^\"(.*)\"$/\1/; s/^'(.*)'$/\1/")"
+          CLEAN_NPM_TOKEN="$(printf '%s' "$CLEAN_NPM_TOKEN" | sed -E 's#^//registry\.npmjs\.org/:_authToken=##; s#^_authToken=##')"
           if [ -z "$CLEAN_NPM_TOKEN" ]; then
-            echo "::error::NPM_TOKEN became empty after trimming line breaks. Recreate the secret."
+            echo "::error::NPM_TOKEN became empty after normalization. Set NPM_TOKEN to the raw npm token value only."
             exit 1
           fi
 
           if [ "$RAW_NPM_TOKEN" != "$CLEAN_NPM_TOKEN" ]; then
-            echo "::warning::NPM_TOKEN contained line breaks. Sanitized token will be used for this run."
+            echo "::warning::NPM_TOKEN required normalization (whitespace/quotes/.npmrc prefix removed). Sanitized token will be used."
           fi
 
           echo "::add-mask::$CLEAN_NPM_TOKEN"
@@ -62,7 +65,13 @@ jobs:
           pnpm changeset status || echo "No pending changesets (or no changeset metadata to report)."
 
       - name: Verify npm authentication
-        run: npm whoami --registry=https://registry.npmjs.org
+        shell: bash
+        run: |
+          if ! npm whoami --registry=https://registry.npmjs.org; then
+            echo "::error::npm authentication failed. Ensure NPM_TOKEN is a valid npm automation token with publish access for @nikolayvalev/design-system."
+            echo "::error::Use the raw token value (e.g. npm_xxx), not an .npmrc line."
+            exit 1
+          fi
 
       - name: Create Release Pull Request or Publish
         id: changesets
