@@ -1,5 +1,15 @@
 # Migration to OKLCH Color System
 
+## 1.1.0
+
+### Minor Changes
+
+- 183fe0c: Add new Vision theme discovery helpers:
+  - `getVisionThemeById(themeId)`
+  - `getVisionThemeIds()`
+  - `getVisionThemeNames()`
+  - `isVisionThemeId(themeId)`
+
 ## 1.0.0
 
 ### Major Changes

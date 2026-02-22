@@ -48,4 +48,12 @@ export function getVisionThemeIds(): string[] {
   return visionThemes.map(theme => theme.id);
 }
 
+export function getVisionThemeNames(): string[] {
+  return visionThemes.map(theme => theme.name);
+}
+
+export function isVisionThemeId(themeId: string): boolean {
+  return visionThemes.some(theme => theme.id === themeId);
+}
+
 export const defaultVisionRegistry = new VisionRegistry(visionThemes);
