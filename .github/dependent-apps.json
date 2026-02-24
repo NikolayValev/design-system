@@ -4,17 +4,65 @@
     {
       "id": "game",
       "path": "apps/game",
-      "required": true
+      "required": true,
+      "repository": "https://github.com/NikolayValev/mandate-zero"
     },
     {
       "id": "second-brain",
       "path": "apps/second-brain",
-      "required": true
+      "required": true,
+      "repository": "https://github.com/NikolayValev/SecondBrain"
     },
     {
       "id": "strata",
       "path": "apps/strata",
-      "required": true
+      "required": true,
+      "repository": "https://github.com/NikolayValev/kami_times"
+    }
+  ],
+  "linkedRepositories": [
+    {
+      "id": "game",
+      "role": "frontend",
+      "repository": "https://github.com/NikolayValev/mandate-zero",
+      "manifestId": "game",
+      "manifestPath": "app.manifest.json",
+      "requiredManifest": false,
+      "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
+      "requiredErrorEnvelope": false
+    },
+    {
+      "id": "second-brain-api",
+      "role": "backend",
+      "repository": "https://github.com/NikolayValev/SecondBrain",
+      "manifestId": "second-brain",
+      "manifestPath": "app.manifest.json",
+      "requiredManifest": false,
+      "openapiPath": "openapi/openapi.json",
+      "openapiSnapshotPath": "openapi/second-brain.openapi.snapshot.json",
+      "requiredOpenapi": false,
+      "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
+      "requiredErrorEnvelope": false
+    },
+    {
+      "id": "second-brain-ui",
+      "role": "frontend",
+      "repository": "https://github.com/NikolayValev/second-brain-ui",
+      "manifestId": "second-brain",
+      "manifestPath": "app.manifest.json",
+      "requiredManifest": false,
+      "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
+      "requiredErrorEnvelope": false
+    },
+    {
+      "id": "strata",
+      "role": "frontend",
+      "repository": "https://github.com/NikolayValev/kami_times",
+      "manifestId": "strata",
+      "manifestPath": "app.manifest.json",
+      "requiredManifest": false,
+      "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
+      "requiredErrorEnvelope": false
     }
   ]
 }

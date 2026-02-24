@@ -19,7 +19,7 @@ Build one coherent platform with shared primitives and predictable delivery:
 
 ## Engineering Rules
 
-- Every app must carry an `app.manifest.json`.
+- Every app must carry a manifest v2 `app.manifest.json`.
 - Every app must depend on the shared contracts (`design-system`, `auth`, `state`).
 - Design system changes must pass dependent-app dry-run validation.
 - Infrastructure changes must pass `terraform fmt` and `terraform validate` in CI.
@@ -46,6 +46,6 @@ pnpm install
 pnpm turbo run build
 pnpm turbo run typecheck
 pnpm turbo run lint
+pnpm validate:platform-contracts
 node scripts/ci/dry-run-design-system-impact.mjs
 ```
-

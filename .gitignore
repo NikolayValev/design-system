@@ -39,3 +39,4 @@ yarn.lock
 crash.log
 .storybook-dev.log
 .storybook-dev.err.log
+docs/linked-contract-readiness.md

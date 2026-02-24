@@ -1,7 +1,9 @@
 {
+  "manifestVersion": 2,
   "id": "strata",
   "displayName": "Strata Management",
   "domain": "consultancy-operations",
+  "topology": "monorepo",
   "frontend": {
     "framework": "nextjs",
     "path": "apps/strata"
@@ -18,5 +20,9 @@
   "environments": [
     "preview",
     "production"
-  ]
+  ],
+  "owners": {
+    "team": "strata",
+    "contact": "strata@local"
+  }
 }

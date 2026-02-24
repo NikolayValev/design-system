@@ -56,9 +56,11 @@ const packageJson = {
 };
 
 const manifest = {
+  manifestVersion: 2,
   id,
   displayName,
   domain,
+  topology: 'monorepo',
   frontend: {
     framework: 'nextjs',
     path: `apps/${id}`,
@@ -73,6 +75,10 @@ const manifest = {
     state: '@repo/state',
   },
   environments: ['preview', 'production'],
+  owners: {
+    team: 'platform',
+    contact: 'platform@local',
+  },
 };
 
 const readme = `# ${displayName}
@@ -120,4 +126,3 @@ writeFileSync(path.join(appPath, 'README.md'), readme, 'utf8');
 writeFileSync(path.join(appPath, 'src', 'main.ts'), mainTs, 'utf8');
 
 console.log(`Created app scaffold: apps/${id}`);
-

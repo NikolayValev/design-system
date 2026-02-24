@@ -1,7 +1,9 @@
 {
+  "manifestVersion": 2,
   "id": "second-brain",
   "displayName": "Second Brain",
   "domain": "knowledge-management",
+  "topology": "monorepo",
   "frontend": {
     "framework": "nextjs",
     "path": "apps/second-brain"
@@ -18,5 +20,9 @@
   "environments": [
     "preview",
     "production"
-  ]
+  ],
+  "owners": {
+    "team": "second-brain",
+    "contact": "second-brain@local"
+  }
 }

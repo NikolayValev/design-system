@@ -3,6 +3,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { REQUIRED_CONTRACTS, validateManifest } from './manifest-contract.mjs';
 
 const usage = `
 Usage:
@@ -32,8 +33,8 @@ const rootDir = path.resolve(scriptDir, '../..');
 const appDir = path.join(rootDir, appPath);
 
 const requiredFiles = ['README.md', 'app.manifest.json', 'package.json', 'src/main.ts'];
-const requiredContracts = ['@nikolayvalev/design-system', '@repo/auth', '@repo/state'];
 const errors = [];
+const warnings = [];
 
 for (const relativeFile of requiredFiles) {
   const absoluteFile = path.join(appDir, relativeFile);
@@ -48,7 +49,7 @@ if (existsSync(packageJsonPath)) {
   const dependencies = packageJson.dependencies ?? {};
   const scripts = packageJson.scripts ?? {};
 
-  for (const dependency of requiredContracts) {
+  for (const dependency of Object.values(REQUIRED_CONTRACTS)) {
     if (!dependencies[dependency]) {
       errors.push(`Missing dependency "${dependency}" in ${appPath}/package.json`);
     }
@@ -69,30 +70,17 @@ if (existsSync(packageJsonPath)) {
 
 const manifestPath = path.join(appDir, 'app.manifest.json');
 if (existsSync(manifestPath)) {
-  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-
-  if (manifest.id !== appId) {
-    errors.push(`Manifest id mismatch. Expected "${appId}", received "${manifest.id}".`);
-  }
-
-  if (manifest.frontend?.framework !== 'nextjs') {
-    errors.push(`Manifest frontend.framework must be "nextjs" for ${appId}.`);
-  }
-
-  if (manifest.backend?.framework !== 'fastapi') {
-    errors.push(`Manifest backend.framework must be "fastapi" for ${appId}.`);
-  }
-
-  if (manifest.contracts?.designSystem !== '@nikolayvalev/design-system') {
-    errors.push(`Manifest contracts.designSystem is invalid for ${appId}.`);
-  }
-
-  if (manifest.contracts?.auth !== '@repo/auth') {
-    errors.push(`Manifest contracts.auth is invalid for ${appId}.`);
-  }
-
-  if (manifest.contracts?.state !== '@repo/state') {
-    errors.push(`Manifest contracts.state is invalid for ${appId}.`);
+  try {
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    const result = validateManifest(manifest, {
+      expectedId: appId,
+      sourceLabel: `${appPath}/app.manifest.json`,
+    });
+    errors.push(...result.errors);
+    warnings.push(...result.warnings);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    errors.push(`Invalid JSON in ${appPath}/app.manifest.json: ${message}`);
   }
 }
 
@@ -101,6 +89,10 @@ if (errors.length > 0) {
     console.error(`::error::${message}`);
   }
   process.exit(1);
+}
+
+for (const message of warnings) {
+  console.warn(`::warning::${message}`);
 }
 
 if (mode === 'build') {

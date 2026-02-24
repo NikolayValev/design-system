@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -46,6 +47,51 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Detect design system changes
+        id: changed-files
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            design_system:
+              - 'packages/design-system/**'
+
+      - name: Dry-run dependent app impact
+        if: steps.changed-files.outputs.design_system == 'true'
+        run: node scripts/ci/dry-run-design-system-impact.mjs
+
+      - name: Validate platform contracts
+        shell: bash
+        run: |
+          args=()
+          if [ "${{ vars.LINKED_MANIFESTS_STRICT }}" = "true" ]; then
+            args+=("--strict-manifests")
+          fi
+          if [ "${{ vars.LINKED_OPENAPI_STRICT }}" = "true" ]; then
+            args+=("--strict-openapi")
+          fi
+          if [ "${{ vars.LINKED_ERROR_ENVELOPE_STRICT }}" = "true" ]; then
+            args+=("--strict-error-envelope")
+          fi
+          pnpm validate:platform-contracts -- "${args[@]}"
+
+      - name: Report linked contract readiness
+        run: pnpm report:linked-contract-readiness:write
+
+      - name: Upload linked readiness report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linked-contract-readiness
+          path: docs/linked-contract-readiness.md
+          if-no-files-found: error
+
+      - name: Check OpenAPI snapshot drift (optional)
+        if: ${{ vars.OPENAPI_SOURCE_URL != '' }}
+        env:
+          OPENAPI_SOURCE_URL: ${{ vars.OPENAPI_SOURCE_URL }}
+          OPENAPI_AUTH_HEADER: ${{ secrets.OPENAPI_AUTH_HEADER }}
+          OPENAPI_OUT_PATH: openapi/second-brain.openapi.snapshot.json
+        run: pnpm contracts:openapi:check
 
       - name: Build (with Turbo remote cache)
         run: pnpm turbo run build

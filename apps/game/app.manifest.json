@@ -1,7 +1,9 @@
 {
+  "manifestVersion": 2,
   "id": "game",
   "displayName": "Game",
   "domain": "interactive-learning",
+  "topology": "monorepo",
   "frontend": {
     "framework": "nextjs",
     "path": "apps/game"
@@ -18,5 +20,9 @@
   "environments": [
     "preview",
     "production"
-  ]
+  ],
+  "owners": {
+    "team": "core-platform",
+    "contact": "platform@local"
+  }
 }

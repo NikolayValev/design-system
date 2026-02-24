@@ -21,3 +21,7 @@ Use ADRs to document irreversible or high-impact technical choices.
 - Consequences
 - Status
 
+## Current ADRs
+
+- `ADR-0001-core-platform-contracts.md`
+- `ADR-0002-openapi-sync-and-linked-validation.md`

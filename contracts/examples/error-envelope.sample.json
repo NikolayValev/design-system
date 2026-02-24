@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "contracts.sample_error",
+    "message": "This is a sample error envelope fixture.",
+    "request_id": "req_sample_contract_001"
+  }
+}
