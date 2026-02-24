@@ -32,6 +32,9 @@ jobs:
           - id: design-system-mcp
             path: packages/mcp-server
             project_id_secret: VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP
+          - id: storybook
+            path: apps/storybook
+            project_id_secret: VERCEL_PROJECT_ID_STORYBOOK
 
     steps:
       - name: Checkout
