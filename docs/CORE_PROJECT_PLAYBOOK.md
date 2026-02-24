@@ -13,7 +13,7 @@ Build one coherent platform with shared primitives and predictable delivery:
 
 - `apps/game`: interactive product surface
 - `apps/second-brain`: knowledge workflow product
-- `apps/strata`: consultancy operations product
+- `apps/strata`: consultancy operations product (canonical repo: `https://github.com/NikolayValev/kami_times`, production: `https://www.strategemalgo.com/`)
 - `packages/*`: reusable platform contracts and shared tooling
 - `infra/terraform`: deployment architecture as code
 

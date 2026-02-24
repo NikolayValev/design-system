@@ -1,8 +1,17 @@
 {
-  "extends": "@repo/config/tsconfig.node.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "lib": ["ES2020"],
+    "module": "ESNext",
+    "target": "ES2020",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "outDir": "./dist"
   },
-  "include": ["src"],
+  "include": ["src", "api"],
   "exclude": ["node_modules", "dist"]
 }

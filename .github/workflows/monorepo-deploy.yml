@@ -29,6 +29,9 @@ jobs:
           - id: strata
             path: apps/strata
             project_id_secret: VERCEL_PROJECT_ID_STRATA
+          - id: design-system-mcp
+            path: packages/mcp-server
+            project_id_secret: VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP
 
     steps:
       - name: Checkout

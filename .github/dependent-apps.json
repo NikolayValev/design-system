@@ -17,7 +17,8 @@
       "id": "strata",
       "path": "apps/strata",
       "required": true,
-      "repository": "https://github.com/NikolayValev/kami_times"
+      "repository": "https://github.com/NikolayValev/kami_times",
+      "productionUrl": "https://www.strategemalgo.com/"
     }
   ],
   "linkedRepositories": [
@@ -59,8 +60,10 @@
       "role": "frontend",
       "repository": "https://github.com/NikolayValev/kami_times",
       "manifestId": "strata",
+      "manifestUrl": "https://www.strategemalgo.com/app.manifest.json",
       "manifestPath": "app.manifest.json",
       "requiredManifest": false,
+      "errorEnvelopeSampleUrl": "https://www.strategemalgo.com/contracts/examples/error-envelope.sample.json",
       "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
       "requiredErrorEnvelope": false
     }

@@ -3,6 +3,8 @@
 ## Purpose
 
 Strata Management is part of the core platform portfolio.
+Canonical frontend repository: `https://github.com/NikolayValev/kami_times`
+Production URL: `https://www.strategemalgo.com/`
 
 ## Local Commands
 

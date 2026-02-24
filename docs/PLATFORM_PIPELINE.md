@@ -122,7 +122,7 @@ Workflow support:
 
 ### 2) Monorepo Deploy (`.github/workflows/monorepo-deploy.yml`)
 
-- Deploys `game`, `second-brain`, and `strata` apps with Vercel from one workflow.
+- Deploys `game`, `second-brain`, `strata`, and `design-system-mcp` with Vercel from one workflow.
 - Uses per-app matrix entries with app path + Vercel project secret.
 - Skips missing apps for deploy (CI impact checks enforce app presence on design-system changes).
 
@@ -133,6 +133,7 @@ Required GitHub secrets:
 - `VERCEL_PROJECT_ID_GAME`
 - `VERCEL_PROJECT_ID_SECOND_BRAIN`
 - `VERCEL_PROJECT_ID_STRATA`
+- `VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP`
 
 ## IaC
 

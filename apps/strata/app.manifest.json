@@ -6,7 +6,9 @@
   "topology": "monorepo",
   "frontend": {
     "framework": "nextjs",
-    "path": "apps/strata"
+    "path": "apps/strata",
+    "repository": "https://github.com/NikolayValev/kami_times",
+    "publicUrl": "https://www.strategemalgo.com/"
   },
   "backend": {
     "framework": "fastapi",
