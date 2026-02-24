@@ -117,12 +117,24 @@ After deploy, endpoints are:
 - `/` - service metadata
 - `/healthz` - health status
 - `/mcp` - MCP Streamable HTTP endpoint
+- `/storybook` - proxied Storybook UI (when `STORYBOOK_ORIGIN` is configured)
+- `/engineers` - engineer onboarding view (HTML + JSON)
+- `/recruiters` - recruiter demo view (HTML + JSON)
+- `/catalog` - live artifact catalog (HTML + JSON)
+- `/docs` - docs index for implementation and operations
 - Example production endpoint: `https://designsystem.nikolayvalev.com/mcp`
 
 ### Custom Domain
 
 Attach `designsystem.nikolayvalev.com` to this Vercel project in Vercel Domains settings.
 Point your DNS CNAME for `designsystem` to Vercel as instructed by Vercel.
+
+To serve Storybook on the same domain at `/storybook`, set:
+
+- `STORYBOOK_ORIGIN` = the Storybook Vercel project URL (for example `https://design-system-storybook.vercel.app`)
+
+Then `https://designsystem.nikolayvalev.com/storybook` will proxy to that origin.
+Use `https://designsystem.nikolayvalev.com` as the single public entrypoint for both demo audiences and engineering onboarding.
 
 ## Environment Overrides
 
@@ -142,6 +154,7 @@ Defaults assume this package runs inside this monorepo. Override paths if needed
 - `DESIGN_SYSTEM_GITHUB_API_BASE` (default: `https://api.github.com`)
 - `DESIGN_SYSTEM_REMOTE_TIMEOUT_MS` (default: `10000`)
 - `GITHUB_TOKEN` (recommended in production to avoid GitHub API rate limits)
+- `STORYBOOK_ORIGIN` (optional; enables `/storybook` reverse proxy)
 
 ## Transport Flags
 

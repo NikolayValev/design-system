@@ -12,15 +12,15 @@ Configurable design system for Vercel projects. Provides a strong visual baselin
 
 ```
 src/
-├── components/          # Token-driven primitives (Button, Card, Input)
-├── intent/              # Goal/feeling/purpose style recipes (lab, pop, zen, museum, brutal, immersive)
-├── tokens/              # Design token definitions and types
-│   ├── types.ts        # Core token contracts
-│   ├── base.ts         # Shared foundation tokens
-│   └── profiles.ts     # Theme profiles (public, dashboard, experimental)
-├── tailwind/           # Tailwind preset with semantic naming
-├── styles/             # Global CSS with minimal normalization
-└── theme.ts            # Configuration API (createTheme, applyTheme)
+|-- components/          # Token-driven primitives (Button, Card, Input)
+|-- intent/              # Goal/feeling/purpose style recipes (lab, pop, zen, museum, brutal, immersive)
+|-- tokens/              # Design token definitions and types
+|   |-- types.ts         # Core token contracts
+|   |-- base.ts          # Shared foundation tokens
+|   `-- profiles.ts      # Theme profiles (public, dashboard, experimental)
+|-- tailwind/            # Tailwind preset with semantic naming
+|-- styles/              # Global CSS with minimal normalization
+`-- theme.ts             # Configuration API (createTheme, applyTheme)
 ```
 
 ## Installation
@@ -65,6 +65,31 @@ import { Card } from '@/design-system/components/Card';
 ```
 
 Use MCP `get_component_bundle` to fetch component source + support files, write them under `src/design-system`, and commit them in your repo.
+
+### Optional CLI scaffold
+
+Use the design-system CLI to scaffold source folders and MCP config in a consuming repo:
+
+```bash
+npx @nikolayvalev/design-system@latest init
+```
+
+By default it links your MCP client config to:
+
+```txt
+https://designsystem.nikolayvalev.com/mcp
+```
+
+## Public Domain Hub
+
+The full platform is browsable from:
+
+- `https://designsystem.nikolayvalev.com/`
+- `https://designsystem.nikolayvalev.com/engineers`
+- `https://designsystem.nikolayvalev.com/recruiters`
+- `https://designsystem.nikolayvalev.com/catalog`
+- `https://designsystem.nikolayvalev.com/docs`
+- `https://designsystem.nikolayvalev.com/storybook`
 
 ## Key Features
 
@@ -256,7 +281,7 @@ import { Card } from '@/design-system/components/Card';
 
 ## DO / DON'T
 
-### ✅ DO
+### DO
 
 - **Use stable import paths** as documented above
 - **Pick one CSS profile** per application
@@ -266,7 +291,7 @@ import { Card } from '@/design-system/components/Card';
 - **Install components as source** via MCP `get_component_bundle` and commit them in each consuming repo
 - **Import profiles** from `/tailwind` or `/tokens` entrypoints
 
-### ❌ DON'T
+### DON'T
 
 - **Deep import** from `dist` or `src` folders
 - **Import multiple CSS profiles** in the same app (causes conflicts)
@@ -358,6 +383,7 @@ See [MIGRATION.md](./MIGRATION.md) for upgrade guides and [CONTRIBUTING.md](./CO
 ## Platform Ops
 
 - **Unified pipeline + deploy setup:** See [docs/PLATFORM_PIPELINE.md](./docs/PLATFORM_PIPELINE.md)
+- **Public domain route map:** See [docs/PUBLIC_PORTAL.md](./docs/PUBLIC_PORTAL.md)
 - **Terraform IaC for frontend/backend:** See [infra/terraform/README.md](./infra/terraform/README.md)
 - **Core project operating model:** See [docs/CORE_PROJECT_PLAYBOOK.md](./docs/CORE_PROJECT_PLAYBOOK.md)
 - **Roadmap:** See [docs/CORE_ROADMAP.md](./docs/CORE_ROADMAP.md)

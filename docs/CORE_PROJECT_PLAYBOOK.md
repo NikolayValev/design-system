@@ -36,6 +36,7 @@ Build one coherent platform with shared primitives and predictable delivery:
 
 - Code merged and CI green.
 - Docs updated for any architectural or contract changes.
+- Public route changes documented in `docs/PUBLIC_PORTAL.md` when domain behavior changes.
 - Changeset added for public package changes.
 - Rollout and rollback notes captured for infra-affecting changes.
 

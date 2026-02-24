@@ -8,6 +8,15 @@ This demonstrates how to consume the design system in a Next.js application.
 npm install @nikolayvalev/design-tokens
 ```
 
+Optional scaffold (recommended in new repos):
+
+```bash
+npx @nikolayvalev/design-system@latest init
+```
+
+This command scaffolds `src/design-system`, creates MCP config files, and links to
+`https://designsystem.nikolayvalev.com/mcp` by default.
+
 Install components separately as source files through MCP `get_component_bundle` and commit them into your repo.
 
 ## Setup

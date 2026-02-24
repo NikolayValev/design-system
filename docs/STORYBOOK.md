@@ -18,6 +18,17 @@ pnpm storybook:build
 
 Build output: `apps/storybook/dist/storybook`
 
+## Public Hosting
+
+Storybook is configured for static Vercel deploy via [`apps/storybook/vercel.json`](../apps/storybook/vercel.json).
+
+- Vercel project root: `apps/storybook`
+- Build command: `pnpm run build`
+- Output directory: `dist/storybook`
+- CI/CD secret for monorepo deploy workflow: `VERCEL_PROJECT_ID_STORYBOOK`
+- Public path on main design-system domain: `https://designsystem.nikolayvalev.com/storybook`
+- Proxy source env var (set on `packages/mcp-server` Vercel project): `STORYBOOK_ORIGIN=https://<storybook-project>.vercel.app`
+
 ## Test loop (iterable)
 
 Use these commands for repeatable validation:

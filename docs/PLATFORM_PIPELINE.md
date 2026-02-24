@@ -122,7 +122,7 @@ Workflow support:
 
 ### 2) Monorepo Deploy (`.github/workflows/monorepo-deploy.yml`)
 
-- Deploys `game`, `second-brain`, `strata`, and `design-system-mcp` with Vercel from one workflow.
+- Deploys `game`, `second-brain`, `strata`, `design-system-mcp`, and `storybook` with Vercel from one workflow.
 - Uses per-app matrix entries with app path + Vercel project secret.
 - Skips missing apps for deploy (CI impact checks enforce app presence on design-system changes).
 
@@ -134,6 +134,16 @@ Required GitHub secrets:
 - `VERCEL_PROJECT_ID_SECOND_BRAIN`
 - `VERCEL_PROJECT_ID_STRATA`
 - `VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP`
+- `VERCEL_PROJECT_ID_STORYBOOK`
+
+Required Vercel project env for path-based Storybook hosting:
+
+- In `design-system-mcp`: `STORYBOOK_ORIGIN=https://<storybook-project>.vercel.app`
+- This enables `https://designsystem.nikolayvalev.com/storybook` via MCP project rewrite/proxy.
+
+Public portal routes on the same domain are served by `packages/mcp-server`:
+
+- `/`, `/engineers`, `/recruiters`, `/catalog`, `/docs`, `/storybook`, `/mcp`, `/healthz`
 
 ## IaC
 

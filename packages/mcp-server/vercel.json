@@ -1,12 +1,47 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": ".",
+  "redirects": [
+    {
+      "source": "/storybook",
+      "destination": "/storybook/",
+      "permanent": false
+    }
+  ],
   "functions": {
     "api/**/*.ts": {
       "maxDuration": 30
     }
   },
   "rewrites": [
+    {
+      "source": "/engineers",
+      "destination": "/api/engineers"
+    },
+    {
+      "source": "/recruiters",
+      "destination": "/api/recruiters"
+    },
+    {
+      "source": "/demo",
+      "destination": "/api/recruiters"
+    },
+    {
+      "source": "/catalog",
+      "destination": "/api/catalog"
+    },
+    {
+      "source": "/docs",
+      "destination": "/api/docs"
+    },
+    {
+      "source": "/storybook/",
+      "destination": "/api/storybook"
+    },
+    {
+      "source": "/storybook/:path*",
+      "destination": "/api/storybook/:path*"
+    },
     {
       "source": "/mcp",
       "destination": "/api/mcp"

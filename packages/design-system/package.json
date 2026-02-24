@@ -3,6 +3,9 @@
   "version": "1.1.0",
   "description": "Configurable design system for Vercel projects",
   "type": "module",
+  "bin": {
+    "design-system": "./dist/cli/init.js"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -53,6 +56,7 @@
   },
   "devDependencies": {
     "@repo/config": "workspace:*",
+    "@types/node": "^24.3.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "react": "^18.2.0",

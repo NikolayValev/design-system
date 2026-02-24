@@ -8,6 +8,18 @@ Get `@nikolayvalev/design-tokens` working in a Next.js App Router project in 5 m
 - Node.js 18+
 - Package manager: npm, pnpm, or yarn
 
+## Step 0: Scaffold local source + MCP config (recommended)
+
+```bash
+npx @nikolayvalev/design-system@latest init
+```
+
+This creates:
+
+- `src/design-system` folders for installable source files
+- `.mcp.json` and `.cursor/mcp.json` with `https://designsystem.nikolayvalev.com/mcp`
+- `DESIGN_SYSTEM_SETUP.md` and `design-system.config.json`
+
 ## Step 1: Install Tokens Package
 
 ```bash
