@@ -1,6 +1,6 @@
 # Quick Start: Next.js App Router
 
-Get `@nikolayvalev/design-system` working in a Next.js App Router project in 5 minutes.
+Get `@nikolayvalev/design-tokens` working in a Next.js App Router project in 5 minutes, with components installed as source files via MCP.
 
 ## Prerequisites
 
@@ -8,15 +8,15 @@ Get `@nikolayvalev/design-system` working in a Next.js App Router project in 5 m
 - Node.js 18+
 - Package manager: npm, pnpm, or yarn
 
-## Step 1: Install Package
+## Step 1: Install Tokens Package
 
 ```bash
-npm install @nikolayvalev/design-system
+npm install @nikolayvalev/design-tokens
 # or
-pnpm add @nikolayvalev/design-system
+pnpm add @nikolayvalev/design-tokens
 ```
 
-The package has peer dependencies on React 18+, which Next.js already provides.
+For components, use MCP `get_component_bundle` and commit files into `src/design-system`.
 
 ## Step 2: Import CSS in Root Layout
 
@@ -24,7 +24,7 @@ Choose a profile and import its CSS. The `public` profile is great for marketing
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-system/styles/public.css';
+import '@nikolayvalev/design-tokens/styles/public.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -57,7 +57,7 @@ Create or update your Tailwind config to use the design system preset:
 ```ts
 // tailwind.config.ts
 import type { Config } from 'tailwindcss';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-system/tailwind';
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 
 const config: Config = {
   presets: [createTailwindPreset(publicProfile)],
@@ -72,13 +72,14 @@ export default config;
 
 The preset gives you semantic color classes like `bg-primary`, `text-foreground`, etc.
 
-## Step 4: Use Components
+## Step 4: Use Source-Installed Components
 
-Import and use components in your pages:
+Install components through MCP (`get_component_bundle`) and use the generated local files:
 
 ```tsx
 // app/page.tsx
-import { Button, Card } from '@nikolayvalev/design-system';
+import { Button } from '@/design-system/components/Button';
+import { Card } from '@/design-system/components/Card';
 
 export default function HomePage() {
   return (

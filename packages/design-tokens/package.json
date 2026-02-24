@@ -1,0 +1,68 @@
+{
+  "name": "@nikolayvalev/design-tokens",
+  "version": "1.0.0",
+  "description": "Design tokens, theme profiles, and Tailwind preset for the Nikolay Valev design system",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens/index.d.ts",
+      "import": "./dist/tokens/index.js"
+    },
+    "./tailwind": {
+      "types": "./dist/tailwind/index.d.ts",
+      "import": "./dist/tailwind/index.js"
+    },
+    "./styles": {
+      "default": "./dist/styles/global.css"
+    },
+    "./styles/public.css": {
+      "default": "./dist/styles/public.css"
+    },
+    "./styles/dashboard.css": {
+      "default": "./dist/styles/dashboard.css"
+    },
+    "./styles/experimental.css": {
+      "default": "./dist/styles/experimental.css"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "tsup && pnpm run build:css",
+    "build:css": "node scripts/build-css.js",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "tailwindcss": "^3.4.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikolayvalev/design-system",
+    "directory": "packages/design-tokens"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "tailwind",
+    "theme"
+  ],
+  "eslintConfig": {
+    "extends": "@repo/config/eslint-design-system.config.js"
+  }
+}

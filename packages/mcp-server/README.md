@@ -6,13 +6,40 @@ MCP server for design-system discovery and governance across repositories.
 
 Tools:
 
+- `list_artifacts` - list components/sections/pages by `kind`
+- `get_artifact_source` - fetch source for a component/section/page by `kind` + `name`
+- `get_artifact_bundle` - return install payload for a component/section/page set
 - `list_components` - list all components or search by query
+- `list_sections` - list all sections or search by query
+- `list_pages` - list all pages or search by query
 - `get_component_source` - fetch source for a component by name
+- `get_section_source` - fetch source for a section by name
+- `get_page_source` - fetch source for a page by name
+- `get_component_bundle` - return shadcn-style install payload (requested components + transitive source files + external deps)
+- `get_section_bundle` - return install payload for sections
+- `get_page_bundle` - return install payload for pages
 - `get_contribution_guide` - fetch `CONTRIBUTION_GUIDE.md`
+
+`list_components` returns component entries with an `origin` field (`local` or `remote`).
+`get_component_bundle` includes:
+- `tokenPackage` (`@nikolayvalev/design-tokens`)
+- `installRoot` (`src/design-system`)
+- `files` (relative source file map to write)
+- `externalDependencies` (non-React packages detected from imports)
+- `warnings` for unresolved imports
+
+Typical flow in consuming repos:
+1. Install `tokenPackage`
+2. Call `get_component_bundle` with component names
+3. Write `files[*].path` under `installRoot`
+4. Install `externalDependencies`
+5. Import locally from `src/design-system/*`
 
 Resources:
 
 - `design-system://components`
+- `design-system://sections`
+- `design-system://pages`
 - `design-system://contribution-guide`
 
 ## Run
@@ -101,8 +128,20 @@ Point your DNS CNAME for `designsystem` to Vercel as instructed by Vercel.
 
 Defaults assume this package runs inside this monorepo. Override paths if needed:
 
+- `DESIGN_SYSTEM_SRC_DIR`
 - `DESIGN_SYSTEM_COMPONENTS_DIR`
+- `DESIGN_SYSTEM_SECTIONS_DIR`
+- `DESIGN_SYSTEM_PAGES_DIR`
 - `DESIGN_SYSTEM_CONTRIBUTION_GUIDE_PATH`
+- `DESIGN_SYSTEM_GITHUB_REPOSITORY` (default: `NikolayValev/design-system`)
+- `DESIGN_SYSTEM_GITHUB_REF` (default: `main`)
+- `DESIGN_SYSTEM_GITHUB_COMPONENTS_ROOT` (default: `packages/design-system/src/components`)
+- `DESIGN_SYSTEM_GITHUB_SRC_ROOT` (default: `packages/design-system/src`)
+- `DESIGN_SYSTEM_GITHUB_SECTIONS_ROOT` (default: `packages/design-system/src/sections`)
+- `DESIGN_SYSTEM_GITHUB_PAGES_ROOT` (default: `packages/design-system/src/pages`)
+- `DESIGN_SYSTEM_GITHUB_API_BASE` (default: `https://api.github.com`)
+- `DESIGN_SYSTEM_REMOTE_TIMEOUT_MS` (default: `10000`)
+- `GITHUB_TOKEN` (recommended in production to avoid GitHub API rate limits)
 
 ## Transport Flags
 

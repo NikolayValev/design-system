@@ -44,6 +44,19 @@ export {
   zineCollageTheme,
 };
 
+export const expandedVisionThemeIds = [
+  'swiss_international',
+  'raw_data',
+  'the_archive',
+  'the_ether',
+  'solarpunk',
+  'y2k_chrome',
+  'deconstruct',
+  'ma_minimalism',
+  'clay_soft',
+  'zine_collage',
+] as const;
+
 export const visionThemes = [
   swissInternationalTheme,
   rawDataTheme,

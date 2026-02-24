@@ -5,8 +5,10 @@ This demonstrates how to consume the design system in a Next.js application.
 ## Installation
 
 ```bash
-npm install @nikolayvalev/design-system
+npm install @nikolayvalev/design-tokens
 ```
+
+Install components separately as source files through MCP `get_component_bundle` and commit them into your repo.
 
 ## Setup
 
@@ -14,9 +16,9 @@ npm install @nikolayvalev/design-system
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-system/styles/public.css';
-// or import '@nikolayvalev/design-system/styles/dashboard.css';
-// or import '@nikolayvalev/design-system/styles/experimental.css';
+import '@nikolayvalev/design-tokens/styles/public.css';
+// or import '@nikolayvalev/design-tokens/styles/dashboard.css';
+// or import '@nikolayvalev/design-tokens/styles/experimental.css';
 
 export default function RootLayout({ children }) {
   return (
@@ -32,7 +34,7 @@ export default function RootLayout({ children }) {
 ```ts
 // tailwind.config.ts
 import type { Config } from 'tailwindcss';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-system/tailwind';
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 
 const config: Config = {
   presets: [createTailwindPreset(publicProfile)],
@@ -51,11 +53,13 @@ const config: Config = {
 export default config;
 ```
 
-### 3. Use components
+### 3. Use source-installed components
 
 ```tsx
 // app/page.tsx
-import { Button, Card, CardHeader, CardTitle, CardContent, Input } from '@nikolayvalev/design-system';
+import { Button } from '@/design-system/components/Button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/design-system/components/Card';
+import { Input } from '@/design-system/components/Input';
 
 export default function HomePage() {
   return (
@@ -83,15 +87,13 @@ export default function HomePage() {
 
 ```tsx
 // app/page.tsx
-import {
-  AtmosphereProvider,
-  EditorialHeader,
-  GalleryStage,
-  MediaFrame,
-  NavigationOrb,
-  VisionProvider,
-  defaultVisionRegistry,
-} from '@nikolayvalev/design-system';
+import { AtmosphereProvider } from '@/design-system/components/AtmosphereProvider';
+import { EditorialHeader } from '@/design-system/components/EditorialHeader';
+import { GalleryStage } from '@/design-system/components/GalleryStage';
+import { MediaFrame } from '@/design-system/components/MediaFrame';
+import { NavigationOrb } from '@/design-system/components/NavigationOrb';
+import { VisionProvider } from '@/design-system/vde-core/context';
+import { defaultVisionRegistry } from '@/design-system/vde-themes';
 
 export default function VisionaryPage() {
   return (
@@ -120,6 +122,22 @@ export default function VisionaryPage() {
 }
 ```
 
+### 5. Use source-installed section and page templates
+
+```tsx
+// app/launch/page.tsx
+import { MarketingLandingPage } from '@/design-system/pages/MarketingLandingPage';
+
+export default function LaunchPage() {
+  return (
+    <MarketingLandingPage
+      heading="Design tokens + installable UI source"
+      subtitle="Drop page scaffolds in minutes, then customize in-repo."
+    />
+  );
+}
+```
+
 Common expanded IDs for `setVision()`:
 - `swiss_international`
 - `raw_data`
@@ -141,7 +159,7 @@ Override specific tokens at runtime using OKLCH color values:
 'use client';
 
 import { useEffect } from 'react';
-import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-system';
+import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-tokens';
 
 export default function RootLayout({ children }) {
   useEffect(() => {
@@ -176,7 +194,7 @@ export default function RootLayout({ children }) {
 ```ts
 // tailwind.config.ts
 import type { Config } from 'tailwindcss';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-system/tailwind';
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 
 const config: Config = {
   presets: [createTailwindPreset(publicProfile)],
@@ -206,22 +224,22 @@ export default config;
 ### Public Site (marketing)
 
 ```tsx
-import '@nikolayvalev/design-system/styles/public.css';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-system/tailwind';
+import '@nikolayvalev/design-tokens/styles/public.css';
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 ```
 
 ### Dashboard (internal tools)
 
 ```tsx
-import '@nikolayvalev/design-system/styles/dashboard.css';
-import { createTailwindPreset, dashboardProfile } from '@nikolayvalev/design-system/tailwind';
+import '@nikolayvalev/design-tokens/styles/dashboard.css';
+import { createTailwindPreset, dashboardProfile } from '@nikolayvalev/design-tokens/tailwind';
 ```
 
 ### Experimental (prototypes)
 
 ```tsx
-import '@nikolayvalev/design-system/styles/experimental.css';
-import { createTailwindPreset, experimentalProfile } from '@nikolayvalev/design-system/tailwind';
+import '@nikolayvalev/design-tokens/styles/experimental.css';
+import { createTailwindPreset, experimentalProfile } from '@nikolayvalev/design-tokens/tailwind';
 ```
 
 ## Custom Profile
@@ -230,8 +248,8 @@ Create a custom profile with OKLCH colors:
 
 ```ts
 // lib/custom-theme.ts
-import type { ThemeProfile } from '@nikolayvalev/design-system/tokens';
-import { baseTokens } from '@nikolayvalev/design-system';
+import type { ThemeProfile } from '@nikolayvalev/design-tokens/tokens';
+import { baseTokens } from '@nikolayvalev/design-tokens/tokens';
 
 export const customProfile: ThemeProfile = {
   name: 'custom',
@@ -247,7 +265,7 @@ export const customProfile: ThemeProfile = {
 };
 
 // Use in Tailwind config
-import { createTailwindPreset } from '@nikolayvalev/design-system/tailwind';
+import { createTailwindPreset } from '@nikolayvalev/design-tokens/tailwind';
 import { customProfile } from './lib/custom-theme';
 
 const config = {
@@ -269,7 +287,8 @@ Lock to a specific major version to prevent unexpected visual changes:
 ```json
 {
   "dependencies": {
-    "@nikolayvalev/design-system": "^1.0.0"
+    "@nikolayvalev/design-tokens": "^1.0.0"
   }
 }
 ```
+

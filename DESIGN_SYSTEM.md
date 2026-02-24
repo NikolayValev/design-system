@@ -5,9 +5,10 @@
 This file defines the authoritative rules for using, extending, and contributing to the design system in this monorepo. **All contributors and AI agents must comply.**
 
 ## 1. Component Usage
-- **All UI components must be imported from `@nikolayvalev/design-system`**.
-- **Do NOT create local CSS, Sass, or style files** in any app or package if a component or style exists in the core design system.
-- If a needed component does not exist, propose it in the design system package first.
+- **Install design tokens as a package dependency:** `@nikolayvalev/design-tokens`.
+- **Install UI components as source files (shadcn-style) via MCP `get_component_bundle`**, then commit those files in the consuming repo.
+- **Do NOT treat design-system components as runtime package dependencies for new app work.** Source-installed components are the default model.
+- **Do NOT create local CSS/Sass outside token-driven patterns** if a system token or provided component source already covers the use case.
 
 ## 2. Contribution Workflow
 - Before submitting a PR that adds or modifies UI, you **must**:
@@ -21,8 +22,9 @@ This file defines the authoritative rules for using, extending, and contributing
 - **Local CSS/Sass files** are forbidden unless explicitly approved in this file.
 
 ## 4. Extension & Customization
-- If you need to extend a component, use the extension APIs provided by the design system (e.g., `className`, `as` prop, or slots).
-- For new tokens or themes, propose them in `@nikolayvalev/design-system/tokens`.
+- Extend source-installed components locally inside your app/repo (while preserving token semantics).
+- For new tokens or themes, propose them in `@nikolayvalev/design-tokens`.
+- When adding or changing component source templates, update MCP install-bundle behavior and docs in `packages/mcp-server`.
 
 ## 5. Enforcement
 - Custom ESLint rules and CI checks will block PRs that violate these rules.

@@ -1,17 +1,6 @@
-import { getVisionThemeById, getVisionThemeIds, visionToCSSVariables } from '../dist/index.js';
+import { expandedVisionThemeIds, getVisionThemeById, getVisionThemeIds, visionToCSSVariables } from '../dist/index.js';
 
-const requiredIds = [
-  'swiss_international',
-  'raw_data',
-  'the_archive',
-  'the_ether',
-  'solarpunk',
-  'y2k_chrome',
-  'deconstruct',
-  'ma_minimalism',
-  'clay_soft',
-  'zine_collage',
-];
+const requiredIds = [...expandedVisionThemeIds];
 
 const failures = [];
 const availableIds = getVisionThemeIds();

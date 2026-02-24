@@ -1,0 +1,78 @@
+import type { DesignTokens } from './types';
+
+/**
+ * Base tokens - shared foundation across all profiles
+ * Using OKLCH color space for perceptual uniformity
+ */
+export const baseTokens: DesignTokens = {
+  colors: {
+    background: 'oklch(1 0 0)',
+    foreground: 'oklch(0.145 0 0)',
+    card: 'oklch(1 0 0)',
+    cardForeground: 'oklch(0.145 0 0)',
+    popover: 'oklch(1 0 0)',
+    popoverForeground: 'oklch(0.145 0 0)',
+    primary: 'oklch(0.205 0 0)',
+    primaryForeground: 'oklch(0.985 0 0)',
+    secondary: 'oklch(0.97 0 0)',
+    secondaryForeground: 'oklch(0.205 0 0)',
+    muted: 'oklch(0.97 0 0)',
+    mutedForeground: 'oklch(0.556 0 0)',
+    accent: 'oklch(0.97 0 0)',
+    accentForeground: 'oklch(0.205 0 0)',
+    destructive: 'oklch(0.577 0.245 27.325)',
+    destructiveForeground: 'oklch(0.145 0 0)',
+    border: 'oklch(0.922 0 0)',
+    input: 'oklch(0.922 0 0)',
+    ring: 'oklch(0.708 0 0)',
+    chartOne: 'oklch(0.646 0.222 41.116)',
+    chartTwo: 'oklch(0.6 0.118 184.704)',
+    chartThree: 'oklch(0.398 0.07 227.392)',
+    chartFour: 'oklch(0.828 0.189 84.429)',
+    chartFive: 'oklch(0.769 0.188 70.08)',
+    sidebar: 'oklch(0.985 0 0)',
+    sidebarForeground: 'oklch(0.145 0 0)',
+    sidebarPrimary: 'oklch(0.205 0 0)',
+    sidebarPrimaryForeground: 'oklch(0.985 0 0)',
+    sidebarAccent: 'oklch(0.97 0 0)',
+    sidebarAccentForeground: 'oklch(0.205 0 0)',
+    sidebarBorder: 'oklch(0.922 0 0)',
+    sidebarRing: 'oklch(0.708 0 0)',
+  },
+  spacing: {
+    xs: '0.25rem',
+    sm: '0.5rem',
+    md: '1rem',
+    lg: '1.5rem',
+    xl: '2rem',
+    '2xl': '3rem',
+    '3xl': '4rem',
+    '4xl': '6rem',
+  },
+  radius: {
+    base: '0.625rem',
+    full: '9999px',
+  },
+  typography: {
+    fontFamily: {
+      sans: 'Geist, Geist Fallback',
+      mono: 'Geist Mono, Geist Mono Fallback',
+    },
+    fontSize: {
+      xs: ['0.75rem', { lineHeight: '1rem' }],
+      sm: ['0.875rem', { lineHeight: '1.25rem' }],
+      base: ['1rem', { lineHeight: '1.5rem' }],
+      lg: ['1.125rem', { lineHeight: '1.75rem' }],
+      xl: ['1.25rem', { lineHeight: '1.75rem' }],
+      '2xl': ['1.5rem', { lineHeight: '2rem' }],
+      '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+      '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+    },
+    fontWeight: {
+      normal: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '700',
+    },
+  },
+};

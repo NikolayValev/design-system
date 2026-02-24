@@ -3,8 +3,9 @@
 This guide must be referenced by all contributors and AI agents before submitting a PR that affects UI or styles.
 
 ## 1. Always Use the Core Design System
-- Import all UI components from `@nikolayvalev/design-system`.
-- Do not create local CSS/Sass files if a component or style exists in the design system.
+- Install tokens from `@nikolayvalev/design-tokens`.
+- Install UI components as source code via MCP `get_component_bundle` (shadcn-style), then commit the files in the target repo.
+- Do not create local CSS/Sass files if a tokenized component pattern already exists.
 
 ## 2. Propose Before You Build
 - If a component or style does not exist, propose it in the design system package first.
@@ -16,8 +17,9 @@ This guide must be referenced by all contributors and AI agents before submittin
 - Local CSS/Sass files are forbidden unless explicitly approved.
 
 ## 4. Extension
-- Use extension APIs (`className`, `as`, slots) to customize components.
-- Propose new tokens/themes in `@nikolayvalev/design-system/tokens`.
+- Extend source-installed components directly in the consuming repo while preserving token semantics.
+- Propose new tokens/themes in `@nikolayvalev/design-tokens`.
+- If component source structure changes, update MCP bundle resolution logic and docs.
 
 ## 5. Enforcement
 - Custom ESLint rules and CI checks will block PRs that violate these rules.

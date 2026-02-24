@@ -8,15 +8,15 @@ export interface EditorialHeaderProps extends React.HTMLAttributes<HTMLHeadingEl
   writingMode?: 'horizontal' | 'vertical';
 }
 
-const sizeMap: Record<NonNullable<EditorialHeaderProps['size']>, string> = {
-  sm: 'clamp(1.4rem, 2vw, 1.8rem)',
-  md: 'clamp(1.9rem, 3.5vw, 2.8rem)',
-  lg: 'clamp(2.6rem, 5.2vw, 4rem)',
-  massive: 'var(--vde-editorial-massive-size, clamp(4rem, 11vw, 10rem))',
+const sizeClassMap: Record<NonNullable<EditorialHeaderProps['size']>, string> = {
+  sm: '[font-size:clamp(1.4rem,_2vw,_1.8rem)]',
+  md: '[font-size:clamp(1.9rem,_3.5vw,_2.8rem)]',
+  lg: '[font-size:clamp(2.6rem,_5.2vw,_4rem)]',
+  massive: '[font-size:var(--vde-editorial-massive-size,_clamp(4rem,_11vw,_10rem))]',
 };
 
 export const EditorialHeader = React.forwardRef<HTMLHeadingElement, EditorialHeaderProps>(
-  ({ as = 'h1', size = 'lg', writingMode = 'horizontal', className = '', style, ...props }, ref) => {
+  ({ as = 'h1', size = 'lg', writingMode = 'horizontal', className = '', ...props }, ref) => {
     const { activeVision } = useVision();
     const isMuseum = activeVision.id === 'museum' || activeVision.id === 'the_archive';
     const isBrutalist = activeVision.id === 'brutalist' || activeVision.id === 'raw_data';
@@ -27,47 +27,25 @@ export const EditorialHeader = React.forwardRef<HTMLHeadingElement, EditorialHea
     const Tag = as;
     const resolvedWritingMode = isMaMinimalism && writingMode === 'horizontal' ? 'vertical' : writingMode;
 
-    const visionStyle: React.CSSProperties = {
-      fontSize: sizeMap[size],
-      writingMode: resolvedWritingMode === 'vertical' ? 'vertical-rl' : 'horizontal-tb',
-      textOrientation: resolvedWritingMode === 'vertical' ? 'mixed' : 'initial',
-      transform: isDeconstruct ? 'rotate(var(--vde-component-tilt, -1deg))' : undefined,
-      ...(isMuseum
-        ? {
-            marginBlock: 'var(--vde-editorial-margin-block, clamp(2.5rem, 8vw, 7rem))',
-            marginInline: 'var(--vde-editorial-margin-inline, clamp(1rem, 10vw, 9rem))',
-            fontFamily: 'var(--vde-font-display)',
-          }
-        : null),
-      ...(isBrutalist
-        ? {
-            color: 'var(--vde-color-background)',
-            background: 'var(--vde-color-foreground)',
-            paddingInline: '0.32em',
-            paddingBlock: '0.08em',
-            textTransform: 'uppercase',
-          }
-        : null),
-      ...(isImmersive
-        ? {
-            color: 'var(--vde-color-foreground)',
-            letterSpacing: 'var(--vde-letter-spacing-wide)',
-            textShadow: 'var(--vde-editorial-glow, 0 0 24px rgba(157, 95, 255, 0.4))',
-          }
-        : null),
-      ...(isMaMinimalism
-        ? {
-            fontWeight: 300,
-            letterSpacing: 'var(--vde-letter-spacing-wide)',
-          }
-        : null),
-      ...style,
-    };
-
     const classes = [
       'relative',
       'inline-block',
       'max-w-full',
+      sizeClassMap[size],
+      resolvedWritingMode === 'vertical'
+        ? '[writing-mode:vertical-rl] [text-orientation:mixed]'
+        : '[writing-mode:horizontal-tb] [text-orientation:initial]',
+      isMuseum
+        ? '[margin-block:var(--vde-editorial-margin-block,_clamp(2.5rem,_8vw,_7rem))] [margin-inline:var(--vde-editorial-margin-inline,_clamp(1rem,_10vw,_9rem))]'
+        : '',
+      isBrutalist
+        ? '[color:var(--vde-color-background)] [background:var(--vde-color-foreground)] [padding-inline:0.32em] [padding-block:0.08em] uppercase'
+        : '',
+      isImmersive
+        ? '[color:var(--vde-color-foreground)] [letter-spacing:var(--vde-letter-spacing-wide)] [text-shadow:var(--vde-editorial-glow,_0_0_24px_rgba(157,_95,_255,_0.4))]'
+        : '',
+      isMaMinimalism ? 'font-light [letter-spacing:var(--vde-letter-spacing-wide)]' : '',
+      isDeconstruct ? '[transform:rotate(var(--vde-component-tilt,_-1deg))]' : '',
       '[font-family:var(--vde-font-display)]',
       '[line-height:var(--vde-line-height-tight)]',
       'transition-all',
@@ -77,7 +55,7 @@ export const EditorialHeader = React.forwardRef<HTMLHeadingElement, EditorialHea
       className,
     ].join(' ');
 
-    return <Tag ref={ref} className={classes} data-vde-component="editorial-header" style={visionStyle} {...props} />;
+    return <Tag ref={ref} className={classes} data-vde-component="editorial-header" {...props} />;
   }
 );
 

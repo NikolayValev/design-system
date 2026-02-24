@@ -10,7 +10,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * Card component - semantic container with token-driven styling
  */
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className = '', children, style, ...props }, ref) => {
+  ({ className = '', children, ...props }, ref) => {
     const vision = useOptionalVision();
     const activeVisionId = vision?.activeVision.id;
     const isClaySoft = activeVisionId === 'clay_soft';
@@ -31,6 +31,8 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       '[transition-duration:var(--vde-motion-duration-normal)]',
       '[transition-timing-function:var(--vde-motion-easing-standard)]',
       isClaySoft ? '[animation:var(--vde-card-bob-animation)]' : '',
+      isDeconstruct ? '[transform:rotate(var(--vde-component-tilt,_-1deg))]' : '',
+      isDeconstruct ? 'z-[2]' : '',
       className,
     ].join(' ');
 
@@ -39,11 +41,6 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={classes}
         data-vde-component="card"
-        style={{
-          transform: isDeconstruct ? 'rotate(var(--vde-component-tilt, -1deg))' : undefined,
-          zIndex: isDeconstruct ? 2 : undefined,
-          ...style,
-        }}
         {...props}
       >
         <AestheticOrnaments />

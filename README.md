@@ -2,6 +2,12 @@
 
 Configurable design system for Vercel projects. Provides a strong visual baseline with per-project adaptability through design tokens, theme profiles, and composition.
 
+## Consumption Model
+
+- `@nikolayvalev/design-tokens`: runtime dependency for tokens, profiles, Tailwind preset, and CSS profiles.
+- Components: installed as source files via MCP `get_component_bundle` and committed per consuming repo.
+- `@nikolayvalev/design-system`: compatibility package for existing consumers.
+
 ## Architecture
 
 ```
@@ -20,8 +26,10 @@ src/
 ## Installation
 
 ```bash
-npm install @nikolayvalev/design-system
+npm install @nikolayvalev/design-tokens
 ```
+
+Component source is installed separately via MCP (`get_component_bundle`) and committed into the consuming repo (shadcn-style).
 
 ## Quick Start
 
@@ -29,14 +37,14 @@ npm install @nikolayvalev/design-system
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-system/styles/public.css';
+import '@nikolayvalev/design-tokens/styles/public.css';
 ```
 
 ### 2. Configure Tailwind
 
 ```ts
 // tailwind.config.ts
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-system/tailwind';
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 
 export default {
   presets: [createTailwindPreset(publicProfile)],
@@ -44,15 +52,19 @@ export default {
 };
 ```
 
-### 3. Use components
+### 3. Install and use components (source files)
 
 ```tsx
-import { Button, Card } from '@nikolayvalev/design-system';
+// after MCP get_component_bundle(["Button", "Card"])
+import { Button } from '@/design-system/components/Button';
+import { Card } from '@/design-system/components/Card';
 
 <Card>
   <Button variant="default">Click me</Button>
 </Card>
 ```
+
+Use MCP `get_component_bundle` to fetch component source + support files, write them under `src/design-system`, and commit them in your repo.
 
 ## Key Features
 
@@ -61,7 +73,7 @@ import { Button, Card } from '@nikolayvalev/design-system';
 Colors, spacing, typography, radii defined as semantic tokens using **OKLCH color space** for perceptual uniformity. Expressed as CSS variables + TypeScript exports.
 
 ```ts
-import { baseTokens } from '@nikolayvalev/design-system/tokens';
+import { baseTokens } from '@nikolayvalev/design-tokens/tokens';
 ```
 
 ### Theme Profiles
@@ -83,7 +95,7 @@ Built on Tailwind CSS v4 with:
 ### Runtime Configuration
 
 ```tsx
-import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-system';
+import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-tokens';
 
 const theme = createTheme({
   profile: publicProfile,
@@ -140,6 +152,18 @@ Core primitives and atmospheric components. Extensible through composition.
 - `MediaFrame` - Vision-aware image/video wrapper with atmospheric effects
 - `AtmosphereProvider` - Global archive/noise or nexus/mesh background utility
 - `NavigationOrb` - Floating navigation with vision-specific motion physics
+- `SectionShell` - Shared scaffold for building reusable sections
+- `FeatureTile` - Tokenized feature block for marketing/product grids
+- `StatChip` - Compact metric primitive for KPI strips
+
+Section templates:
+- `HeroSection`
+- `FeatureGridSection`
+- `MetricStripSection`
+
+Page templates:
+- `MarketingLandingPage`
+- `ProductShowcasePage`
 
 All components read from CSS variables and update through `VisionProvider`/`useVision`.
 
@@ -204,25 +228,30 @@ Extensions don't break the base system.
 All public API is accessed through these stable entrypoints:
 
 ```ts
-// Root - components, theme utilities, and intent style recipes
-import { Button, Card, Input, createTheme, applyTheme, getDesignStyle } from '@nikolayvalev/design-system';
+// Tokens/runtime theming
+import { createTheme, applyTheme } from '@nikolayvalev/design-tokens';
 
 // Tokens - profiles and types
-import { publicProfile, dashboardProfile, experimentalProfile } from '@nikolayvalev/design-system/tokens';
-import type { ThemeProfile, ColorTokens } from '@nikolayvalev/design-system/tokens';
+import { publicProfile, dashboardProfile, experimentalProfile } from '@nikolayvalev/design-tokens/tokens';
+import type { ThemeProfile, ColorTokens } from '@nikolayvalev/design-tokens/tokens';
 
 // Tailwind - preset factory and profiles
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-system/tailwind';
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 
 // Styles - choose one CSS file per app
-import '@nikolayvalev/design-system/styles/public.css';      // Light + dark mode
-import '@nikolayvalev/design-system/styles/dashboard.css';   // Dark mode, compact
-import '@nikolayvalev/design-system/styles/experimental.css'; // High contrast
+import '@nikolayvalev/design-tokens/styles/public.css'; // Light + dark mode
+import '@nikolayvalev/design-tokens/styles/dashboard.css'; // Dark mode, compact
+import '@nikolayvalev/design-tokens/styles/experimental.css'; // High contrast
+
+// Components - source-installed in your app/repo via MCP get_component_bundle
+import { Button } from '@/design-system/components/Button';
+import { Card } from '@/design-system/components/Card';
 ```
 
 **Do NOT import from:**
-- `@nikolayvalev/design-system/dist/*` (internals)
-- `@nikolayvalev/design-system/src/*` (source files)
+- `@nikolayvalev/design-tokens/dist/*` (internals)
+- `@nikolayvalev/design-tokens/src/*` (source files)
+- `@nikolayvalev/design-system` for new runtime component dependencies in app repos
 - Deep paths not listed above
 
 ## DO / DON'T
@@ -234,6 +263,7 @@ import '@nikolayvalev/design-system/styles/experimental.css'; // High contrast
 - **Override tokens** via `createTheme()` for customization
 - **Lock major version** in package.json to control visual updates
 - **Use semantic classes** like `bg-primary` instead of hardcoded colors
+- **Install components as source** via MCP `get_component_bundle` and commit them in each consuming repo
 - **Import profiles** from `/tailwind` or `/tokens` entrypoints
 
 ### ❌ DON'T
@@ -244,6 +274,7 @@ import '@nikolayvalev/design-system/styles/experimental.css'; // High contrast
 - **Rely on CSS class names** as API (implementation detail)
 - **Modify node_modules** - use override patterns instead
 - **Assume monorepo paths** in your Tailwind content globs
+- **Use `@nikolayvalev/design-system` as a new runtime component dependency** in app repos
 
 ## Profile Details
 
@@ -260,8 +291,8 @@ import '@nikolayvalev/design-system/styles/experimental.css'; // High contrast
 
 **Import:**
 ```ts
-import '@nikolayvalev/design-system/styles/public.css';
-import { publicProfile } from '@nikolayvalev/design-system/tailwind';
+import '@nikolayvalev/design-tokens/styles/public.css';
+import { publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 ```
 
 ### `dashboard` Profile
@@ -277,8 +308,8 @@ import { publicProfile } from '@nikolayvalev/design-system/tailwind';
 
 **Import:**
 ```ts
-import '@nikolayvalev/design-system/styles/dashboard.css';
-import { dashboardProfile } from '@nikolayvalev/design-system/tailwind';
+import '@nikolayvalev/design-tokens/styles/dashboard.css';
+import { dashboardProfile } from '@nikolayvalev/design-tokens/tailwind';
 ```
 
 ### `experimental` Profile
@@ -294,8 +325,8 @@ import { dashboardProfile } from '@nikolayvalev/design-system/tailwind';
 
 **Import:**
 ```ts
-import '@nikolayvalev/design-system/styles/experimental.css';
-import { experimentalProfile } from '@nikolayvalev/design-system/tailwind';
+import '@nikolayvalev/design-tokens/styles/experimental.css';
+import { experimentalProfile } from '@nikolayvalev/design-tokens/tailwind';
 ```
 
 ## Versioning
@@ -311,7 +342,7 @@ Lock to major version to control when visual updates happen:
 ```json
 {
   "dependencies": {
-    "@nikolayvalev/design-system": "~1.0.0"
+    "@nikolayvalev/design-tokens": "~1.0.0"
   }
 }
 ```

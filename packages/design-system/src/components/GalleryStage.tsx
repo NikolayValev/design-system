@@ -24,7 +24,7 @@ function resolveMaterial(visionId: string, material: NonNullable<GalleryStagePro
 }
 
 export const GalleryStage = React.forwardRef<HTMLDivElement, GalleryStageProps>(
-  ({ className = '', children, material = 'adaptive', style, ...props }, ref) => {
+  ({ className = '', children, material = 'adaptive', ...props }, ref) => {
     const { activeVision } = useVision();
     const resolvedMaterial = resolveMaterial(activeVision.id, material);
     const isMuseum = activeVision.id === 'museum' || activeVision.id === 'the_archive';
@@ -33,29 +33,24 @@ export const GalleryStage = React.forwardRef<HTMLDivElement, GalleryStageProps>(
     const isDeconstruct = activeVision.id === 'deconstruct';
     const isZineCollage = activeVision.id === 'zine_collage';
 
-    const stageStyle: React.CSSProperties = {
-      background:
-        resolvedMaterial === 'glass'
-          ? 'var(--vde-gallery-glass-background, color-mix(in oklab, var(--vde-color-surface) 78%, transparent))'
-          : 'var(--vde-gallery-material-background, var(--vde-color-surface))',
-      boxShadow: isBrutalist ? 'var(--vde-gallery-offset-shadow, 4px 4px 0 0 #000)' : 'var(--vde-shadow-ambient)',
-      backdropFilter: isImmersive ? 'blur(var(--vde-gallery-backdrop-blur, 20px))' : 'none',
-      WebkitBackdropFilter: isImmersive ? 'blur(var(--vde-gallery-backdrop-blur, 20px))' : 'none',
-      transform: isDeconstruct ? 'rotate(var(--vde-component-tilt, -1deg))' : undefined,
-      zIndex: isDeconstruct ? 3 : undefined,
-      clipPath: isZineCollage ? 'var(--vde-gallery-torn-clip-path)' : undefined,
-      ...style,
-    };
-
     const classes = [
       'relative',
       'isolate',
       'overflow-hidden',
       'border',
+      resolvedMaterial === 'glass'
+        ? '[background:var(--vde-gallery-glass-background,_color-mix(in_oklab,_var(--vde-color-surface)_78%,_transparent))]'
+        : '[background:var(--vde-gallery-material-background,_var(--vde-color-surface))]',
       '[border-color:var(--vde-color-border)]',
       '[border-width:var(--vde-border-width)]',
       '[border-radius:var(--vde-boundary-radius)]',
       '[color:var(--vde-color-surface-foreground)]',
+      isBrutalist ? '[box-shadow:var(--vde-gallery-offset-shadow,_4px_4px_0_0_#000)]' : '[box-shadow:var(--vde-shadow-ambient)]',
+      isImmersive ? '[backdrop-filter:blur(var(--vde-gallery-backdrop-blur,_20px))]' : '[backdrop-filter:none]',
+      isImmersive ? '[-webkit-backdrop-filter:blur(var(--vde-gallery-backdrop-blur,_20px))]' : '[-webkit-backdrop-filter:none]',
+      isDeconstruct ? '[transform:rotate(var(--vde-component-tilt,_-1deg))]' : '',
+      isDeconstruct ? 'z-[3]' : '',
+      isZineCollage ? '[clip-path:var(--vde-gallery-torn-clip-path)]' : '',
       'transition-all',
       '[transition-duration:var(--vde-motion-duration-normal)]',
       '[transition-timing-function:var(--vde-motion-easing-standard)]',
@@ -63,26 +58,18 @@ export const GalleryStage = React.forwardRef<HTMLDivElement, GalleryStageProps>(
     ].join(' ');
 
     return (
-      <section ref={ref} className={classes} data-vde-component="gallery-stage" style={stageStyle} {...props}>
+      <section ref={ref} className={classes} data-vde-component="gallery-stage" {...props}>
         <AestheticOrnaments />
         {isMuseum ? (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-[1]"
-            style={{
-              backgroundImage: 'var(--vde-surface-texture)',
-              opacity: 'var(--vde-gallery-paper-overlay-opacity, 0.55)',
-            }}
+            className="pointer-events-none absolute inset-0 z-[1] [background-image:var(--vde-surface-texture)] [opacity:var(--vde-gallery-paper-overlay-opacity,_0.55)]"
           />
         ) : null}
         {isImmersive ? (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-[1]"
-            style={{
-              background:
-                'radial-gradient(circle at 10% 0%, rgba(126, 87, 255, 0.22), transparent 50%), radial-gradient(circle at 100% 100%, rgba(87, 195, 255, 0.2), transparent 48%)',
-            }}
+            className="pointer-events-none absolute inset-0 z-[1] [background:radial-gradient(circle_at_10%_0%,_rgba(126,_87,_255,_0.22),_transparent_50%),_radial-gradient(circle_at_100%_100%,_rgba(87,_195,_255,_0.2),_transparent_48%)]"
           />
         ) : null}
         {isZineCollage ? (

@@ -1,0 +1,9 @@
+{
+  "extends": "@repo/config/tsconfig.node.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "lib": ["ES2020", "DOM"]
+  },
+  "include": ["src", "scripts"],
+  "exclude": ["node_modules", "dist"]
+}

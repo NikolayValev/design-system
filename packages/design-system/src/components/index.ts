@@ -27,3 +27,12 @@ export type { AtmosphereProviderProps } from './AtmosphereProvider';
 
 export { NavigationOrb } from './NavigationOrb';
 export type { NavigationOrbItem, NavigationOrbProps } from './NavigationOrb';
+
+export { SectionShell } from './SectionShell';
+export type { SectionShellProps } from './SectionShell';
+
+export { FeatureTile } from './FeatureTile';
+export type { FeatureTileProps } from './FeatureTile';
+
+export { StatChip } from './StatChip';
+export type { StatChipProps } from './StatChip';
