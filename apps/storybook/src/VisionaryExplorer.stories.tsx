@@ -1,578 +1,551 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ArrowUpRight, Box, Eye, Maximize2, MoveRight, Type } from 'lucide-react';
-import { useEffect, useState, type ReactNode } from 'react';
-import { useVision } from '@nikolayvalev/design-system';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Layout,
+  NavigationOrb,
+  useVision,
+  visionThemes,
+  type VisionTheme,
+} from '@nikolayvalev/design-system';
 
-const THEMES = {
-  MUSEUM: 'museum',
-  BRUTAL: 'brutalist',
-  IMMERSIVE: 'immersive',
-} as const;
+interface ThemePersonality {
+  headline: string;
+  mood: string[];
+  motif: string;
+  orbItems: string[];
+  prompt: string;
+  signatureUse: string;
+  stageClass: string;
+  strengths: string[];
+  summary: string;
+}
 
-type ExplorerTheme = (typeof THEMES)[keyof typeof THEMES];
+interface StrengthItem {
+  detail: string;
+  title: string;
+}
 
-const ALL_THEMES: ExplorerTheme[] = [THEMES.MUSEUM, THEMES.BRUTAL, THEMES.IMMERSIVE];
+const THEME_PERSONALITIES: Record<string, ThemePersonality> = {
+  swiss_international: {
+    headline: 'Clarity Through Grid Discipline',
+    mood: ['ordered', 'neutral', 'precise'],
+    motif: 'modular grid',
+    orbItems: ['Grid', 'Ratios', 'System'],
+    prompt: 'Search timetable or route',
+    signatureUse: 'Enterprise dashboards and information-heavy systems that must stay legible at scale.',
+    stageClass: 'bg-slate-50/80',
+    strengths: [
+      'Layouts stay coherent under dense content and complex hierarchies.',
+      'Typographic rhythm favors readability before decoration.',
+      'Interaction states stay restrained and deterministic.',
+    ],
+    summary: 'Swiss International turns complexity into structure with sober spacing, strict alignment, and low-noise contrast.',
+  },
+  raw_data: {
+    headline: 'Radical Contrast, No Polishing',
+    mood: ['raw', 'loud', 'confrontational'],
+    motif: 'hard offset',
+    orbItems: ['Signal', 'Edges', 'Shock'],
+    prompt: 'Enter command payload',
+    signatureUse: 'Brand activations and bold campaigns where visual force matters more than subtlety.',
+    stageClass: 'bg-lime-100/70',
+    strengths: [
+      'High contrast states make hierarchy immediately obvious.',
+      'Hard borders and offsets create aggressive visual affordances.',
+      'Motion favors direct snaps over eased transitions.',
+    ],
+    summary: 'RAW_DATA is deliberately anti-polish, built to feel immediate, unapologetic, and impossible to ignore.',
+  },
+  the_archive: {
+    headline: 'Institutional Memory In Interface Form',
+    mood: ['scholarly', 'archival', 'timeless'],
+    motif: 'paper grain',
+    orbItems: ['Records', 'Catalog', 'Notes'],
+    prompt: 'Find archival reference',
+    signatureUse: 'Publishing, museums, and long-form editorial products with historical framing.',
+    stageClass: 'bg-amber-100/60',
+    strengths: [
+      'Warm material cues make long reading sessions feel intentional.',
+      'Serif-forward typography supports narrative authority.',
+      'Subtle motion keeps attention on content rather than chrome.',
+    ],
+    summary: 'The Archive emphasizes continuity and provenance, turning digital surfaces into trustworthy reference spaces.',
+  },
+  the_ether: {
+    headline: 'Luminous Glass With Spatial Depth',
+    mood: ['ambient', 'floating', 'spectral'],
+    motif: 'frosted pane',
+    orbItems: ['Layers', 'Light', 'Depth'],
+    prompt: 'Locate floating workspace',
+    signatureUse: 'Premium immersive experiences and speculative UI concept work.',
+    stageClass: 'bg-cyan-100/35',
+    strengths: [
+      'Blur and translucency separate foreground from atmospheric depth.',
+      'Glow systems communicate interactive focus without hard outlines.',
+      'Motion feels buoyant, not mechanical.',
+    ],
+    summary: 'The Ether is designed for depth-first interfaces where light and layering define orientation.',
+  },
+  solarpunk: {
+    headline: 'Optimism Engineered Into UI',
+    mood: ['hopeful', 'organic', 'clean-tech'],
+    motif: 'sun grid',
+    orbItems: ['Climate', 'Energy', 'Future'],
+    prompt: 'Check community energy status',
+    signatureUse: 'Civic tools, climate products, and futures-focused public platforms.',
+    stageClass: 'bg-emerald-100/60',
+    strengths: [
+      'Eco-forward color language signals progress and trust.',
+      'Soft contrast avoids alarm while staying informative.',
+      'Compositions balance utility with warmth.',
+    ],
+    summary: 'Solarpunk frames digital tools as constructive systems for communities, sustainability, and shared agency.',
+  },
+  y2k_chrome: {
+    headline: 'Reflective Pop Futurism',
+    mood: ['flashy', 'synthetic', 'nostalgic-future'],
+    motif: 'chrome flare',
+    orbItems: ['Shine', 'Pop', 'Retro'],
+    prompt: 'Open chrome profile card',
+    signatureUse: 'Fashion, entertainment, and youth-centric products needing high visual energy.',
+    stageClass: 'bg-sky-100/50',
+    strengths: [
+      'Specular accents create immediate visual signatures.',
+      'Playful saturation differentiates key actions from body content.',
+      'Strong ornamental identity supports campaign storytelling.',
+    ],
+    summary: 'Y2K Chrome amplifies spectacle with metallic highlights, hyper-clean gradients, and unapologetic pop cues.',
+  },
+  deconstruct: {
+    headline: 'Controlled Disorder For Expressive Systems',
+    mood: ['fragmented', 'experimental', 'asymmetric'],
+    motif: 'broken frame',
+    orbItems: ['Fragments', 'Offsets', 'Cutlines'],
+    prompt: 'Inject fragmented module',
+    signatureUse: 'Experimental portfolios and cultural products with anti-template direction.',
+    stageClass: 'bg-rose-100/45',
+    strengths: [
+      'Asymmetry creates narrative tension without losing function.',
+      'Layer collisions can emphasize editorial sequencing.',
+      'Deliberate disruption makes ordinary components feel authored.',
+    ],
+    summary: 'Deconstruct abandons rigid regularity in favor of expressive composition and intentional rupture.',
+  },
+  ma_minimalism: {
+    headline: 'Whitespace As Primary Interface',
+    mood: ['quiet', 'measured', 'essential'],
+    motif: 'negative space',
+    orbItems: ['Calm', 'Rhythm', 'Pause'],
+    prompt: 'Write short intentional note',
+    signatureUse: 'Mindfulness, premium services, and products where calm clarity is a core value.',
+    stageClass: 'bg-stone-100/70',
+    strengths: [
+      'Sparse composition increases perceptual breathing room.',
+      'Low ornament allows content and intent to lead.',
+      'Motion remains subtle and respectful.',
+    ],
+    summary: 'Ma Minimalism makes emptiness functional by treating spacing, pace, and silence as design primitives.',
+  },
+  clay_soft: {
+    headline: 'Tactile Softness Without Losing Utility',
+    mood: ['rounded', 'friendly', 'handcrafted'],
+    motif: 'soft mound',
+    orbItems: ['Touch', 'Softness', 'Warmth'],
+    prompt: 'Describe your project tone',
+    signatureUse: 'Consumer products and onboarding flows that prioritize approachability.',
+    stageClass: 'bg-orange-100/55',
+    strengths: [
+      'Rounded surfaces reduce intimidation in first-use contexts.',
+      'Material softness supports welcoming brand voice.',
+      'UI still retains clear interaction boundaries.',
+    ],
+    summary: 'Clay Soft mixes tactile warmth with modern component rigor for inviting, low-friction experiences.',
+  },
+  zine_collage: {
+    headline: 'Handmade Energy, Digital Medium',
+    mood: ['cutout', 'editorial-chaos', 'playful'],
+    motif: 'paper cut',
+    orbItems: ['Clips', 'Layers', 'Paste'],
+    prompt: 'Drop headline fragment',
+    signatureUse: 'Creative communities, magazines, and cultural releases that need personality over polish.',
+    stageClass: 'bg-fuchsia-100/45',
+    strengths: [
+      'Layered artifacts create distinct visual voice quickly.',
+      'Imperfect rhythm adds human texture to digital layouts.',
+      'Strong collage cues support expressive storytelling.',
+    ],
+    summary: 'Zine Collage embraces assembled imperfection to produce unmistakable authorial character.',
+  },
+  museum: {
+    headline: 'Editorial Heritage, Refined Pace',
+    mood: ['warm', 'curated', 'literary'],
+    motif: 'curatorial panel',
+    orbItems: ['Essays', 'Material', 'Index'],
+    prompt: 'Search collection annotation',
+    signatureUse: 'Museum-like storytelling, journals, and premium long-form reading products.',
+    stageClass: 'bg-amber-50/80',
+    strengths: [
+      'Serif architecture lends gravity to headings and narratives.',
+      'Archival warmth makes interfaces feel tangible.',
+      'Measured timing improves reading-focused flows.',
+    ],
+    summary: 'Museum channels print-era discipline with modern token systems for trustworthy, cultivated experiences.',
+  },
+  brutalist: {
+    headline: 'Function First, Decor Last',
+    mood: ['direct', 'structural', 'assertive'],
+    motif: 'steel frame',
+    orbItems: ['Blocks', 'Weight', 'Signal'],
+    prompt: 'Enter raw metric key',
+    signatureUse: 'Internal tools, data terminals, and anti-marketing products with hard utility focus.',
+    stageClass: 'bg-zinc-200/70',
+    strengths: [
+      'Hard geometry communicates boundaries instantly.',
+      'No-frills states improve scan speed for repeated tasks.',
+      'Contrast and weight reduce ambiguity in dense UIs.',
+    ],
+    summary: 'Brutalist strips styling to structural essentials so interaction intent is obvious at first glance.',
+  },
+  immersive: {
+    headline: 'Cinematic Interface Depth',
+    mood: ['atmospheric', 'fluid', 'high-fidelity'],
+    motif: 'depth field',
+    orbItems: ['Scene', 'Flow', 'Focus'],
+    prompt: 'Launch immersive session',
+    signatureUse: 'Media products, immersive onboarding, and premium storytelling canvases.',
+    stageClass: 'bg-indigo-100/35',
+    strengths: [
+      'Layered backgrounds create strong spatial orientation.',
+      'Glow and blur guide focus without harsh separators.',
+      'Longer eased motion supports cinematic pacing.',
+    ],
+    summary: 'Immersive treats the page as a stage, using light, depth, and velocity to shape attention.',
+  },
+  editorial: {
+    headline: 'Magazine Systems For Digital Narratives',
+    mood: ['polished', 'authoritative', 'narrative'],
+    motif: 'column rhythm',
+    orbItems: ['Lead', 'Deck', 'Pullquote'],
+    prompt: 'Draft editorial standfirst',
+    signatureUse: 'Newsrooms, publishing suites, and productized long-form content.',
+    stageClass: 'bg-neutral-100/75',
+    strengths: [
+      'Hierarchy-driven typography mirrors professional publishing.',
+      'Balanced spacing supports scannable long-form layouts.',
+      'Component vocabulary suits content-first teams.',
+    ],
+    summary: 'Editorial provides a publication-grade baseline where text hierarchy and story pacing remain central.',
+  },
+  zen: {
+    headline: 'Low-Stimulus Focused Interaction',
+    mood: ['calm', 'balanced', 'intentional'],
+    motif: 'still frame',
+    orbItems: ['Focus', 'Breath', 'Flow'],
+    prompt: 'Capture your next mindful task',
+    signatureUse: 'Productivity, wellness, and intentional-use applications.',
+    stageClass: 'bg-emerald-50/75',
+    strengths: [
+      'Muted energy levels reduce cognitive overhead.',
+      'Simple geometry keeps user attention on tasks.',
+      'Soft pacing supports sustained concentration.',
+    ],
+    summary: 'Zen minimizes stimulus so interfaces feel steady, focused, and mentally lightweight.',
+  },
+  synthwave: {
+    headline: 'Neon Drama With Clear Intent',
+    mood: ['retro-future', 'electric', 'night-mode'],
+    motif: 'neon horizon',
+    orbItems: ['Pulse', 'Neon', 'Night'],
+    prompt: 'Open after-dark mode',
+    signatureUse: 'Entertainment interfaces, music tools, and expressive dark-theme products.',
+    stageClass: 'bg-purple-100/40',
+    strengths: [
+      'Vivid glow signatures create memorable action points.',
+      'Dark base plus neon accents maintains contrast hierarchy.',
+      'Motion energy reinforces a live, energetic feel.',
+    ],
+    summary: 'Synthwave balances nostalgia and legibility through neon accents, dark fields, and rhythmic transitions.',
+  },
+  aurora: {
+    headline: 'Atmospheric Gradients, Gentle Energy',
+    mood: ['ethereal', 'luminous', 'fresh'],
+    motif: 'aurora band',
+    orbItems: ['Spectrum', 'Drift', 'Glow'],
+    prompt: 'Start atmospheric workspace',
+    signatureUse: 'Modern brand products needing softness without looking generic.',
+    stageClass: 'bg-teal-100/45',
+    strengths: [
+      'Gradient-led surfaces add depth with low visual aggression.',
+      'Color movement feels alive while staying professional.',
+      'Balanced contrast keeps long-session usability intact.',
+    ],
+    summary: 'Aurora brings atmospheric motion and color drift into practical UI systems without sacrificing clarity.',
+  },
+  noir: {
+    headline: 'Dark Precision, Editorial Tension',
+    mood: ['moody', 'high-contrast', 'dramatic'],
+    motif: 'spotlight cut',
+    orbItems: ['Contrast', 'Shadow', 'Edge'],
+    prompt: 'Query noir scenario',
+    signatureUse: 'Premium dark products, creative tooling, and cinematic admin experiences.',
+    stageClass: 'bg-slate-300/35',
+    strengths: [
+      'Tight dark/light relationships sharpen visual hierarchy.',
+      'Reduced palette keeps attention on key interactions.',
+      'Strong typographic contrast supports dramatic tone.',
+    ],
+    summary: 'Noir is a high-contrast dark system that privileges focus, mood, and selective emphasis.',
+  },
+  parchment: {
+    headline: 'Scholarly Warmth And Text Fidelity',
+    mood: ['historic', 'quiet', 'textural'],
+    motif: 'aged sheet',
+    orbItems: ['Manuscript', 'Annotations', 'Marginalia'],
+    prompt: 'Find passage and citation',
+    signatureUse: 'Documentation, knowledge repositories, and reader-first environments.',
+    stageClass: 'bg-yellow-100/65',
+    strengths: [
+      'Warm paper tones reduce sterile digital feel.',
+      'Typography favors reading endurance over spectacle.',
+      'Material texture adds context without distraction.',
+    ],
+    summary: 'Parchment is optimized for reading gravity, scholarly pacing, and durable text presentation.',
+  },
+  terminal: {
+    headline: 'Command-Line Certainty In UI Form',
+    mood: ['utilitarian', 'code-native', 'deterministic'],
+    motif: 'prompt cursor',
+    orbItems: ['Command', 'Logs', 'Output'],
+    prompt: 'Enter shell command',
+    signatureUse: 'Developer tools, infra consoles, and operational control surfaces.',
+    stageClass: 'bg-green-100/50',
+    strengths: [
+      'Monospace hierarchy improves parameter and data alignment.',
+      'Binary visual language reduces ambiguity in system actions.',
+      'Minimal decoration keeps throughput high for expert users.',
+    ],
+    summary: 'Terminal prioritizes speed, precision, and semantic clarity for technical workflows.',
+  },
+};
 
-function isExplorerTheme(value: string): value is ExplorerTheme {
-  return ALL_THEMES.includes(value as ExplorerTheme);
+const FALLBACK_PERSONALITY: ThemePersonality = {
+  headline: 'Token-Driven Design Identity',
+  mood: ['consistent', 'adaptive', 'systemic'],
+  motif: 'semantic contract',
+  orbItems: ['Theme', 'Tokens', 'Traits'],
+  prompt: 'Enter value',
+  signatureUse: 'General-purpose product interfaces.',
+  stageClass: 'bg-slate-100/70',
+  strengths: [
+    'Consistent semantics across components.',
+    'Predictable interactions under theme changes.',
+    'Composable styles for scalable systems.',
+  ],
+  summary: 'This theme is rendered from the same token contract and remains interoperable with all core components.',
+};
+
+function getPersonality(themeId: string): ThemePersonality {
+  return THEME_PERSONALITIES[themeId] ?? FALLBACK_PERSONALITY;
+}
+
+function primaryFont(fontStack: string): string {
+  const first = fontStack.split(',')[0] ?? fontStack;
+  return first.trim().replace(/"/g, '');
+}
+
+function summarizeStrengths(theme: VisionTheme, personality: ThemePersonality): StrengthItem[] {
+  const { typographyArchitecture, surfacePhysics, boundaryLogic, motionSignature } = theme.artisticPillars;
+
+  return [
+    {
+      title: 'Signature Strength',
+      detail: personality.strengths[0] ?? '',
+    },
+    {
+      title: 'Secondary Strength',
+      detail: personality.strengths[1] ?? '',
+    },
+    {
+      title: 'Experience Edge',
+      detail: personality.strengths[2] ?? '',
+    },
+    {
+      title: 'Typography System',
+      detail: `${primaryFont(typographyArchitecture.fontStack.display)} display, ${primaryFont(typographyArchitecture.fontStack.body)} body, letter spacing ${typographyArchitecture.letterSpacing.normal}.`,
+    },
+    {
+      title: 'Motion Profile',
+      detail: `${motionSignature.physics} physics with ${motionSignature.duration.fast}/${motionSignature.duration.normal}/${motionSignature.duration.slow} duration cadence.`,
+    },
+    {
+      title: 'Material Profile',
+      detail: `${surfacePhysics.blur} blur, grain ${surfacePhysics.grain}, ${boundaryLogic.borderWeight} borders, ${boundaryLogic.radius} radius.`,
+    },
+  ];
 }
 
 function VisionaryExplorer(): JSX.Element {
-  const { activeVisionId, setVision } = useVision();
-  const [activeTheme, setActiveTheme] = useState<ExplorerTheme>(
-    isExplorerTheme(activeVisionId) ? activeVisionId : THEMES.MUSEUM
-  );
-  const [animateKey, setAnimateKey] = useState(0);
-
-  useEffect(() => {
-    if (isExplorerTheme(activeVisionId)) {
-      setActiveTheme(activeVisionId);
-    }
-  }, [activeVisionId]);
-
-  useEffect(() => {
-    setAnimateKey(previous => previous + 1);
-  }, [activeTheme]);
-
-  const onThemeChange = (theme: ExplorerTheme): void => {
-    setActiveTheme(theme);
-    setVision(theme);
-  };
+  const { activeVision, activeVisionId, setVision } = useVision();
+  const personality = getPersonality(activeVisionId);
+  const strengths = summarizeStrengths(activeVision, personality);
+  const swatches = [
+    { label: 'Background', value: activeVision.colors.background },
+    { label: 'Surface', value: activeVision.colors.surface },
+    { label: 'Accent', value: activeVision.colors.accent },
+    { label: 'Secondary', value: activeVision.colors.secondary },
+    { label: 'Chart 1', value: activeVision.colors.chart1 },
+    { label: 'Chart 2', value: activeVision.colors.chart2 },
+  ];
 
   return (
-    <div className={`min-h-screen w-full transition-colors duration-700 ease-in-out ${getThemeWrapperClasses(activeTheme)}`}>
-      {activeTheme === THEMES.IMMERSIVE ? (
-        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] h-[50%] w-[50%] rounded-full bg-fuchsia-900/30 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-20%] right-[-10%] h-[50%] w-[50%] rounded-full bg-cyan-900/30 blur-[120px] animate-pulse [animation-delay:900ms]" />
-          <div className="absolute top-[40%] left-[40%] h-[20%] w-[20%] rounded-full bg-blue-500/10 blur-[80px]" />
-        </div>
-      ) : null}
+    <div className="min-h-screen bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)]">
+      <div className="mx-auto max-w-7xl space-y-8 p-6 md:p-10">
+        <header className="space-y-4 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
+          <p className="text-xs uppercase tracking-[0.2em] opacity-70">Visionary Explorer</p>
+          <h1 className="text-4xl [font-family:var(--vde-font-display)]">{activeVision.name}</h1>
+          <p className="max-w-[70ch] text-sm md:text-base">{activeVision.description}</p>
+          <p className="text-xs uppercase tracking-[0.12em] opacity-70">
+            Archetype: {activeVision.archetype} | Vision ID: {activeVisionId}
+          </p>
+          <nav className="flex flex-wrap gap-2 pt-2">
+            {visionThemes.map(theme => (
+              <button
+                key={theme.id}
+                type="button"
+                onClick={() => setVision(theme.id)}
+                className={`rounded-full border px-3 py-1.5 text-xs transition-all ${
+                  activeVisionId === theme.id
+                    ? '[background:var(--vde-color-accent)] [color:var(--vde-color-accent-foreground)] [border-color:var(--vde-color-accent)]'
+                    : '[background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] [border-color:var(--vde-color-border)] opacity-80 hover:opacity-100'
+                }`}
+              >
+                {theme.name}
+              </button>
+            ))}
+          </nav>
+        </header>
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
-        <Header activeTheme={activeTheme} onThemeChange={onThemeChange} />
+        <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <article
+            className={`space-y-5 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [color:var(--vde-color-surface-foreground)] ${personality.stageClass}`}
+          >
+            <p className="text-xs uppercase tracking-[0.18em] opacity-70">Theme Signature: {personality.motif}</p>
+            <h2 className="text-3xl [font-family:var(--vde-font-display)]">{personality.headline}</h2>
+            <p className="max-w-[64ch] text-sm md:text-base">{personality.summary}</p>
+            <div className="flex flex-wrap gap-2">
+              {personality.mood.map(word => (
+                <span
+                  key={word}
+                  className="rounded-full border px-2 py-1 text-[11px] uppercase tracking-[0.08em] [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)]"
+                >
+                  {word}
+                </span>
+              ))}
+            </div>
+            <div className="grid gap-3 md:grid-cols-3">
+              {personality.strengths.map(strength => (
+                <div
+                  key={strength}
+                  className="rounded-xl border p-3 text-xs leading-relaxed [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)]"
+                >
+                  {strength}
+                </div>
+              ))}
+            </div>
+          </article>
 
-        <main key={animateKey} className="mt-16 space-y-24">
-          <HeroSection theme={activeTheme} />
-          <ComponentShowcase theme={activeTheme} />
-          <LayoutShowcase theme={activeTheme} />
-        </main>
+          <aside className="space-y-4 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
+            <h3 className="text-sm uppercase tracking-[0.12em] opacity-80">Best Use</h3>
+            <p className="text-sm leading-relaxed">{personality.signatureUse}</p>
+            <h3 className="border-t pt-4 text-sm uppercase tracking-[0.12em] opacity-80 [border-color:var(--vde-color-border)]">
+              Ornament Toggles
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full border px-2 py-1 text-[11px] [border-color:var(--vde-color-border)]">
+                Grain: {activeVision.ornaments.grain ? 'On' : 'Off'}
+              </span>
+              <span className="rounded-full border px-2 py-1 text-[11px] [border-color:var(--vde-color-border)]">
+                Glow: {activeVision.ornaments.glow ? 'On' : 'Off'}
+              </span>
+              <span className="rounded-full border px-2 py-1 text-[11px] [border-color:var(--vde-color-border)]">
+                Texture: {activeVision.ornaments.texture ? 'On' : 'Off'}
+              </span>
+            </div>
+          </aside>
+        </section>
 
-        <Footer theme={activeTheme} />
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {strengths.map(item => (
+            <article
+              key={item.title}
+              className="rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]"
+            >
+              <h3 className="text-xs uppercase tracking-[0.12em] opacity-75">{item.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed">{item.detail}</p>
+            </article>
+          ))}
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+          <Layout heading="Component Preview" className="mx-0 max-w-none">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Interaction Snapshot</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="default">Primary</Button>
+                    <Button variant="secondary">Secondary</Button>
+                    <Button variant="outline">Outline</Button>
+                  </div>
+                  <Input placeholder={personality.prompt} />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Navigation Rhythm</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative min-h-[200px] rounded-xl border p-4 [border-color:var(--vde-color-border)]">
+                    <NavigationOrb
+                      className="absolute bottom-3 right-3"
+                      defaultOpen
+                      floating={false}
+                      items={personality.orbItems.map(item => ({ id: item.toLowerCase(), label: item }))}
+                      label={`${activeVision.name} navigation`}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </Layout>
+
+          <aside className="space-y-4 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
+            <h3 className="text-sm uppercase tracking-[0.12em] opacity-80">Visual Fingerprint</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {swatches.map(swatch => (
+                <div key={swatch.label} className="space-y-1">
+                  <div
+                    className="h-10 w-full rounded-md border [border-color:var(--vde-color-border)]"
+                    style={{ background: swatch.value }}
+                  />
+                  <p className="text-[11px] font-medium">{swatch.label}</p>
+                  <p className="text-[10px] opacity-70">{swatch.value}</p>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </section>
       </div>
     </div>
   );
-}
-
-interface HeaderProps {
-  activeTheme: ExplorerTheme;
-  onThemeChange: (theme: ExplorerTheme) => void;
-}
-
-function Header({ activeTheme, onThemeChange }: HeaderProps): JSX.Element {
-  return (
-    <header className="flex flex-col items-center justify-between gap-6 border-b border-current/10 pb-6 md:flex-row">
-      <div className="flex items-center gap-3">
-        <div
-          className={`flex h-10 w-10 items-center justify-center
-            ${activeTheme === THEMES.MUSEUM ? 'rounded-full border-4 border-double border-current' : ''}
-            ${activeTheme === THEMES.BRUTAL ? 'border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]' : ''}
-            ${activeTheme === THEMES.IMMERSIVE ? 'rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20' : ''}
-          `}
-        >
-          <Box size={20} />
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] uppercase tracking-[0.18em] opacity-60">System Name</span>
-          <h1 className="text-xl font-bold leading-none">
-            {activeTheme === THEMES.MUSEUM ? 'The Archive' : null}
-            {activeTheme === THEMES.BRUTAL ? 'RAW_DATA_V1' : null}
-            {activeTheme === THEMES.IMMERSIVE ? 'Nexus OS' : null}
-          </h1>
-        </div>
-      </div>
-
-      <nav className="flex items-center gap-2 rounded-full bg-black/5 p-1 md:rounded-lg">
-        {[
-          { id: THEMES.MUSEUM, label: 'Museum', icon: <Type size={14} /> },
-          { id: THEMES.BRUTAL, label: 'Brutalist', icon: <Box size={14} /> },
-          { id: THEMES.IMMERSIVE, label: 'Immersive', icon: <Eye size={14} /> },
-        ].map(item => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => onThemeChange(item.id)}
-            className={`flex items-center gap-2 px-4 py-2 text-sm transition-all duration-300 ${
-              activeTheme === item.id ? getActiveTabStyle(item.id) : 'opacity-60 hover:opacity-100'
-            }`}
-          >
-            {item.icon}
-            <span className="hidden sm:inline">{item.label}</span>
-          </button>
-        ))}
-      </nav>
-    </header>
-  );
-}
-
-interface ThemeProps {
-  theme: ExplorerTheme;
-}
-
-function HeroSection({ theme }: ThemeProps): JSX.Element {
-  if (theme === THEMES.MUSEUM) {
-    return (
-      <section className="grid items-center gap-12 md:grid-cols-12">
-        <div className="space-y-8 md:col-span-7">
-          <span className="inline-block border-b border-black pb-1 text-xs uppercase tracking-[0.2em]">Est. 2025 • Editorial Collection</span>
-          <h2 className="text-6xl leading-[0.9] tracking-tight md:text-8xl">
-            The <span className="font-light italic text-[#8A3324]">Return</span> of
-            <br />
-            Permanence.
-          </h2>
-          <p className="max-w-xl text-xl font-light leading-relaxed opacity-80 md:text-2xl">
-            Rejecting the ephemeral nature of the modern feed. A design system grounded in history, typography, and tactile warmth.
-          </p>
-          <div className="pt-4">
-            <button
-              type="button"
-              className="px-8 py-3 text-xs uppercase tracking-[0.2em] border border-[#2C2825] transition-colors hover:bg-[#2C2825] hover:text-[#F7F5F0]"
-            >
-              Read The Journal
-            </button>
-          </div>
-        </div>
-        <div className="relative md:col-span-5">
-          <div className="aspect-[3/4] border border-[#2C2825] p-2">
-            <div className="museum-grain relative flex h-full w-full items-center justify-center overflow-hidden bg-[#E6E2D6]">
-              <span className="text-9xl font-serif italic opacity-10">Ag</span>
-            </div>
-          </div>
-          <div className="absolute -bottom-6 -right-6 hidden max-w-xs border border-gray-200 bg-white p-6 shadow-xl md:block">
-            <p className="font-serif text-sm italic">"Digital spaces should feel like libraries, not terminals."</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (theme === THEMES.BRUTAL) {
-    return (
-      <section className="relative pb-24 pt-12">
-        <div className="relative overflow-hidden border-4 border-black bg-[#CCFF00] p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] md:p-16">
-          <div className="absolute right-4 top-4 bg-black px-2 py-1 font-mono text-xs font-bold uppercase text-white">SystemStatus: UNSTABLE</div>
-          <h2 className="relative z-10 break-words text-5xl font-black uppercase leading-[0.85] tracking-tighter md:text-9xl">
-            TRUTH
-            <br />
-            IS
-            <br />
-            <span className="bg-black px-2 text-white">UGLY</span>
-          </h2>
-          <p className="mt-8 inline-block max-w-2xl -rotate-1 border-2 border-black bg-white p-4 font-mono text-lg font-bold shadow-[4px_4px_0px_0px_black] md:text-xl">
-            No rounded corners. No gradients. Just raw HTML and heavy strokes. This is the rebellion against corporate polish.
-          </p>
-          <div className="mt-12">
-            <button
-              type="button"
-              className="border-4 border-black bg-[#FF3366] px-8 py-4 text-xl font-bold text-white shadow-[8px_8px_0px_0px_black] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_black] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none"
-            >
-              START_REBELLION()
-            </button>
-          </div>
-          <div className="absolute bottom-4 left-0 right-0 overflow-hidden whitespace-nowrap border-y-4 border-black bg-white py-2">
-            <div className="animate-marquee inline-block font-mono text-xl font-bold">
-              WARNING: HIGH CONTRAST AREA /// DO NOT SMOOTH /// RAW DATA ONLY /// WARNING: HIGH CONTRAST AREA ///
-            </div>
-            <div className="animate-marquee inline-block pl-8 font-mono text-xl font-bold">
-              WARNING: HIGH CONTRAST AREA /// DO NOT SMOOTH /// RAW DATA ONLY /// WARNING: HIGH CONTRAST AREA ///
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="relative flex min-h-[60vh] flex-col justify-center">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-20 blur-[100px]" />
-
-      <div className="relative z-10 space-y-6 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-cyan-400 backdrop-blur-md">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-400" />
-          Hyper-Reality Engine v2.0
-        </div>
-
-        <h2 className="bg-gradient-to-b from-white to-white/40 bg-clip-text text-6xl font-bold tracking-tight text-transparent md:text-8xl">
-          Beyond the
-          <br />
-          Screen
-        </h2>
-
-        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/60 md:text-xl">
-          The interface dissolves. You are no longer viewing a page; you are inhabiting a simulation. Physics-based motion, depth, and light.
-        </p>
-
-        <div className="flex justify-center pt-8">
-          <button
-            type="button"
-            className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/10 px-8 py-4 backdrop-blur-xl transition-all duration-500 hover:bg-white/20"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <span className="relative flex items-center gap-2 font-medium">
-              Enter Environment <MoveRight className="transition-transform group-hover:translate-x-1" />
-            </span>
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ComponentShowcase({ theme }: ThemeProps): JSX.Element {
-  return (
-    <section className="space-y-12">
-      <div className="border-t border-current/10 pt-12">
-        <h3 className={`mb-8 text-2xl ${theme === THEMES.BRUTAL ? 'inline-block bg-black px-2 font-black uppercase text-white' : ''} ${theme === THEMES.MUSEUM ? 'font-serif italic' : ''} ${theme === THEMES.IMMERSIVE ? 'font-medium text-white/40' : ''}`}>
-          System Primitives
-        </h3>
-      </div>
-
-      <div className="grid gap-12 md:grid-cols-3">
-        <div className="space-y-4">
-          <Label theme={theme}>Typography</Label>
-          <div className={`flex min-h-[300px] flex-col justify-between p-8 ${getCardStyle(theme)}`}>
-            <div className="space-y-4">
-              <div>
-                <p className="mb-1 text-xs opacity-50">Display</p>
-                <p className={`text-4xl leading-tight ${theme === THEMES.MUSEUM ? 'font-serif' : theme === THEMES.BRUTAL ? 'font-black' : 'font-bold'}`}>Aa</p>
-              </div>
-              <div>
-                <p className="mb-1 text-xs opacity-50">Heading</p>
-                <p className="text-2xl">The quick brown fox.</p>
-              </div>
-              <div>
-                <p className="mb-1 text-xs opacity-50">Body</p>
-                <p className="text-sm leading-relaxed opacity-80">Design is intelligence made visible. We shape our tools and thereafter our tools shape us.</p>
-              </div>
-            </div>
-            <div className="flex items-end justify-between border-t border-current/10 pt-4">
-              <span className="text-xs opacity-40">Font Family</span>
-              <span className="text-xs font-mono">
-                {theme === THEMES.MUSEUM ? 'Playfair Display / Inter' : null}
-                {theme === THEMES.BRUTAL ? 'Space Mono / System' : null}
-                {theme === THEMES.IMMERSIVE ? 'Inter / Geist' : null}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <Label theme={theme}>Interaction</Label>
-          <div className={`flex min-h-[300px] flex-col items-center justify-center gap-6 p-8 ${getCardStyle(theme)}`}>
-            <button type="button" className={`w-full ${getButtonStyle(theme)}`}>
-              Primary Action
-            </button>
-            <button type="button" className={`w-full ${getSecondaryButtonStyle(theme)}`}>
-              Secondary Action
-            </button>
-            <div className="w-full">
-              <input type="text" placeholder="Input field..." className={`w-full bg-transparent p-3 outline-none transition-all ${getInputStyle(theme)}`} />
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <Label theme={theme}>Surfaces & Depth</Label>
-          <div className={`relative min-h-[300px] overflow-hidden p-8 ${getCardStyle(theme)}`}>
-            <div className={`absolute left-1/2 top-1/2 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center ${getSurfaceStyle(theme)}`}>
-              <Box size={32} />
-            </div>
-
-            {theme === THEMES.IMMERSIVE ? (
-              <>
-                <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-purple-500/20 blur-2xl" />
-                <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-cyan-500/20 blur-2xl" />
-              </>
-            ) : null}
-
-            <div className="absolute bottom-4 left-4 right-4 text-center text-xs opacity-60">
-              {theme === THEMES.MUSEUM ? 'Natural paper textures, grain, subtle drop shadows.' : null}
-              {theme === THEMES.BRUTAL ? 'Hard lines, flat colors, no transparency.' : null}
-              {theme === THEMES.IMMERSIVE ? 'Glassmorphism, blurs, multi-layer depth.' : null}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function LayoutShowcase({ theme }: ThemeProps): JSX.Element {
-  return (
-    <section className="space-y-8 pb-24">
-      <div className="flex items-end justify-between border-t border-current/10 pt-12">
-        <h3 className={`text-2xl ${theme === THEMES.BRUTAL ? 'inline-block bg-black px-2 font-black uppercase text-white' : ''} ${theme === THEMES.MUSEUM ? 'font-serif italic' : ''} ${theme === THEMES.IMMERSIVE ? 'font-medium text-white/40' : ''}`}>
-          Micro-Layout: The Article
-        </h3>
-        <button type="button" className="flex items-center gap-2 text-sm opacity-50 transition-opacity hover:opacity-100">
-          View Full Page <ArrowUpRight size={14} />
-        </button>
-      </div>
-
-      <div className={`min-h-[500px] w-full p-6 transition-all duration-500 md:p-12 ${getLayoutContainerStyle(theme)}`}>
-        {theme === THEMES.MUSEUM ? (
-          <article className="mx-auto grid max-w-3xl grid-cols-12 gap-6">
-            <header className="col-span-12 mb-12 border-b border-[#2C2825] pb-8 text-center">
-              <span className="mb-4 block font-serif italic text-[#8A3324]">Vol. 24 — Architecture</span>
-              <h1 className="mb-4 text-5xl font-serif">The Silence of Stone</h1>
-              <p className="text-sm uppercase tracking-[0.2em] opacity-60">By The Curator • Oct 2025</p>
-            </header>
-            <div className="col-span-12 space-y-4 md:col-span-4">
-              <p className="text-lg font-bold leading-tight">A study in minimalism and the return to tangible interfaces in a digital age.</p>
-              <div className="relative h-[200px] w-full bg-[#E6E2D6] grayscale">
-                <div className="absolute inset-2 border border-[#2C2825] opacity-20" />
-                <div className="absolute inset-0 flex items-center justify-center font-serif text-4xl italic opacity-30">Fig. 1</div>
-              </div>
-              <p className="text-xs italic opacity-60">Fig 1. The original sketch.</p>
-            </div>
-            <div className="col-span-12 md:col-span-8">
-              <p className="mb-6 text-xl leading-relaxed font-serif first-letter:float-left first-letter:mr-2 first-letter:text-5xl first-letter:font-bold">
-                History is not linear. It loops. The trends we see today are echoes of the past, reformatted for screens. The "Museumcore" aesthetic is not just a style; it is a plea for slowness.
-              </p>
-              <p className="text-base leading-loose opacity-80">
-                When we strip away the gradients and the neon shadows, we are left with the skeleton of content: Type and Space. This layout utilizes a classic grid, serif typography, and ample whitespace to dignify the text.
-              </p>
-            </div>
-          </article>
-        ) : null}
-
-        {theme === THEMES.BRUTAL ? (
-          <article className="flex h-full flex-col">
-            <div className="mb-4 flex items-end justify-between border-b-4 border-black pb-4">
-              <h1 className="text-4xl font-black uppercase leading-none md:text-7xl">
-                RAW_State
-                <br />
-                Manifesto
-              </h1>
-              <div className="hidden text-right font-mono text-xs md:block">
-                <div>ID: #88291</div>
-                <div>DATE: NOW()</div>
-                <div>PRIORITY: CRITICAL</div>
-              </div>
-            </div>
-            <div className="grid gap-0 border-4 border-black bg-white shadow-[8px_8px_0px_0px_black] md:grid-cols-2">
-              <div className="flex items-center justify-center border-b-4 border-black bg-[#FF00FF] p-8 md:border-b-0 md:border-r-4">
-                <span className="text-9xl font-black text-white mix-blend-hard-light">?</span>
-              </div>
-              <div className="space-y-6 p-8">
-                <h3 className="inline-block bg-black px-2 text-xl font-bold uppercase text-white">Section_01</h3>
-                <p className="font-mono text-sm font-medium leading-tight">
-                  // THE CODE IS THE DESIGN
-                  <br />
-                  <br />
-                  We reject the soft. We reject the fake depth. This layout is built on CSS Borders and native HTML inputs. It is fast, accessible, and impossible to ignore.
-                </p>
-                <button type="button" className="w-full border-2 border-black py-4 font-bold uppercase transition-colors hover:bg-black hover:text-white">
-                  Download_Manifesto.pdf
-                </button>
-              </div>
-            </div>
-          </article>
-        ) : null}
-
-        {theme === THEMES.IMMERSIVE ? (
-          <article className="relative z-10">
-            <div className="absolute -left-20 top-0 h-full w-1 bg-gradient-to-b from-transparent via-cyan-500 to-transparent opacity-20" />
-
-            <div className="space-y-12">
-              <header className="space-y-4">
-                <div className="flex items-center gap-4 text-xs uppercase tracking-[0.2em] text-cyan-400">
-                  <span>01 / Introduction</span>
-                  <div className="h-px w-24 bg-cyan-900" />
-                  <span>Simulated Reality</span>
-                </div>
-                <h1 className="bg-gradient-to-r from-white via-white to-white/50 bg-clip-text text-5xl font-medium tracking-tight text-transparent md:text-6xl">
-                  Fluid Interfaces
-                </h1>
-              </header>
-
-              <div className="grid gap-16 md:grid-cols-2">
-                <div className="space-y-6">
-                  <p className="text-lg leading-relaxed text-white/70">The immersive web treats the viewport as a camera into a 3D world. Elements float, blur, and glow.</p>
-                  <button
-                    type="button"
-                    className="group w-full cursor-pointer rounded-2xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur-md transition-colors hover:bg-white/10"
-                  >
-                    <div className="mb-4 flex items-start justify-between">
-                      <div className="rounded-full bg-cyan-500/20 p-3 text-cyan-400 transition-transform group-hover:scale-110">
-                        <Maximize2 size={20} />
-                      </div>
-                      <ArrowUpRight className="text-white/20 transition-colors group-hover:text-white" />
-                    </div>
-                    <h4 className="mb-2 text-xl font-medium">Spatial Audio</h4>
-                    <p className="text-sm text-white/50">Soundscapes that react to user scroll position and interaction velocity.</p>
-                  </button>
-                </div>
-
-                <div className="relative">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 blur-xl" />
-                  <div className="relative h-full rounded-2xl border border-white/10 bg-black/40 p-8 backdrop-blur-sm">
-                    <div className="flex flex-col gap-4">
-                      <div className="h-2 w-1/3 animate-pulse rounded-full bg-white/20" />
-                      <div className="h-2 w-2/3 rounded-full bg-white/10" />
-                      <div className="h-2 w-1/2 rounded-full bg-white/10" />
-                    </div>
-                    <div className="mt-8 flex gap-2">
-                      <div className="h-8 w-8 rounded-full border border-white/20" />
-                      <div className="-ml-4 h-8 w-8 rounded-full border border-white/20 bg-black" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-        ) : null}
-      </div>
-    </section>
-  );
-}
-
-function Footer({ theme }: ThemeProps): JSX.Element {
-  return (
-    <footer className="flex flex-col items-center justify-between gap-6 border-t border-current/10 py-12 opacity-60 md:flex-row">
-      <div className="flex items-center gap-2">
-        <div className="h-4 w-4 bg-current" />
-        <span className="text-sm">Storybook Visionary Prototype</span>
-      </div>
-      <div className="flex gap-8 text-sm">
-        <button type="button" className="hover:underline">
-          Research
-        </button>
-        <button type="button" className="hover:underline">
-          Systems
-        </button>
-        <button type="button" className="hover:underline">
-          Contact
-        </button>
-      </div>
-      <div className="text-xs uppercase tracking-[0.15em]">
-        <span>{theme}</span>
-      </div>
-    </footer>
-  );
-}
-
-interface LabelProps {
-  children: ReactNode;
-  theme: ExplorerTheme;
-}
-
-function Label({ children, theme }: LabelProps): JSX.Element {
-  return <h4 className={`text-xs uppercase tracking-[0.2em] opacity-50 ${theme === THEMES.BRUTAL ? 'font-mono font-bold' : ''}`}>{children}</h4>;
-}
-
-function getThemeWrapperClasses(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'bg-[#F7F5F0] text-[#2C2825] font-serif selection:bg-[#8A3324] selection:text-white';
-    case THEMES.BRUTAL:
-      return 'bg-[#FFFDF5] text-black font-mono selection:bg-black selection:text-[#CCFF00]';
-    case THEMES.IMMERSIVE:
-      return 'bg-[#050505] text-white font-sans selection:bg-cyan-500 selection:text-black';
-    default:
-      return '';
-  }
-}
-
-function getActiveTabStyle(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'rounded-full bg-[#2C2825] font-serif italic text-[#F7F5F0]';
-    case THEMES.BRUTAL:
-      return 'bg-[#FF3366] text-white font-bold border-2 border-black shadow-[2px_2px_0px_0px_black] -translate-y-1';
-    case THEMES.IMMERSIVE:
-      return 'rounded-lg border border-white/10 bg-white/10 text-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.3)] backdrop-blur-md';
-    default:
-      return '';
-  }
-}
-
-function getCardStyle(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'border border-[#D1CDC7] bg-white shadow-sm';
-    case THEMES.BRUTAL:
-      return 'border-4 border-black bg-white shadow-[8px_8px_0px_0px_black]';
-    case THEMES.IMMERSIVE:
-      return 'rounded-3xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-lg';
-    default:
-      return '';
-  }
-}
-
-function getButtonStyle(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'bg-[#2C2825] text-[#F7F5F0] py-3 px-6 text-sm tracking-[0.2em] uppercase hover:opacity-90 transition-opacity';
-    case THEMES.BRUTAL:
-      return 'bg-[#CCFF00] text-black border-2 border-black font-bold py-3 px-6 shadow-[4px_4px_0px_0px_black] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_black] active:shadow-none transition-all';
-    case THEMES.IMMERSIVE:
-      return 'rounded-full border border-cyan-500/50 bg-cyan-500/20 px-6 py-3 font-medium text-cyan-300 transition-all hover:bg-cyan-500/30 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]';
-    default:
-      return '';
-  }
-}
-
-function getSecondaryButtonStyle(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'bg-transparent text-[#2C2825] border border-[#2C2825] py-3 px-6 text-sm tracking-[0.2em] uppercase hover:bg-[#2C2825] hover:text-[#F7F5F0] transition-colors';
-    case THEMES.BRUTAL:
-      return 'bg-white text-black border-2 border-black font-bold py-3 px-6 shadow-[4px_4px_0px_0px_black] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_black] active:shadow-none transition-all';
-    case THEMES.IMMERSIVE:
-      return 'rounded-full border border-white/10 bg-white/5 px-6 py-3 font-medium text-white transition-all hover:bg-white/10';
-    default:
-      return '';
-  }
-}
-
-function getInputStyle(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'border-b border-[#2C2825] placeholder:italic placeholder:opacity-50 focus:border-b-2';
-    case THEMES.BRUTAL:
-      return 'bg-white border-2 border-black font-mono placeholder:uppercase placeholder:text-black/40 focus:bg-[#FFF0F5]';
-    case THEMES.IMMERSIVE:
-      return 'rounded-xl border border-white/10 bg-white/5 placeholder:text-white/30 focus:border-cyan-500/50 focus:bg-white/10 transition-colors';
-    default:
-      return '';
-  }
-}
-
-function getSurfaceStyle(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'bg-[#F0EEE6] border border-[#D1CDC7] shadow-inner';
-    case THEMES.BRUTAL:
-      return 'bg-[#0000FF] border-4 border-black text-white';
-    case THEMES.IMMERSIVE:
-      return 'rounded-2xl border border-white/20 bg-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] backdrop-blur-md';
-    default:
-      return '';
-  }
-}
-
-function getLayoutContainerStyle(theme: ExplorerTheme): string {
-  switch (theme) {
-    case THEMES.MUSEUM:
-      return 'border border-[#D1CDC7] bg-[#F2F0EB]';
-    case THEMES.BRUTAL:
-      return 'pattern-grid-lg border-4 border-black bg-white';
-    case THEMES.IMMERSIVE:
-      return 'relative overflow-hidden rounded-3xl border border-white/10 bg-black';
-    default:
-      return '';
-  }
 }
 
 const meta = {
@@ -588,21 +561,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
-
-export const Museum: Story = {
-  parameters: {
-    forcedVision: 'museum',
-  },
-};
-
-export const Brutalist: Story = {
-  parameters: {
-    forcedVision: 'brutalist',
-  },
-};
-
-export const Immersive: Story = {
-  parameters: {
-    forcedVision: 'immersive',
-  },
-};

@@ -27,24 +27,3 @@ export const Default: Story = {
     </Card>
   ),
 };
-
-export const Museum: Story = {
-  ...Default,
-  parameters: {
-    forcedVision: 'museum',
-  },
-};
-
-export const Brutalist: Story = {
-  ...Default,
-  parameters: {
-    forcedVision: 'brutalist',
-  },
-};
-
-export const Immersive: Story = {
-  ...Default,
-  parameters: {
-    forcedVision: 'immersive',
-  },
-};

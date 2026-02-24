@@ -31,21 +31,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
-
-export const Museum: Story = {
-  parameters: {
-    forcedVision: 'museum',
-  },
-};
-
-export const Brutalist: Story = {
-  parameters: {
-    forcedVision: 'brutalist',
-  },
-};
-
-export const Immersive: Story = {
-  parameters: {
-    forcedVision: 'immersive',
-  },
-};

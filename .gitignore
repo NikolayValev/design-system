@@ -37,3 +37,5 @@ yarn.lock
 *.tfstate
 *.tfstate.*
 crash.log
+.storybook-dev.log
+.storybook-dev.err.log

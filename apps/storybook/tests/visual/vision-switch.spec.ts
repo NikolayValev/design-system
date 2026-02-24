@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
+import { visionThemes } from '@nikolayvalev/design-system';
 
-type VisionId = 'museum' | 'brutalist' | 'immersive';
+const coreVisions = ['museum', 'brutalist', 'immersive'] as const;
+const supportedVisions = Array.from(new Set(visionThemes.map(theme => theme.id)));
 
 interface ProbeResult {
   appliedVision: string | null;
@@ -17,9 +19,7 @@ interface ProbeResult {
   topLevelSpanCount: number;
 }
 
-const visions: VisionId[] = ['museum', 'brutalist', 'immersive'];
-
-function storyUrl(storyId: string, vision: VisionId): string {
+function storyUrl(storyId: string, vision: string): string {
   return `/iframe.html?id=${storyId}&viewMode=story&globals=vision:${vision}`;
 }
 
@@ -58,8 +58,22 @@ async function probe(page: Parameters<typeof test>[1]['page'], selector: string)
 }
 
 test.describe('vision switch consistency', () => {
+  test('all registered visions are selectable from Storybook globals', async ({ page }) => {
+    test.setTimeout(Math.max(180000, supportedVisions.length * 8000));
+
+    for (const vision of supportedVisions) {
+      await page.goto(storyUrl('design-system-button--playground', vision), { waitUntil: 'domcontentloaded' });
+      await expect
+        .poll(
+          async () => page.evaluate(() => document.documentElement.getAttribute('data-vde-vision')),
+          { timeout: 5000 }
+        )
+        .toBe(vision);
+    }
+  });
+
   test('EditorialHeader reacts to all core visions', async ({ page }) => {
-    for (const vision of visions) {
+    for (const vision of coreVisions) {
       await page.goto(storyUrl('design-system-editorialheader--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="editorial-header"]');
 
@@ -76,7 +90,7 @@ test.describe('vision switch consistency', () => {
   });
 
   test('GalleryStage material ornaments shift by vision', async ({ page }) => {
-    for (const vision of visions) {
+    for (const vision of coreVisions) {
       await page.goto(storyUrl('design-system-gallerystage--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="gallery-stage"]');
 
@@ -94,7 +108,7 @@ test.describe('vision switch consistency', () => {
   });
 
   test('MediaFrame effects map to each vision', async ({ page }) => {
-    for (const vision of visions) {
+    for (const vision of coreVisions) {
       await page.goto(storyUrl('design-system-mediaframe--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="media-frame"]');
 
@@ -111,7 +125,7 @@ test.describe('vision switch consistency', () => {
   });
 
   test('AtmosphereProvider mode auto resolves archive vs nexus', async ({ page }) => {
-    for (const vision of visions) {
+    for (const vision of coreVisions) {
       await page.goto(storyUrl('design-system-atmosphereprovider--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="atmosphere-provider"]');
 
@@ -126,7 +140,7 @@ test.describe('vision switch consistency', () => {
   });
 
   test('NavigationOrb physics differ by vision', async ({ page }) => {
-    for (const vision of visions) {
+    for (const vision of coreVisions) {
       await page.goto(storyUrl('design-system-navigationorb--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="navigation-orb"]');
 

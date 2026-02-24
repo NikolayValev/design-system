@@ -24,6 +24,23 @@ interface OrbPhysics {
   staggerMs: number;
 }
 
+const POSITION_CLASSES = new Set(['static', 'fixed', 'absolute', 'relative', 'sticky']);
+
+function hasPositionClass(className: string): boolean {
+  if (!className.trim()) {
+    return false;
+  }
+
+  return className
+    .trim()
+    .split(/\s+/)
+    .some(token => {
+      const tokenParts = token.split(':');
+      const variantToken = tokenParts[tokenParts.length - 1] ?? token;
+      return POSITION_CLASSES.has(variantToken.startsWith('!') ? variantToken.slice(1) : variantToken);
+    });
+}
+
 function resolvePhysics(visionId: string): OrbPhysics {
   if (visionId === 'museum' || visionId === 'the_archive') {
     return {
@@ -59,6 +76,8 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
     const { activeVision } = useVision();
     const [isOpen, setIsOpen] = React.useState(defaultOpen);
     const physics = resolvePhysics(activeVision.id);
+    const hasCustomPosition = hasPositionClass(className);
+    const positionClasses = hasCustomPosition ? '' : floating ? 'fixed bottom-6 right-6 z-50' : 'relative';
 
     const handleSelect = (item: NavigationOrbItem): void => {
       item.onSelect?.();
@@ -67,7 +86,7 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
     };
 
     const classes = [
-      floating ? 'fixed bottom-6 right-6 z-50' : 'relative',
+      positionClasses,
       'pointer-events-none',
       'min-h-12 min-w-12',
       className,
@@ -88,7 +107,7 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
             };
 
             const itemClasses = [
-              'pointer-events-auto',
+              isOpen ? 'pointer-events-auto' : 'pointer-events-none',
               'absolute',
               'bottom-0',
               'right-0',
@@ -113,7 +132,14 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
             if (item.href) {
               return (
                 <li key={item.id}>
-                  <a className={itemClasses} href={item.href} onClick={() => handleSelect(item)} style={itemStyle}>
+                  <a
+                    aria-hidden={!isOpen}
+                    className={itemClasses}
+                    href={item.href}
+                    onClick={() => handleSelect(item)}
+                    style={itemStyle}
+                    tabIndex={isOpen ? 0 : -1}
+                  >
                     {item.label}
                   </a>
                 </li>
@@ -122,7 +148,14 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
 
             return (
               <li key={item.id}>
-                <button className={itemClasses} onClick={() => handleSelect(item)} style={itemStyle} type="button">
+                <button
+                  aria-hidden={!isOpen}
+                  className={itemClasses}
+                  onClick={() => handleSelect(item)}
+                  style={itemStyle}
+                  tabIndex={isOpen ? 0 : -1}
+                  type="button"
+                >
                   {item.label}
                 </button>
               </li>

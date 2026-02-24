@@ -30,13 +30,13 @@ export const synthwaveTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1.01', display: '1.2' },
-      lineHeight: { tight: '1.1', normal: '1.44', relaxed: '1.7' },
+      lineHeight: { tight: '1.18', normal: '1.5', relaxed: '1.7' },
       fontStack: {
         body: '"Space Grotesk", "Avenir Next", sans-serif',
-        display: '"Monoton", "Impact", sans-serif',
+        display: '"Space Grotesk", "Avenir Next", sans-serif',
         mono: '"Fira Code", "Consolas", monospace',
       },
-      letterSpacing: { tight: '-0.01em', normal: '0.005em', wide: '0.05em' },
+      letterSpacing: { tight: '0.03em', normal: '0.016em', wide: '0.065em' },
     },
     surfacePhysics: {
       transparency: '0.84',
@@ -67,4 +67,3 @@ export const synthwaveTheme: VisionTheme = {
     texture: true,
   },
 };
-
