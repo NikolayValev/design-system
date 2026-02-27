@@ -74,6 +74,17 @@ Use the design-system CLI to scaffold source folders and MCP config in a consumi
 npx @nikolayvalev/design-system@latest init
 ```
 
+The CLI now supports an arrow-key selector (`themes`, `components`, `pages`) in TTY terminals.
+When `themes` is selected, it also opens a style picker with color swatches and vibe descriptions (`public`, `dashboard`, `experimental`).
+It also supports compile-time vision system assignment per profile (`legacy`, `expanded`, `all`).
+You can also run non-interactive:
+
+```bash
+npx @nikolayvalev/design-system@latest init --modules themes,components
+# optional compile-time vision mapping
+# --vision-system expanded --vision-map public=swiss_international,dashboard=raw_data,experimental=y2k_chrome
+```
+
 By default it links your MCP client config to:
 
 ```txt

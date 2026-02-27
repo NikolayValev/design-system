@@ -1,5 +1,12 @@
 # @apps/strata
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [8a6c3aa]
+  - @nikolayvalev/design-system@1.2.0
+
 ## 0.1.2
 
 ### Patch Changes

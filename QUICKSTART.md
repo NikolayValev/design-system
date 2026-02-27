@@ -14,6 +14,16 @@ Get `@nikolayvalev/design-tokens` working in a Next.js App Router project in 5 m
 npx @nikolayvalev/design-system@latest init
 ```
 
+In interactive terminals, the CLI shows an arrow-key selector for modules (`themes`, `components`, `pages`).
+If `themes` is selected, it also shows a color/vibe profile picker (`public`, `dashboard`, `experimental`).
+It also supports compile-time vision mapping per profile via `--vision-system` and `--vision-map`.
+For CI/non-interactive usage:
+
+```bash
+npx @nikolayvalev/design-system@latest init --modules themes,components
+# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=raw_data,experimental=y2k_chrome
+```
+
 This creates:
 
 - `src/design-system` folders for installable source files

@@ -14,6 +14,16 @@ Optional scaffold (recommended in new repos):
 npx @nikolayvalev/design-system@latest init
 ```
 
+In interactive terminals, the CLI shows an arrow-key module selector (`themes`, `components`, `pages`).
+If `themes` is selected, it shows a style picker with color swatches and vibe descriptions.
+It can also set compile-time vision assignments with `--vision-system` and profile-specific overrides.
+For non-interactive runs:
+
+```bash
+npx @nikolayvalev/design-system@latest init --modules themes,components
+# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=raw_data,experimental=y2k_chrome
+```
+
 This command scaffolds `src/design-system`, creates MCP config files, and links to
 `https://designsystem.nikolayvalev.com/mcp` by default.
 

@@ -1,22 +1,25 @@
 import type { ThemeProfile } from './types';
 import { baseTokens } from './base';
+import { BUILT_IN_PROFILE_NAMES } from './profile-names';
+
+const [PUBLIC_PROFILE_NAME, DASHBOARD_PROFILE_NAME, EXPERIMENTAL_PROFILE_NAME] = BUILT_IN_PROFILE_NAMES;
 
 /**
  * Public profile - for marketing sites and public-facing applications
  * Vibrant, approachable, polished (light mode)
  */
-export const publicProfile: ThemeProfile = {
-  name: 'public',
+export const publicProfile = {
+  name: PUBLIC_PROFILE_NAME,
   tokens: baseTokens,
   density: 'comfortable',
-};
+} satisfies ThemeProfile;
 
 /**
  * Dashboard profile - for internal tools and data-heavy interfaces
  * Dark mode with high information density
  */
-export const dashboardProfile: ThemeProfile = {
-  name: 'dashboard',
+export const dashboardProfile = {
+  name: DASHBOARD_PROFILE_NAME,
   tokens: {
     ...baseTokens,
     colors: {
@@ -66,14 +69,14 @@ export const dashboardProfile: ThemeProfile = {
     radius: baseTokens.radius,
   },
   density: 'compact',
-};
+} satisfies ThemeProfile;
 
 /**
  * Experimental profile - for prototypes and creative projects
  * Bold, unconventional, high contrast
  */
-export const experimentalProfile: ThemeProfile = {
-  name: 'experimental',
+export const experimentalProfile = {
+  name: EXPERIMENTAL_PROFILE_NAME,
   tokens: {
     ...baseTokens,
     colors: {
@@ -120,4 +123,4 @@ export const experimentalProfile: ThemeProfile = {
     },
   },
   density: 'comfortable',
-};
+} satisfies ThemeProfile;
