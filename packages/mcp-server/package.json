@@ -1,19 +1,40 @@
 {
-  "name": "@repo/mcp-server",
-  "version": "0.0.1",
-  "private": true,
+  "name": "@nikolayvalev/design-system-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for the Nikolay Valev design system — lets AI agents browse, fetch, and install components, sections, pages, tokens, and themes.",
   "type": "module",
   "bin": {
     "design-system-mcp": "dist/index.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "dev": "tsx src/index.ts --transport stdio",
     "dev:http": "tsx src/index.ts --transport http",
     "build": "tsup",
     "start": "node dist/index.js --transport stdio",
     "start:http": "node dist/index.js --transport http"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "design-system",
+    "react",
+    "components",
+    "ai-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikolayvalev/design-system",
+    "directory": "packages/mcp-server"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.0",

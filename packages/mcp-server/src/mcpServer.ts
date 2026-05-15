@@ -20,6 +20,15 @@ import {
   type ComponentSummary,
 } from './tools/designSystemTools.js';
 import { getContributionGuide, getContributionGuideMarkdown } from './tools/contributionGuideTool.js';
+import {
+  listThemes,
+  getTheme,
+  TOKEN_PROFILES,
+  getTokenProfileSource,
+  getBaseTokenSource,
+  type ThemeSummary,
+  type TokenProfileSummary,
+} from './tools/tokenThemeTools.js';
 
 export const SERVER_NAME = 'design-system-service';
 export const SERVER_VERSION = '0.4.0';
@@ -424,6 +433,94 @@ export function createMcpServer() {
     },
   );
 
+  // ── Token & theme tools ────────────────────────────────────────────────────
+
+  server.registerTool(
+    'list_themes',
+    {
+      title: 'List VDE Themes',
+      description:
+        'List all 20 Visionary Design Engine (VDE) themes with id, name, archetype, and description. Use this to browse available visual styles before calling get_theme for full token details.',
+      inputSchema: {},
+    },
+    async () => {
+      const themes = await listThemes();
+      const result = { count: themes.length, themes };
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+        structuredContent: result,
+      };
+    },
+  );
+
+  server.registerTool(
+    'get_theme',
+    {
+      title: 'Get VDE Theme',
+      description:
+        'Get the full source definition of a specific VDE theme by id (e.g. "aurora", "museum", "synthwave"). Includes colors, typography, surface physics, motion, and ornament settings.',
+      inputSchema: {
+        id: z.string().min(1).describe('Theme id (e.g. "aurora", "brutalist", "zen").'),
+      },
+    },
+    async ({ id }) => {
+      const theme = await getTheme(id);
+      if (!theme) {
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Theme "${id}" was not found. Call list_themes to see available ids.` }],
+        };
+      }
+      return {
+        content: [{ type: 'text', text: theme.source }],
+        structuredContent: theme,
+      };
+    },
+  );
+
+  server.registerTool(
+    'list_token_profiles',
+    {
+      title: 'List Token Profiles',
+      description:
+        'List the three built-in design-token profiles (public, dashboard, experimental) with their density and purpose. Use this to choose the right CSS import and Tailwind preset for a consuming project.',
+      inputSchema: {},
+    },
+    async () => {
+      const result = { count: TOKEN_PROFILES.length, profiles: TOKEN_PROFILES };
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+        structuredContent: result,
+      };
+    },
+  );
+
+  server.registerTool(
+    'get_token_profile_source',
+    {
+      title: 'Get Token Profile Source',
+      description:
+        'Read the full TypeScript source of all token profiles (public, dashboard, experimental) including every OKLCH color, spacing scale, radius, and typography value.',
+      inputSchema: {},
+    },
+    async () => {
+      const [profileSource, baseSource] = await Promise.all([getTokenProfileSource(), getBaseTokenSource()]);
+      if (!profileSource) {
+        return {
+          isError: true,
+          content: [{ type: 'text', text: 'Token profile source could not be read.' }],
+        };
+      }
+      const combined = baseSource ? `// base.ts\n${baseSource}\n\n// profiles.ts\n${profileSource}` : profileSource;
+      return {
+        content: [{ type: 'text', text: combined }],
+        structuredContent: { profileSource, baseSource: baseSource ?? null },
+      };
+    },
+  );
+
+  // ── Contribution guide ─────────────────────────────────────────────────────
+
   server.registerTool(
     'get_contribution_guide',
     {
@@ -528,6 +625,51 @@ export function createMcpServer() {
             uri: 'design-system://contribution-guide',
             mimeType: 'text/markdown',
             text: markdown,
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerResource(
+    'theme_index',
+    'design-system://themes',
+    {
+      title: 'VDE Theme Index',
+      description: 'List of all 20 Visionary Design Engine themes with id, name, archetype, and description.',
+      mimeType: 'application/json',
+    },
+    async () => {
+      const themes = await listThemes();
+      const result = { count: themes.length, themes };
+      return {
+        contents: [
+          {
+            uri: 'design-system://themes',
+            mimeType: 'application/json',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerResource(
+    'token_profiles',
+    'design-system://token-profiles',
+    {
+      title: 'Token Profiles',
+      description: 'The three built-in design-token profiles: public, dashboard, experimental.',
+      mimeType: 'application/json',
+    },
+    async () => {
+      const result = { count: TOKEN_PROFILES.length, profiles: TOKEN_PROFILES };
+      return {
+        contents: [
+          {
+            uri: 'design-system://token-profiles',
+            mimeType: 'application/json',
+            text: JSON.stringify(result, null, 2),
           },
         ],
       };

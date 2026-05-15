@@ -36,8 +36,10 @@
     "validate:linked-manifests": "node scripts/ci/validate-linked-repo-manifests.mjs",
     "validate:linked-manifests:strict": "node scripts/ci/validate-linked-repo-manifests.mjs --strict",
     "changeset": "changeset",
+    "version": "changeset version",
     "version-packages": "changeset version",
     "release": "turbo run build --filter=@nikolayvalev/* && changeset publish",
+    "release:mcp": "turbo run build --filter=@nikolayvalev/design-system-mcp && changeset publish",
     "clean": "turbo run clean && rimraf node_modules"
   },
   "devDependencies": {
