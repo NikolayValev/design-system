@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -73,12 +75,15 @@ jobs:
             exit 1
           fi
 
+      - name: Build packages
+        run: pnpm turbo run build --filter=@nikolayvalev/*
+
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm run version
-          publish: pnpm run release
+          publish: pnpm changeset publish
           title: 'chore: version packages'
           commit: 'chore: version packages'
         env:
