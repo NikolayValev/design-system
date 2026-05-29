@@ -1,6 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": ".",
+  "env": {
+    "DESIGN_SYSTEM_SRC_DIR": "design-system-src",
+    "DESIGN_SYSTEM_CONTRIBUTION_GUIDE_PATH": "CONTRIBUTION_GUIDE.md"
+  },
   "redirects": [
     {
       "source": "/storybook",

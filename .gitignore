@@ -3,6 +3,10 @@ node_modules
 
 # Build outputs
 dist
+
+# CI-generated source bundles (written by monorepo-deploy before Vercel build)
+packages/mcp-server/design-system-src/
+packages/mcp-server/CONTRIBUTION_GUIDE.md
 .next
 out
 playwright-report

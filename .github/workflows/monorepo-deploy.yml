@@ -68,6 +68,18 @@ jobs:
         if: steps.check.outputs.exists == 'true'
         run: pnpm turbo run build --filter=./${{ matrix.app.path }}
 
+      - name: Bundle design-system sources into MCP server
+        if: steps.check.outputs.exists == 'true' && matrix.app.id == 'design-system-mcp'
+        run: |
+          mkdir -p packages/mcp-server/design-system-src/tokens
+          cp -r packages/design-system/src/vde-themes  packages/mcp-server/design-system-src/
+          cp -r packages/design-system/src/components  packages/mcp-server/design-system-src/
+          cp -r packages/design-system/src/sections    packages/mcp-server/design-system-src/
+          cp -r packages/design-system/src/pages       packages/mcp-server/design-system-src/
+          cp packages/design-system/src/tokens/profiles.ts packages/mcp-server/design-system-src/tokens/
+          cp packages/design-system/src/tokens/base.ts     packages/mcp-server/design-system-src/tokens/
+          cp packages/design-system/CONTRIBUTION_GUIDE.md  packages/mcp-server/CONTRIBUTION_GUIDE.md
+
       - name: Check deployment secrets
         if: steps.check.outputs.exists == 'true'
         id: deploy_guard

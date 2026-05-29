@@ -1,6 +1,39 @@
-# Design System Library
+# Design System
 
-Configurable design system for Vercel projects. Provides a strong visual baseline with per-project adaptability through design tokens, theme profiles, and composition.
+Production-grade design system and component library by [Nikolay Valev](https://github.com/NikolayValev) — built with OKLCH tokens, 20 VDE visual themes, composable React components, and a hosted MCP server so AI agents can browse and install components directly.
+
+## Packages
+
+| Package | npm | Description |
+| --- | --- | --- |
+| `@nikolayvalev/design-system` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system)](https://www.npmjs.com/package/@nikolayvalev/design-system) | React components, VDE themes, Tailwind preset, CLI |
+| `@nikolayvalev/design-tokens` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-tokens)](https://www.npmjs.com/package/@nikolayvalev/design-tokens) | Tokens only — OKLCH colors, spacing, CSS profiles |
+| `@nikolayvalev/design-system-mcp` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system-mcp)](https://www.npmjs.com/package/@nikolayvalev/design-system-mcp) | MCP server for AI agents |
+
+## MCP Server (AI-native tooling)
+
+AI agents (Claude, Cursor, Windsurf) can browse components, fetch source, and install them directly.
+
+**Hosted endpoint:** `https://mcp-server-umber-six.vercel.app/mcp`
+
+Add to your MCP client config:
+
+```json
+{
+  "mcpServers": {
+    "design-system": {
+      "url": "https://mcp-server-umber-six.vercel.app/mcp"
+    }
+  }
+}
+```
+
+Or run locally via stdio:
+
+```bash
+DESIGN_SYSTEM_SRC_DIR=/path/to/packages/design-system/src \
+  npx @nikolayvalev/design-system-mcp --transport stdio
+```
 
 ## Consumption Model
 
