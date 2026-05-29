@@ -36,6 +36,9 @@ yarn.lock
 *.swp
 *.swo
 
+# Claude Code
+.claude/
+
 # Terraform
 .terraform
 *.tfstate
