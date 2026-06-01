@@ -33,7 +33,7 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
       </p>
     </section>
 
-    <section class="panel" style="margin-top:16px">
+    <section class="panel" style="margin-top:10px">
       <h2 style="margin-top:0">Where do you want to go?</h2>
       <div class="grid">
         <article class="card">
@@ -55,7 +55,7 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
       </div>
     </section>
 
-    <section class="panel" style="margin-top:16px">
+    <section class="panel" style="margin-top:10px">
       <h2 style="margin-top:0">Machine endpoints</h2>
       <div class="endpoints">
         <span class="endpoint">MCP &nbsp;&nbsp;&nbsp;https://designsystem.nikolayvalev.com/mcp</span>

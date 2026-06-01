@@ -195,7 +195,7 @@ export function renderSitePage({
       .main {
         flex: 1;
         min-width: 0;
-        padding: 32px 36px 48px;
+        padding: 20px 24px 36px;
         max-width: 860px;
       }
 
@@ -203,13 +203,13 @@ export function renderSitePage({
       .panel {
         background: linear-gradient(180deg, var(--panel), var(--panel-alt));
         border: 1px solid var(--line);
-        border-radius: 18px;
-        padding: 24px;
+        border-radius: 14px;
+        padding: 16px 20px;
       }
 
       .hero-title {
-        margin: 0 0 10px;
-        font-size: clamp(26px, 3.5vw, 40px);
+        margin: 0 0 8px;
+        font-size: clamp(22px, 3vw, 34px);
         line-height: 1.15;
       }
 
@@ -217,33 +217,34 @@ export function renderSitePage({
         margin: 0;
         color: var(--muted);
         max-width: 76ch;
-        line-height: 1.6;
+        line-height: 1.55;
+        font-size: 14px;
       }
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
       }
 
       .card {
         border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 16px;
+        border-radius: 10px;
+        padding: 12px 14px;
         background: rgba(9,15,29,0.45);
       }
 
-      .card h3 { margin: 0 0 8px; font-size: 15px; }
-      .card p { margin: 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+      .card h3 { margin: 0 0 5px; font-size: 14px; }
+      .card p { margin: 0; color: var(--muted); line-height: 1.45; font-size: 13px; }
 
       .pill {
         display: inline-block;
         border-radius: 999px;
         border: 1px solid #34527f;
         color: #9fc2ff;
-        padding: 4px 10px;
-        font-size: 12px;
-        margin: 0 8px 8px 0;
+        padding: 3px 8px;
+        font-size: 11px;
+        margin: 0 6px 6px 0;
       }
 
       pre, code {
@@ -275,24 +276,24 @@ export function renderSitePage({
         padding: 0;
       }
 
-      h2 { font-size: 18px; margin: 0 0 10px; }
-      h3 { font-size: 15px; margin: 20px 0 6px; color: var(--text); }
+      h2 { font-size: 16px; margin: 0 0 8px; }
+      h3 { font-size: 14px; margin: 14px 0 5px; color: var(--text); }
 
       .step {
         display: flex;
-        gap: 14px;
-        margin-bottom: 20px;
+        gap: 12px;
+        margin-bottom: 14px;
       }
 
       .step-num {
         flex-shrink: 0;
-        width: 26px;
-        height: 26px;
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
         background: rgba(93,228,199,0.12);
         border: 1px solid var(--brand);
         color: var(--brand);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         display: flex;
         align-items: center;
@@ -301,24 +302,24 @@ export function renderSitePage({
       }
 
       .step-body { flex: 1; }
-      .step-body p { margin: 4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
-      .step-title { font-weight: 600; font-size: 14px; }
+      .step-body p { margin: 3px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+      .step-title { font-weight: 600; font-size: 13px; }
 
       .endpoints {
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        margin-top: 8px;
+        gap: 5px;
+        margin-top: 6px;
       }
 
       .endpoint {
         font-family: ui-monospace, "Cascadia Code", monospace;
-        font-size: 12px;
+        font-size: 11px;
         color: #7aafcc;
         background: #0a1628;
         border: 1px solid var(--line);
-        border-radius: 6px;
-        padding: 6px 12px;
+        border-radius: 5px;
+        padding: 5px 10px;
       }
 
       /* ── Mobile ── */
