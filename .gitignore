@@ -39,6 +39,9 @@ yarn.lock
 # Claude Code
 .claude/
 
+# Visual brainstorming sessions
+.superpowers/
+
 # Terraform
 .terraform
 *.tfstate
