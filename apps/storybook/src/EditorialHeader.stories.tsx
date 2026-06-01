@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { EditorialHeader } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/EditorialHeader',
+  title: 'Primitives/EditorialHeader',
   component: EditorialHeader,
   tags: ['autodocs'],
+  parameters: {
+    docs: { description: { component: 'Vision-aware display heading with massive size variant and optional vertical writing mode. Font stack switches with the active VDE theme.' } },
+  },
   args: {
     as: 'h1',
     children: 'Designing Atmospheres, Not Interfaces',

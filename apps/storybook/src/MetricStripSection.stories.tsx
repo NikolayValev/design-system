@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MetricStripSection } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/Sections/MetricStripSection',
+  title: 'Sections/MetricStripSection',
   component: MetricStripSection,
   tags: ['autodocs', 'skip-visual'],
+  parameters: {
+    docs: { description: { component: 'KPI metric strip designed for launch and product pages. Accepts label/value pairs and adapts to the active vision typography.' } },
+  },
   args: {
     sectionEyebrow: 'Signal',
     sectionTitle: 'Impact metrics',

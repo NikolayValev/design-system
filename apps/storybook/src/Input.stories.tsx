@@ -3,12 +3,13 @@ import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@nikola
 import { Search, Mail, Lock, AtSign, AlertCircle } from 'lucide-react';
 
 const meta = {
-  title: 'Design System/Input',
+  title: 'Primitives/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: {
     storyCaption:
       'Form primitive — surface, border, focus ring, and motion all derive from the active vision.',
+    docs: { description: { component: 'Form input primitive. Surface, border, focus ring, and motion curves all derive from the active VDE theme.' } },
   },
   args: {
     placeholder: 'Type here...',

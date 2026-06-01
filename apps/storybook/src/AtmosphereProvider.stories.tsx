@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AtmosphereProvider } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/AtmosphereProvider',
+  title: 'Primitives/AtmosphereProvider',
   component: AtmosphereProvider,
   tags: ['autodocs'],
+  parameters: {
+    docs: { description: { component: 'Global background utility. Renders archive (grain/noise) or nexus (mesh) atmospheric effects behind all page content.' } },
+  },
   args: {
     fixedBackground: false,
     intensity: 'normal',

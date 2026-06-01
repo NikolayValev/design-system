@@ -3,12 +3,13 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from '@nikolayvalev/
 import { ArrowUpRight, TrendingUp, Image as ImageIcon, MapPin } from 'lucide-react';
 
 const meta = {
-  title: 'Design System/Card',
+  title: 'Primitives/Card',
   component: Card,
   tags: ['autodocs'],
   parameters: {
     storyCaption:
       'Surface primitive — token-driven background, border, and shadow inherit from the active vision. Compose with CardHeader, CardTitle, CardContent.',
+    docs: { description: { component: 'Surface container with semantic sub-components (CardHeader, CardTitle, CardContent). Background, border, and shadow inherit from the active vision.' } },
   },
   args: {
     children: null,

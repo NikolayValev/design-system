@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FeatureGridSection } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/Sections/FeatureGridSection',
+  title: 'Sections/FeatureGridSection',
   component: FeatureGridSection,
   tags: ['autodocs', 'skip-visual'],
+  parameters: {
+    docs: { description: { component: 'Three-column feature grid section with eyebrow, title, description, and item list. Installs as source via MCP get_component_bundle.' } },
+  },
   args: {
     sectionEyebrow: 'Capabilities',
     sectionTitle: 'Section-based architecture',

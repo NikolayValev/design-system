@@ -2,11 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ProductShowcasePage } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/Pages/ProductShowcasePage',
+  title: 'Pages/ProductShowcasePage',
   component: ProductShowcasePage,
   tags: ['autodocs', 'skip-visual'],
   parameters: {
     vdeFrame: 'edge',
+    docs: { description: { component: 'Product showcase page template with media frame, feature list, and CTA section. All layout and color respond to the active VDE theme.' } },
   },
   args: {
     heading: 'Product showcase template',

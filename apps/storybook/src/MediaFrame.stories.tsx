@@ -6,9 +6,12 @@ const sampleImage = `data:image/svg+xml;utf8,${encodeURIComponent(
 )}`;
 
 const meta = {
-  title: 'Design System/MediaFrame',
+  title: 'Primitives/MediaFrame',
   component: MediaFrame,
   tags: ['autodocs'],
+  parameters: {
+    docs: { description: { component: 'Vision-aware image and video wrapper with atmospheric overlay effects. Aspect ratio and frame style adapt to the active theme.' } },
+  },
   args: {
     alt: 'Atmospheric media sample',
     kind: 'image',

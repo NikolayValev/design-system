@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { HeroSection } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/Sections/HeroSection',
+  title: 'Sections/HeroSection',
   component: HeroSection,
   tags: ['autodocs', 'skip-visual'],
+  parameters: {
+    docs: { description: { component: 'Composable hero section. Accepts heading, subtitle, and action buttons. All colors and typography derive from the active VDE theme.' } },
+  },
   args: {
     heading: 'Ship your design language fast',
     subtitle: 'Composable hero section with token-driven primitives and no hardcoded colors.',

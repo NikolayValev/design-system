@@ -325,6 +325,49 @@ function OverviewContent(): JSX.Element {
         ))}
       </section>
 
+      <section className="grid gap-6 lg:grid-cols-2">
+        <article
+          className="rounded-[14px] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4"
+        >
+          <p className="text-[10px] uppercase tracking-[0.28em] opacity-55">04 · Navigation Guide</p>
+          <h3
+            className="text-xl"
+            style={{ fontFamily: 'var(--vde-font-display)', letterSpacing: 'var(--vde-letter-spacing-tight)' }}
+          >
+            What's in the sidebar
+          </h3>
+          <ul className="space-y-2 text-sm leading-relaxed opacity-80 list-none p-0 m-0">
+            <li><strong>Introduction</strong> — you are here. Theme switcher and system overview.</li>
+            <li><strong>Primitives</strong> — Button, Card, Input, Layout, EditorialHeader, NavigationOrb, MediaFrame, GalleryStage, AtmosphereProvider.</li>
+            <li><strong>Sections</strong> — HeroSection, FeatureGridSection, MetricStripSection. Compose into pages.</li>
+            <li><strong>Pages</strong> — MarketingLandingPage, ProductShowcasePage. Full page templates.</li>
+            <li><strong>VDE</strong> — VisionaryExplorer. Deep dive into all 20 themes.</li>
+          </ul>
+        </article>
+
+        <article
+          className="rounded-[14px] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4"
+        >
+          <p className="text-[10px] uppercase tracking-[0.28em] opacity-55">05 · Install via MCP</p>
+          <h3
+            className="text-xl"
+            style={{ fontFamily: 'var(--vde-font-display)', letterSpacing: 'var(--vde-letter-spacing-tight)' }}
+          >
+            Components install as source
+          </h3>
+          <p className="text-sm leading-relaxed opacity-80">
+            Components are not imported from npm — they're installed as source files into your repo via MCP, then committed.
+            Wire your AI client to the MCP server and ask it to install any component you see here.
+          </p>
+          <code
+            className="block rounded-[8px] border [border-color:var(--vde-color-border)] [background:var(--vde-color-background)] p-3 text-[11px] leading-relaxed opacity-90"
+            style={{ fontFamily: 'var(--vde-font-mono, monospace)' }}
+          >
+            {`{ "mcpServers": { "design-system": { "url": "https://designsystem.nikolayvalev.com/mcp" } } }`}
+          </code>
+        </article>
+      </section>
+
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t pt-6 [border-color:var(--vde-color-border)] text-[11px] uppercase tracking-[0.22em] opacity-60">
         <span>Visionary Design Engine</span>
         <span>Sidebar ←  Visions, components, sections, pages</span>
@@ -334,7 +377,7 @@ function OverviewContent(): JSX.Element {
 }
 
 const meta = {
-  title: 'Overview',
+  title: 'Introduction/Overview',
   component: OverviewContent,
   tags: ['autodocs'],
   parameters: {

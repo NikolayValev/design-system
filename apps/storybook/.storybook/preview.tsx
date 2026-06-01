@@ -110,12 +110,16 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          'Overview',
-          ['Welcome'],
-          'Visionary',
-          ['Explorer'],
-          'Design System',
-          ['Button', 'Input', 'Card', 'Layout', 'EditorialHeader', 'NavigationOrb', 'MediaFrame', 'GalleryStage', 'AtmosphereProvider', 'Sections', 'Pages'],
+          'Introduction',
+          ['Overview'],
+          'Primitives',
+          ['Button', 'Input', 'Card', 'Layout', 'EditorialHeader', 'NavigationOrb', 'MediaFrame', 'GalleryStage', 'AtmosphereProvider'],
+          'Sections',
+          ['HeroSection', 'FeatureGridSection', 'MetricStripSection'],
+          'Pages',
+          ['MarketingLandingPage', 'ProductShowcasePage'],
+          'VDE',
+          ['VisionaryExplorer'],
         ],
       },
     },

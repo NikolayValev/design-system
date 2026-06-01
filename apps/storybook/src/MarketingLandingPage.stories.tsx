@@ -2,11 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MarketingLandingPage } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/Pages/MarketingLandingPage',
+  title: 'Pages/MarketingLandingPage',
   component: MarketingLandingPage,
   tags: ['autodocs', 'skip-visual'],
   parameters: {
     vdeFrame: 'edge',
+    docs: { description: { component: 'Full marketing landing page template composed from HeroSection, FeatureGridSection, and MetricStripSection. Install as source via MCP.' } },
   },
   args: {
     heading: 'All 10 design styles, one installable system',

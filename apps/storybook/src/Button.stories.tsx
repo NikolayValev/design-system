@@ -3,12 +3,13 @@ import { Button } from '@nikolayvalev/design-system';
 import { ArrowUpRight, Sparkles, Trash2, Loader2, Check } from 'lucide-react';
 
 const meta = {
-  title: 'Design System/Button',
+  title: 'Primitives/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: {
     storyCaption:
       'Token-driven primitive. Hover, focus, and shadow physics shift across visions — switch the toolbar to feel each archetype.',
+    docs: { description: { component: 'Token-driven action primitive with five variants (default, secondary, destructive, outline, ghost) and three sizes. All visual properties derive from the active VDE theme.' } },
   },
   args: {
     children: 'Action',

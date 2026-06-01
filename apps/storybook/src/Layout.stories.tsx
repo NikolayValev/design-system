@@ -2,9 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button, Card, CardContent, CardHeader, CardTitle, Layout } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/Layout',
+  title: 'Primitives/Layout',
   component: Layout,
   tags: ['autodocs'],
+  parameters: {
+    storyCaption: 'Token-driven section shell. Provides consistent max-width, padding, and heading slot across all layout contexts.',
+    docs: { description: { component: 'Shared scaffold for building reusable sections. Accepts a heading prop and children.' } },
+  },
   args: {
     children: undefined,
     heading: 'Visionary Workspace',

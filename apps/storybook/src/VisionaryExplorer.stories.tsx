@@ -549,11 +549,12 @@ function VisionaryExplorer(): JSX.Element {
 }
 
 const meta = {
-  title: 'Visionary/Explorer',
+  title: 'VDE/VisionaryExplorer',
   component: VisionaryExplorer,
   tags: ['autodocs'],
   parameters: {
     vdeFrame: 'edge',
+    docs: { description: { component: 'Interactive guide to all 20 VDE themes. Each theme shows its personality, typography stack, color palette, use cases, and a live component preview.' } },
   },
 } satisfies Meta<typeof VisionaryExplorer>;
 

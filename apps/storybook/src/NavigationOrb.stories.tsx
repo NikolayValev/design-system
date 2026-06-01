@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { NavigationOrb } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Design System/NavigationOrb',
+  title: 'Primitives/NavigationOrb',
   component: NavigationOrb,
   tags: ['autodocs'],
+  parameters: {
+    docs: { description: { component: 'Floating navigation component with vision-specific motion physics. Supports both inline and floating (fixed) positioning modes.' } },
+  },
   args: {
     defaultOpen: true,
     floating: false,
