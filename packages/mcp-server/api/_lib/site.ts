@@ -6,18 +6,18 @@ const NAV_LINKS = [
   { href: '/recruiters', label: 'Recruiters' },
   { href: '/catalog', label: 'Catalog' },
   { href: '/docs', label: 'Docs' },
-  { href: '/storybook', label: 'Storybook' },
+];
+
+const TOOL_LINKS = [
+  { href: '/storybook', label: 'Storybook ↗', external: true },
+  { href: '/mcp', label: '/mcp', external: false },
 ];
 
 export function wantsHtml(req: IncomingMessage): boolean {
   const accept = String(req.headers.accept ?? '').toLowerCase();
   const url = new URL(req.url ?? '/', 'http://localhost');
   const format = url.searchParams.get('format');
-
-  if (format === 'json') {
-    return false;
-  }
-
+  if (format === 'json') return false;
   return accept.includes('text/html') || accept.includes('application/xhtml+xml');
 }
 
@@ -42,11 +42,27 @@ export function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;');
 }
 
-function renderNav(pathname: string): string {
-  return NAV_LINKS.map(link => {
+function renderSidebar(pathname: string): string {
+  const navItems = NAV_LINKS.map(link => {
     const isActive = pathname === link.href;
-    return `<a class="nav-link${isActive ? ' active' : ''}" href="${link.href}">${link.label}</a>`;
+    return `<a class="sidebar-link${isActive ? ' active' : ''}" href="${link.href}">${link.label}</a>`;
   }).join('');
+
+  const toolItems = TOOL_LINKS.map(link => {
+    const attrs = link.external ? ' target="_blank" rel="noreferrer"' : '';
+    return `<a class="sidebar-link tool"${attrs} href="${link.href}">${link.label}</a>`;
+  }).join('');
+
+  return `
+    <aside class="sidebar">
+      <a class="sidebar-logo" href="/"><span>NV</span><span class="logo-slash">/</span><span>DS</span></a>
+      <nav class="sidebar-nav">
+        <p class="sidebar-section">Navigate</p>
+        ${navItems}
+        <p class="sidebar-section" style="margin-top:20px">Tools</p>
+        ${toolItems}
+      </nav>
+    </aside>`;
 }
 
 export function renderSitePage({
@@ -80,52 +96,110 @@ export function renderSitePage({
         --brand: #5de4c7;
         --brand-2: #ffb76f;
         --line: #1f3558;
+        --sidebar-w: 200px;
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
         font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
         background: radial-gradient(circle at 8% 6%, #1a2f4f, var(--bg) 44%) fixed;
         color: var(--text);
+        min-height: 100vh;
       }
 
-      a {
-        color: var(--brand);
-      }
+      a { color: var(--brand); }
 
+      /* ── Shell ── */
       .shell {
-        max-width: 1080px;
-        margin: 0 auto;
-        padding: 24px 20px 40px;
-      }
-
-      .topbar {
         display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 24px;
+        min-height: 100vh;
       }
 
-      .nav-link {
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 7px 13px;
-        text-decoration: none;
-        color: var(--muted);
+      /* ── Sidebar ── */
+      .sidebar {
+        width: var(--sidebar-w);
+        flex-shrink: 0;
+        background: rgba(9,15,28,0.72);
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0 32px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar-logo {
+        display: block;
+        padding: 0 20px 20px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 16px;
         font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--text);
       }
 
-      .nav-link.active {
-        color: #071217;
-        background: linear-gradient(100deg, var(--brand), #7ef4dc);
-        border-color: transparent;
-        font-weight: 700;
+      .logo-slash { color: var(--brand); }
+
+      .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        padding: 0 12px;
       }
 
+      .sidebar-section {
+        margin: 0 0 4px;
+        padding: 0 8px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #3a5a7a;
+      }
+
+      .sidebar-link {
+        display: block;
+        padding: 7px 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        color: var(--muted);
+        text-decoration: none;
+        margin-bottom: 2px;
+        border-left: 2px solid transparent;
+        transition: color 0.15s, background 0.15s;
+      }
+
+      .sidebar-link:hover {
+        color: var(--text);
+        background: rgba(255,255,255,0.05);
+      }
+
+      .sidebar-link.active {
+        color: var(--text);
+        background: rgba(93,228,199,0.08);
+        border-left-color: var(--brand);
+        font-weight: 600;
+      }
+
+      .sidebar-link.tool {
+        color: #5a8aaa;
+        font-size: 12px;
+      }
+
+      /* ── Main ── */
+      .main {
+        flex: 1;
+        min-width: 0;
+        padding: 32px 36px 48px;
+        max-width: 860px;
+      }
+
+      /* ── Content primitives ── */
       .panel {
         background: linear-gradient(180deg, var(--panel), var(--panel-alt));
         border: 1px solid var(--line);
@@ -135,38 +209,32 @@ export function renderSitePage({
 
       .hero-title {
         margin: 0 0 10px;
-        font-size: clamp(28px, 4vw, 44px);
+        font-size: clamp(26px, 3.5vw, 40px);
+        line-height: 1.15;
       }
 
       .hero-subtitle {
         margin: 0;
         color: var(--muted);
         max-width: 76ch;
-        line-height: 1.5;
+        line-height: 1.6;
       }
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 12px;
       }
 
       .card {
         border: 1px solid var(--line);
         border-radius: 14px;
-        padding: 14px;
-        background: rgba(9, 15, 29, 0.45);
+        padding: 16px;
+        background: rgba(9,15,29,0.45);
       }
 
-      .card h3 {
-        margin: 0 0 8px;
-      }
-
-      .card p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.45;
-      }
+      .card h3 { margin: 0 0 8px; font-size: 15px; }
+      .card p { margin: 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
 
       .pill {
         display: inline-block;
@@ -178,25 +246,114 @@ export function renderSitePage({
         margin: 0 8px 8px 0;
       }
 
-      code {
+      pre, code {
         font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
       }
 
-      @media (max-width: 760px) {
-        .shell {
-          padding: 18px 14px 28px;
+      pre {
+        background: #0a1628;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        font-size: 13px;
+        color: #a5c8ff;
+        margin: 10px 0;
+      }
+
+      code {
+        font-size: 0.88em;
+        background: rgba(93,228,199,0.08);
+        color: var(--brand);
+        padding: 1px 5px;
+        border-radius: 3px;
+      }
+
+      pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+      }
+
+      h2 { font-size: 18px; margin: 0 0 10px; }
+      h3 { font-size: 15px; margin: 20px 0 6px; color: var(--text); }
+
+      .step {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .step-num {
+        flex-shrink: 0;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(93,228,199,0.12);
+        border: 1px solid var(--brand);
+        color: var(--brand);
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2px;
+      }
+
+      .step-body { flex: 1; }
+      .step-body p { margin: 4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+      .step-title { font-weight: 600; font-size: 14px; }
+
+      .endpoints {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .endpoint {
+        font-family: ui-monospace, "Cascadia Code", monospace;
+        font-size: 12px;
+        color: #7aafcc;
+        background: #0a1628;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 6px 12px;
+      }
+
+      /* ── Mobile ── */
+      @media (max-width: 768px) {
+        .shell { flex-direction: column; }
+
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: static;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+          padding: 12px 16px;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+          gap: 4px;
         }
 
-        .panel {
-          padding: 16px;
-        }
+        .sidebar-logo { padding: 0 16px 0 0; border-bottom: none; margin-bottom: 0; }
+        .sidebar-nav { flex-direction: row; flex-wrap: wrap; padding: 0; gap: 2px; }
+        .sidebar-section { display: none; }
+        .sidebar-link { padding: 5px 9px; font-size: 12px; border-left: none; border-radius: 999px; }
+        .sidebar-link.active { border-left: none; }
+
+        .main { padding: 20px 18px 36px; }
       }
     </style>
   </head>
   <body>
     <div class="shell">
-      <nav class="topbar">${renderNav(pathname)}</nav>
-      ${body}
+      ${renderSidebar(pathname)}
+      <main class="main">
+        ${body}
+      </main>
     </div>
   </body>
 </html>`;

@@ -19,52 +19,114 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
 
   const body = `
     <section class="panel">
-      <span class="pill">Engineer Workflow</span>
-      <h1 class="hero-title">Build and Integrate Fast</h1>
+      <span class="pill">Engineer Quickstart</span>
+      <h1 class="hero-title">Get running in 5 minutes</h1>
       <p class="hero-subtitle">
-        Use the CLI to scaffold local design-system source folders, then connect your MCP client to
-        <code>https://designsystem.nikolayvalev.com/mcp</code> for installable component bundles.
+        Install the token package, pick a CSS profile, configure Tailwind, wire your AI client,
+        then let MCP install components directly into your repo.
       </p>
     </section>
 
-    <section class="panel" style="margin-top: 16px;">
-      <h2 style="margin-top: 0;">CLI Bootstrap</h2>
-      <div class="card">
-        <p><code>npx @nikolayvalev/design-system@latest init</code></p>
-        <p style="margin-top: 8px;">
-          The command scaffolds <code>src/design-system</code> structure, creates MCP config files, and
-          writes a project-level <code>design-system.config.json</code>.
-        </p>
+    <section class="panel" style="margin-top:16px">
+      <h2 style="margin-top:0">Step-by-step workflow</h2>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <p class="step-title">Install the tokens package</p>
+          <p>This is the only runtime dependency. Everything else is source-installed.</p>
+          <pre><code>npm install @nikolayvalev/design-tokens</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <p class="step-title">Pick one CSS profile and import it</p>
+          <p>One profile per app. It sets all CSS variables for the chosen context.</p>
+          <pre><code>// Marketing site — light + dark mode, vibrant
+import '@nikolayvalev/design-tokens/styles/public.css';
+
+// Internal tool — dark only, compact density
+import '@nikolayvalev/design-tokens/styles/dashboard.css';
+
+// Prototype — pure black, high contrast, zero radius
+import '@nikolayvalev/design-tokens/styles/experimental.css';</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <p class="step-title">Configure the Tailwind preset</p>
+          <p>The preset maps every token to a semantic utility class (<code>bg-primary</code>, <code>text-foreground</code>, etc.).</p>
+          <pre><code>// tailwind.config.ts
+import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
+
+export default {
+  presets: [createTailwindPreset(publicProfile)],
+  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+};</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <p class="step-title">Wire MCP to your AI client</p>
+          <p>Add this to your Claude Desktop, Cursor, or Windsurf MCP config file.</p>
+          <pre><code>{
+  "mcpServers": {
+    "design-system": {
+      "url": "https://designsystem.nikolayvalev.com/mcp"
+    }
+  }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <p class="step-title">Install components via MCP</p>
+          <p>
+            Ask your AI agent: <em>"Install the Button and Card components from the design system."</em><br />
+            It calls <code>get_component_bundle(["Button", "Card"])</code>, returns the source files,
+            and writes them under <code>src/design-system/</code>. Commit the result.
+          </p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <p class="step-title">Optional: CLI scaffold</p>
+          <p>Scaffolds folder structure, MCP config, and <code>design-system.config.json</code> automatically.</p>
+          <pre><code>npx @nikolayvalev/design-system@latest init</code></pre>
+        </div>
       </div>
     </section>
 
-    <section class="panel" style="margin-top: 16px;">
-      <h2 style="margin-top: 0;">Integration Endpoints</h2>
+    <section class="panel" style="margin-top:16px">
+      <h2 style="margin-top:0">Key imports reference</h2>
       <div class="grid">
         <article class="card">
-          <h3>MCP</h3>
-          <p><code>/mcp</code> for streamable HTTP tools and resources.</p>
+          <h3>Runtime theming</h3>
+          <p><code>@nikolayvalev/design-tokens</code></p>
         </article>
         <article class="card">
-          <h3>Catalog</h3>
-          <p><a href="/catalog">/catalog</a> lists live components, sections, and pages.</p>
+          <h3>Profiles &amp; types</h3>
+          <p><code>@nikolayvalev/design-tokens/tokens</code></p>
         </article>
         <article class="card">
-          <h3>Storybook</h3>
-          <p><a href="/storybook">/storybook</a> is the visual source of truth.</p>
+          <h3>Tailwind preset</h3>
+          <p><code>@nikolayvalev/design-tokens/tailwind</code></p>
         </article>
         <article class="card">
-          <h3>Health</h3>
-          <p><code>/healthz</code> for uptime checks and automation probes.</p>
+          <h3>CSS variables</h3>
+          <p><code>@nikolayvalev/design-tokens/styles/[profile].css</code></p>
         </article>
       </div>
-    </section>
-
-    <section class="panel" style="margin-top: 16px;">
-      <h2 style="margin-top: 0;">Docs</h2>
-      <p class="hero-subtitle">
-        Start at <a href="/docs">/docs</a> for implementation guides, runbooks, and architecture references.
-      </p>
     </section>
   `;
 
