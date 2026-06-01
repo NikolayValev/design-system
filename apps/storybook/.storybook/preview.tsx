@@ -4,7 +4,8 @@ import '../src/styles.css';
 
 type StorybookVisionParameters = {
   forcedVision?: string;
-  vdeFrame?: 'edge' | 'default';
+  vdeFrame?: 'edge' | 'default' | 'editorial';
+  storyCaption?: string;
 };
 
 const defaultVisionId = visionThemes[0]?.id ?? 'museum';
@@ -14,19 +15,71 @@ const visionToolbarItems = visionThemes.map(vision => ({
   title: vision.name,
 }));
 
+const baseFrame =
+  'min-h-screen bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)] transition-all [transition-duration:var(--vde-motion-duration-normal)] [transition-timing-function:var(--vde-motion-easing-standard)] [font-family:var(--vde-font-body)]';
+
 const withVisionProvider: Decorator = (Story, context) => {
   const parameters = context.parameters as typeof context.parameters & StorybookVisionParameters;
   const forcedVision = typeof parameters.forcedVision === 'string' ? parameters.forcedVision : undefined;
   const visionId = forcedVision ?? (typeof context.globals.vision === 'string' ? context.globals.vision : defaultVisionId);
-  const isEdgeFrame = parameters.vdeFrame === 'edge';
-  const frameClasses = isEdgeFrame
-    ? 'min-h-screen bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)] transition-all [transition-duration:var(--vde-motion-duration-normal)] [transition-timing-function:var(--vde-motion-easing-standard)]'
-    : 'min-h-screen p-8 bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)] transition-all [transition-duration:var(--vde-motion-duration-normal)] [transition-timing-function:var(--vde-motion-easing-standard)]';
+  const frameMode = parameters.vdeFrame ?? 'default';
+
+  if (frameMode === 'edge') {
+    return (
+      <VisionProvider registry={defaultVisionRegistry} visionId={visionId}>
+        <div className={baseFrame}>
+          <Story />
+        </div>
+      </VisionProvider>
+    );
+  }
+
+  const caption = typeof parameters.storyCaption === 'string' ? parameters.storyCaption : undefined;
+  const storyTitle = typeof context.title === 'string' ? context.title.split('/').pop() : undefined;
+  const storyName = typeof context.name === 'string' ? context.name : undefined;
 
   return (
     <VisionProvider registry={defaultVisionRegistry} visionId={visionId}>
-      <div className={frameClasses}>
-        <Story />
+      <div className={`${baseFrame} relative`}>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              'linear-gradient(var(--vde-color-foreground) 1px, transparent 1px), linear-gradient(90deg, var(--vde-color-foreground) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+            backgroundPosition: '-1px -1px',
+          }}
+        />
+        <div className="relative mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-8 py-10 md:px-12 md:py-14">
+          {(storyTitle || caption) && (
+            <header className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b pb-5 [border-color:var(--vde-color-border)]">
+              <div className="space-y-1">
+                <p className="text-[10px] uppercase tracking-[0.32em] opacity-60">
+                  {context.title?.split('/').slice(0, -1).join(' / ') || 'Showroom'}
+                </p>
+                <h2
+                  className="text-2xl md:text-3xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]"
+                >
+                  {storyTitle}
+                  {storyName && storyName !== 'Default' && storyName !== 'Playground' ? (
+                    <span className="opacity-50"> · {storyName}</span>
+                  ) : null}
+                </h2>
+              </div>
+              {caption ? (
+                <p className="max-w-[42ch] text-right text-xs leading-relaxed opacity-70">{caption}</p>
+              ) : (
+                <p className="text-[10px] uppercase tracking-[0.28em] opacity-40">
+                  Vision · {visionId}
+                </p>
+              )}
+            </header>
+          )}
+          <div className="flex-1">
+            <Story />
+          </div>
+        </div>
       </div>
     </VisionProvider>
   );
@@ -54,6 +107,18 @@ const preview: Preview = {
       },
     },
     layout: 'fullscreen',
+    options: {
+      storySort: {
+        order: [
+          'Overview',
+          ['Welcome'],
+          'Visionary',
+          ['Explorer'],
+          'Design System',
+          ['Button', 'Input', 'Card', 'Layout', 'EditorialHeader', 'NavigationOrb', 'MediaFrame', 'GalleryStage', 'AtmosphereProvider', 'Sections', 'Pages'],
+        ],
+      },
+    },
   },
 };
 
