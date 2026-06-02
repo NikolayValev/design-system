@@ -7,3 +7,7 @@ addons.setConfig({
     showRoots: true,
   },
 });
+
+if (typeof window !== 'undefined' && !new URLSearchParams(window.location.search).has('path')) {
+  window.location.replace('/?path=/story/introduction-overview--welcome');
+}

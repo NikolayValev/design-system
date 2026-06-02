@@ -379,10 +379,8 @@ function OverviewContent(): JSX.Element {
 const meta = {
   title: 'Introduction/Overview',
   component: OverviewContent,
-  tags: ['autodocs'],
   parameters: {
     vdeFrame: 'edge',
-    docs: { disable: true },
   },
 } satisfies Meta<typeof OverviewContent>;
 
