@@ -329,23 +329,53 @@ export function renderSitePage({
         .sidebar {
           width: 100%;
           height: auto;
-          position: static;
-          flex-direction: row;
-          flex-wrap: wrap;
-          align-items: center;
-          padding: 12px 16px;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+          flex-direction: column;
+          padding: 10px 16px 8px;
           border-right: none;
           border-bottom: 1px solid var(--line);
-          gap: 4px;
+          overflow: hidden;
         }
 
-        .sidebar-logo { padding: 0 16px 0 0; border-bottom: none; margin-bottom: 0; }
-        .sidebar-nav { flex-direction: row; flex-wrap: wrap; padding: 0; gap: 2px; }
-        .sidebar-section { display: none; }
-        .sidebar-link { padding: 5px 9px; font-size: 12px; border-left: none; border-radius: 999px; }
-        .sidebar-link.active { border-left: none; }
+        .sidebar-logo {
+          padding: 0 0 8px;
+          border-bottom: 1px solid var(--line);
+          margin-bottom: 6px;
+          font-size: 12px;
+        }
 
-        .main { padding: 20px 18px 36px; }
+        .sidebar-nav {
+          flex-direction: row;
+          flex-wrap: nowrap;
+          padding: 0;
+          gap: 3px;
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+
+        .sidebar-nav::-webkit-scrollbar { display: none; }
+
+        .sidebar-section { display: none; }
+
+        .sidebar-link {
+          padding: 4px 10px;
+          font-size: 12px;
+          border-left: none;
+          border-radius: 999px;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+
+        .sidebar-link.active {
+          border-left: none;
+          background: rgba(93,228,199,0.12);
+        }
+
+        .main { padding: 16px 16px 32px; }
+
+        pre { font-size: 12px; padding: 10px 12px; }
       }
     </style>
   </head>

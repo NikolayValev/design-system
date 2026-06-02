@@ -27,7 +27,7 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
       </p>
     </section>
 
-    <section class="panel" style="margin-top:16px">
+    <section class="panel" style="margin-top:10px">
       <h2 style="margin-top:0">Step-by-step workflow</h2>
 
       <div class="step">
@@ -91,8 +91,14 @@ export default {
           <p class="step-title">Install components via MCP</p>
           <p>
             Ask your AI agent: <em>"Install the Button and Card components from the design system."</em><br />
-            It calls <code>get_component_bundle(["Button", "Card"])</code>, returns the source files,
-            and writes them under <code>src/design-system/</code>. Commit the result.
+            The agent calls <code>get_component_bundle(["Button", "Card"])</code>, receives source files
+            with all transitive dependencies resolved, then writes them under <code>src/design-system/</code>.
+            Commit the result — components are source, not runtime imports.
+          </p>
+          <p style="margin-top:6px">
+            Browse first with <code>list_components()</code>, read one file with <code>get_component_source("Button")</code>,
+            or install a full section template with <code>get_section_bundle(["HeroSection"])</code>.
+            17 tools total — see <a href="/docs">/docs</a> for the full reference.
           </p>
         </div>
       </div>
@@ -107,7 +113,7 @@ export default {
       </div>
     </section>
 
-    <section class="panel" style="margin-top:16px">
+    <section class="panel" style="margin-top:10px">
       <h2 style="margin-top:0">Key imports reference</h2>
       <div class="grid">
         <article class="card">
