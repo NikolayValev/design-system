@@ -5,6 +5,12 @@ export const claySoftTheme: VisionTheme = {
   name: 'Clay_Soft',
   archetype: 'Soft 3D',
   description: 'Playful volumetric clay surfaces with pastel tones and springy motion.',
+  family: 'minimal',
+  tagline: 'Tactile softness that stays welcoming without losing utility.',
+  summary:
+    'Clay Soft mixes tactile warmth with modern component rigor. Rounded surfaces reduce intimidation in first-use contexts while the UI retains clear interaction boundaries and a welcoming brand voice.',
+  bestFor: ['Consumer onboarding flows', 'Approachable product UIs', 'Friendly brand experiences'],
+  mood: ['rounded', 'friendly', 'handcrafted'],
   colors: {
     background: 'oklch(0.94 0.04 320)',
     foreground: 'oklch(0.31 0.04 320)',

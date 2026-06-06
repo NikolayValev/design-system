@@ -241,7 +241,7 @@ Options:
   --modules <list>      Comma-separated module list (${modulesDisplayList()})
   --targets <list>      Alias for --modules
   --vision-system <id>  Compile-time vision system: ${visionSystemDisplayList()} (default: ${DEFAULT_VISION_SYSTEM})
-  --vision-map <pairs>  Profile/vision map, e.g. public=the_archive,dashboard=raw_data
+  --vision-map <pairs>  Profile/vision map, e.g. public=editorial,dashboard=terminal
   --vision-public <id>  Assign compile-time vision for public profile
   --vision-dashboard <id> Assign compile-time vision for dashboard profile
   --vision-experimental <id> Assign compile-time vision for experimental profile

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button, Card, CardContent, CardHeader, CardTitle, Layout } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Primitives/Layout',
+  title: 'Components/Layout',
   component: Layout,
   tags: ['autodocs'],
   parameters: {

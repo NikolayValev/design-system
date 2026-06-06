@@ -22,7 +22,7 @@ const baseAtmosphericVariables: Record<string, string> = {
     'radial-gradient(circle at 18% 14%, rgba(100, 100, 100, 0.2), transparent 45%), radial-gradient(circle at 84% 76%, rgba(140, 140, 140, 0.14), transparent 40%)',
   '--vde-atmosphere-motion': 'none',
   '--vde-card-bob-animation': 'none',
-  '--vde-component-tilt': '-1deg',
+  '--vde-component-tilt': '0deg',
   '--vde-nav-orb-bounce-duration': 'var(--vde-motion-duration-normal)',
   '--vde-nav-orb-bounce-easing': 'var(--vde-motion-easing-emphatic)',
 };
@@ -71,30 +71,6 @@ const atmosphericOverridesByVision: Record<string, Record<string, string>> = {
     '--vde-atmosphere-archive-opacity': '0.32',
     '--vde-atmosphere-noise-opacity': '0.01',
   },
-  raw_data: {
-    '--vde-gallery-material-background': 'var(--vde-color-background)',
-    '--vde-gallery-offset-shadow': '8px 8px 0 0 #000',
-    '--vde-media-contrast-filter': 'grayscale(1) contrast(2.8) saturate(0)',
-    '--vde-atmosphere-archive-opacity': '0.12',
-    '--vde-atmosphere-noise-opacity': '0.24',
-  },
-  the_archive: {
-    '--vde-editorial-margin-block': 'clamp(2.4rem, 7vw, 6rem)',
-    '--vde-editorial-margin-inline': 'clamp(1rem, 8vw, 8rem)',
-    '--vde-gallery-paper-overlay-opacity': '0.62',
-    '--vde-media-passpartout-shadow': 'inset 0 0 0 0.7rem rgba(250, 246, 236, 0.92), inset 0 0 2.2rem rgba(41, 31, 20, 0.22)',
-    '--vde-atmosphere-archive-opacity': '0.28',
-    '--vde-atmosphere-noise-opacity': '0.1',
-  },
-  the_ether: {
-    '--vde-editorial-glow': '0 0 30px rgba(99, 220, 255, 0.44)',
-    '--vde-gallery-material-background': 'color-mix(in oklab, var(--vde-color-surface) 68%, transparent)',
-    '--vde-gallery-backdrop-blur': '20px',
-    '--vde-media-light-leak': 'inset 0 0 3rem rgba(105, 223, 255, 0.33), inset 0 0 1.8rem rgba(196, 146, 255, 0.24)',
-    '--vde-atmosphere-nexus-opacity': '0.92',
-    '--vde-atmosphere-mesh-gradient':
-      'radial-gradient(circle at 10% 8%, rgba(112, 230, 255, 0.45), transparent 42%), radial-gradient(circle at 88% 16%, rgba(171, 123, 255, 0.4), transparent 45%), radial-gradient(circle at 58% 92%, rgba(122, 255, 237, 0.22), transparent 52%)',
-  },
   solarpunk: {
     '--vde-gallery-material-background': 'color-mix(in oklab, var(--vde-color-surface) 82%, transparent)',
     '--vde-atmosphere-nexus-opacity': '0.88',
@@ -111,17 +87,6 @@ const atmosphericOverridesByVision: Record<string, Record<string, string>> = {
     '--vde-atmosphere-mesh-gradient':
       'radial-gradient(circle at 15% 10%, rgba(255, 90, 210, 0.32), transparent 44%), radial-gradient(circle at 84% 14%, rgba(98, 246, 255, 0.3), transparent 45%), radial-gradient(circle at 52% 95%, rgba(255, 255, 255, 0.16), transparent 58%)',
   },
-  deconstruct: {
-    '--vde-component-tilt': '-1deg',
-    '--vde-atmosphere-archive-opacity': '0.18',
-    '--vde-atmosphere-noise-opacity': '0.06',
-  },
-  ma_minimalism: {
-    '--vde-gallery-offset-shadow': 'none',
-    '--vde-media-passpartout-shadow': 'none',
-    '--vde-atmosphere-archive-opacity': '0.05',
-    '--vde-atmosphere-noise-opacity': '0',
-  },
   clay_soft: {
     '--vde-gallery-material-background': 'var(--vde-color-surface)',
     '--vde-atmosphere-nexus-opacity': '0.74',
@@ -129,12 +94,6 @@ const atmosphericOverridesByVision: Record<string, Record<string, string>> = {
       'radial-gradient(circle at 18% 18%, rgba(255, 191, 217, 0.38), transparent 48%), radial-gradient(circle at 84% 22%, rgba(184, 218, 255, 0.35), transparent 46%), radial-gradient(circle at 52% 90%, rgba(196, 239, 206, 0.34), transparent 54%)',
     '--vde-atmosphere-motion': 'vde-atmosphere-drift 22s ease-in-out infinite alternate',
     '--vde-card-bob-animation': 'vde-card-bob 6s ease-in-out infinite',
-  },
-  zine_collage: {
-    '--vde-gallery-torn-clip-path': 'polygon(0% 2%, 3% 0%, 10% 3%, 20% 1%, 33% 4%, 46% 1%, 61% 5%, 72% 2%, 86% 4%, 100% 2%, 98% 98%, 92% 100%, 80% 97%, 68% 100%, 52% 96%, 38% 99%, 24% 96%, 10% 99%, 2% 96%)',
-    '--vde-gallery-tape-opacity': '0.96',
-    '--vde-atmosphere-archive-opacity': '0.24',
-    '--vde-atmosphere-noise-opacity': '0.2',
   },
 };
 

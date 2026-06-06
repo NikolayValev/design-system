@@ -38,13 +38,13 @@ function hasPositionClass(className: string): boolean {
 }
 
 function resolvePhysics(visionId: string): OrbPhysics {
-  if (visionId === 'museum' || visionId === 'the_archive') {
+  if (visionId === 'museum') {
     return {
       variant: 'museum',
     };
   }
 
-  if (visionId === 'brutalist' || visionId === 'raw_data' || visionId === 'swiss_international') {
+  if (visionId === 'brutalist' || visionId === 'swiss_international') {
     return {
       variant: 'brutalist',
     };

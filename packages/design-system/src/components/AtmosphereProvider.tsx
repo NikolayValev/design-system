@@ -33,14 +33,7 @@ function resolveMode(visionId: string, mode: NonNullable<AtmosphereProviderProps
     return mode;
   }
 
-  const nexusVisions = new Set([
-    'immersive',
-    'aurora',
-    'the_ether',
-    'solarpunk',
-    'y2k_chrome',
-    'clay_soft',
-  ]);
+  const nexusVisions = new Set(['immersive', 'solarpunk', 'y2k_chrome', 'clay_soft']);
 
   return nexusVisions.has(visionId) ? 'nexus' : 'archive';
 }

@@ -5,6 +5,12 @@ export const immersiveTheme: VisionTheme = {
   name: 'Immersive',
   archetype: 'Atmospheric Glow',
   description: 'Deep space-inspired surfaces with subtle glow and layered blur.',
+  family: 'atmospheric',
+  tagline: 'Cinematic depth that shapes attention with light and motion.',
+  summary:
+    'Immersive treats the page as a stage, using layered backgrounds, glow, and blur to create spatial orientation. Longer eased motion supports cinematic pacing without harsh separators.',
+  bestFor: ['Media and entertainment', 'Immersive onboarding', 'Premium storytelling canvases'],
+  mood: ['atmospheric', 'fluid', 'high-fidelity'],
   colors: {
     background: 'oklch(0.21 0.04 260)',
     foreground: 'oklch(0.95 0.02 250)',

@@ -56,20 +56,15 @@ Story-level controls:
 Automation hooks:
 - Atmospheric components expose `data-vde-component="..."` attributes for non-visual assertions.
 - `apps/storybook/tests/visual/vision-switch.spec.ts` validates museum/brutalist/immersive behavior for all hero components.
-- `apps/storybook/tests/visual/vision-expanded.spec.ts` validates all 10 expanded design styles across tokens, sections, and page templates.
+- `apps/storybook/tests/visual/vision-expanded.spec.ts` validates the expanded design styles across tokens, sections, and page templates.
 - `packages/design-system/scripts/verify-expanded-visions.mjs` validates expanded registry IDs, token mappings, and Atmosphere variable generation.
 
-Expanded Vision IDs:
+Expanded Vision IDs (the compile-time highlight subset):
+
 - `swiss_international`
-- `raw_data`
-- `the_archive`
-- `the_ether`
+- `clay_soft`
 - `solarpunk`
 - `y2k_chrome`
-- `deconstruct`
-- `ma_minimalism`
-- `clay_soft`
-- `zine_collage`
 
 ## What it covers
 

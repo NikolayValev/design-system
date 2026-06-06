@@ -115,7 +115,7 @@ You can also run non-interactive:
 ```bash
 npx @nikolayvalev/design-system@latest init --modules themes,components
 # optional compile-time vision mapping
-# --vision-system expanded --vision-map public=swiss_international,dashboard=raw_data,experimental=y2k_chrome
+# --vision-system expanded --vision-map public=swiss_international,dashboard=clay_soft,experimental=y2k_chrome
 ```
 
 By default it links your MCP client config to:
@@ -238,27 +238,32 @@ All components read from CSS variables and update through `VisionProvider`/`useV
 
 ## Vision Registry
 
-The registry includes legacy and expanded archetypes. New expansion IDs:
+The registry ships **12 curated visions** across five families:
 
-- `swiss_international`
-- `raw_data`
-- `the_archive`
-- `the_ether`
-- `solarpunk`
-- `y2k_chrome`
-- `deconstruct`
-- `ma_minimalism`
-- `clay_soft`
-- `zine_collage`
+- **Editorial & Print** — `editorial`, `museum`
+- **Minimal & Structured** — `swiss_international`, `zen`, `clay_soft`
+- **Technical & Utility** — `terminal`, `brutalist`
+- **Atmospheric & Luminous** — `immersive`, `synthwave`, `noir`
+- **Expressive & Statement** — `solarpunk`, `y2k_chrome`
+
+Each theme carries structured metadata — `family`, `tagline`, `summary`, `bestFor`, and `mood` — alongside its colors and artistic pillars. Family names and descriptions live in `themeFamilies`.
 
 Runtime helpers:
 
 ```ts
-import { getVisionThemeIds, getVisionThemeById, defaultVisionRegistry } from '@nikolayvalev/design-system';
+import {
+  getVisionThemeIds,
+  getVisionThemeById,
+  defaultVisionRegistry,
+  themeFamilies,
+  groupThemesByFamily,
+  visionThemes,
+} from '@nikolayvalev/design-system';
 
 const allVisionIds = getVisionThemeIds();
-const archive = getVisionThemeById('the_archive');
-defaultVisionRegistry.get('raw_data');
+const editorial = getVisionThemeById('editorial');
+defaultVisionRegistry.get('terminal');
+const byFamily = groupThemesByFamily(visionThemes);
 ```
 
 ## Extending Per Project

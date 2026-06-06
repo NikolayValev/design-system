@@ -6,7 +6,7 @@ const sampleImage = `data:image/svg+xml;utf8,${encodeURIComponent(
 )}`;
 
 const meta = {
-  title: 'Primitives/MediaFrame',
+  title: 'Showcase/MediaFrame',
   component: MediaFrame,
   tags: ['autodocs'],
   parameters: {

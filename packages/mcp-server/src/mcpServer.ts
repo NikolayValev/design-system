@@ -458,9 +458,9 @@ export function createMcpServer() {
     {
       title: 'Get VDE Theme',
       description:
-        'Get the full source definition of a specific VDE theme by id (e.g. "aurora", "museum", "synthwave"). Includes colors, typography, surface physics, motion, and ornament settings.',
+        'Get the full source definition of a specific VDE theme by id (e.g. "editorial", "museum", "synthwave"). Includes colors, typography, surface physics, motion, and ornament settings.',
       inputSchema: {
-        id: z.string().min(1).describe('Theme id (e.g. "aurora", "brutalist", "zen").'),
+        id: z.string().min(1).describe('Theme id (e.g. "editorial", "brutalist", "zen").'),
       },
     },
     async ({ id }) => {

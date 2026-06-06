@@ -1,5 +1,4 @@
 import React from 'react';
-import { useOptionalVision } from '../vde-core';
 import { AestheticOrnaments } from './AestheticOrnaments';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -7,15 +6,12 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Card component - semantic container with token-driven styling
+ * Card — semantic container with token-driven styling. Theme-specific motion
+ * (e.g. the soft "bob") is driven entirely by `--vde-*` variables, so the
+ * component carries no per-theme branches.
  */
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className = '', children, ...props }, ref) => {
-    const vision = useOptionalVision();
-    const activeVisionId = vision?.activeVision.id;
-    const isClaySoft = activeVisionId === 'clay_soft';
-    const isDeconstruct = activeVisionId === 'deconstruct';
-
     const classes = [
       'relative',
       'overflow-hidden',
@@ -27,12 +23,10 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       '[border-radius:var(--vde-boundary-radius)]',
       '[box-shadow:var(--vde-shadow-ambient)]',
       '[font-family:var(--vde-font-body)]',
-      'transition-all',
+      '[animation:var(--vde-card-bob-animation)]',
+      'transition-[background-color,border-color,box-shadow]',
       '[transition-duration:var(--vde-motion-duration-normal)]',
       '[transition-timing-function:var(--vde-motion-easing-standard)]',
-      isClaySoft ? '[animation:var(--vde-card-bob-animation)]' : '',
-      isDeconstruct ? '[transform:rotate(var(--vde-component-tilt,_-1deg))]' : '',
-      isDeconstruct ? 'z-[2]' : '',
       className,
     ].join(' ');
 

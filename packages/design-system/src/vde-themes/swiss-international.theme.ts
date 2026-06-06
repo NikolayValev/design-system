@@ -5,6 +5,12 @@ export const swissInternationalTheme: VisionTheme = {
   name: 'Swiss International',
   archetype: 'The Grid',
   description: 'Objective Swiss precision with strict containers, visible structure, and linear rhythm.',
+  family: 'minimal',
+  tagline: 'Grid discipline that turns complexity into structure.',
+  summary:
+    'Swiss International turns complexity into structure with sober spacing, strict alignment, and low-noise contrast. Typographic rhythm favours readability before decoration and stays coherent under dense content.',
+  bestFor: ['Enterprise dashboards', 'Information-dense systems', 'Reference and documentation'],
+  mood: ['ordered', 'neutral', 'precise'],
   colors: {
     background: 'oklch(0.985 0 0)',
     foreground: 'oklch(0.18 0 0)',

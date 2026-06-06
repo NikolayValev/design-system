@@ -14,9 +14,7 @@ const LEGACY_VISION_THEME_IDS = [
   'editorial',
   'zen',
   'synthwave',
-  'aurora',
   'noir',
-  'parchment',
   'terminal',
 ] as const;
 
@@ -30,13 +28,13 @@ const DEFAULT_PROFILE_VISION_ASSIGNMENTS: Record<VisionSystemId, ProfileVisionAs
   },
   expanded: {
     public: 'swiss_international',
-    dashboard: 'raw_data',
+    dashboard: 'clay_soft',
     experimental: 'y2k_chrome',
   },
   all: {
-    public: 'the_archive',
-    dashboard: 'raw_data',
-    experimental: 'immersive',
+    public: 'editorial',
+    dashboard: 'terminal',
+    experimental: 'synthwave',
   },
 };
 

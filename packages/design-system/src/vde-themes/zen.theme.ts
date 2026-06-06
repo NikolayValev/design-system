@@ -5,6 +5,12 @@ export const zenTheme: VisionTheme = {
   name: 'Zen Garden',
   archetype: 'Calm Minimal',
   description: 'Quiet palette, soft boundaries, and smooth understated motion.',
+  family: 'minimal',
+  tagline: 'Low-stimulus calm that keeps attention on the task.',
+  summary:
+    'Zen minimises stimulus so interfaces feel steady and mentally lightweight. Muted energy levels reduce cognitive overhead while simple geometry and soft pacing support sustained concentration.',
+  bestFor: ['Productivity tools', 'Wellness and mindfulness apps', 'Focus-first workflows'],
+  mood: ['calm', 'balanced', 'intentional'],
   colors: {
     background: 'oklch(0.97 0.01 145)',
     foreground: 'oklch(0.29 0.03 160)',

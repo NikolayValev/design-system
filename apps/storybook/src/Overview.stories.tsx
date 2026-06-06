@@ -1,33 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useVision, visionThemes, type VisionTheme } from '@nikolayvalev/design-system';
-
-interface ThemeBlurb {
-  motif: string;
-  tone: string;
-}
-
-const BLURBS: Record<string, ThemeBlurb> = {
-  museum: { motif: 'Curatorial Paper', tone: 'editorial / heritage' },
-  swiss_international: { motif: 'Grid Discipline', tone: 'systemic / neutral' },
-  raw_data: { motif: 'Anti-Polish', tone: 'shock / signal' },
-  the_archive: { motif: 'Institutional Memory', tone: 'scholarly / warm' },
-  the_ether: { motif: 'Frosted Glass', tone: 'ambient / spectral' },
-  solarpunk: { motif: 'Civic Optimism', tone: 'eco / hopeful' },
-  y2k_chrome: { motif: 'Reflective Pop', tone: 'flashy / nostalgic' },
-  deconstruct: { motif: 'Controlled Disorder', tone: 'fragmented / loud' },
-  ma_minimalism: { motif: 'Negative Space', tone: 'quiet / measured' },
-  clay_soft: { motif: 'Tactile Softness', tone: 'rounded / friendly' },
-  zine_collage: { motif: 'Paper Cuts', tone: 'handmade / playful' },
-  brutalist: { motif: 'Steel Frame', tone: 'direct / structural' },
-  immersive: { motif: 'Depth Field', tone: 'cinematic / fluid' },
-  editorial: { motif: 'Column Rhythm', tone: 'narrative / polished' },
-  zen: { motif: 'Still Frame', tone: 'calm / focused' },
-  synthwave: { motif: 'Neon Horizon', tone: 'retro-future / electric' },
-  aurora: { motif: 'Atmospheric Band', tone: 'ethereal / luminous' },
-  noir: { motif: 'Spotlight Cut', tone: 'moody / dramatic' },
-  parchment: { motif: 'Aged Sheet', tone: 'historic / textural' },
-  terminal: { motif: 'Prompt Cursor', tone: 'code-native / utilitarian' },
-};
+import { useVision, visionThemes, themeFamilies, type VisionTheme } from '@nikolayvalev/design-system';
 
 function primary(stack: string): string {
   const first = stack.split(',')[0] ?? stack;
@@ -43,7 +15,6 @@ function ThemeTile({
   isActive: boolean;
   onSelect: () => void;
 }): JSX.Element {
-  const blurb = BLURBS[theme.id] ?? { motif: theme.archetype, tone: 'token-driven' };
   const swatches = [
     theme.colors.background,
     theme.colors.surface,
@@ -120,7 +91,7 @@ function ThemeTile({
 
       <div className="space-y-3 p-4">
         <div className="space-y-1">
-          <p className="text-[10px] uppercase tracking-[0.22em] opacity-60">{blurb.tone}</p>
+          <p className="text-[10px] uppercase tracking-[0.22em] opacity-60">{theme.mood.join(' · ')}</p>
           <h4
             className="text-lg leading-tight"
             style={{
@@ -130,7 +101,7 @@ function ThemeTile({
           >
             {theme.name}
           </h4>
-          <p className="text-[11px] leading-relaxed opacity-75">{blurb.motif}</p>
+          <p className="text-[11px] leading-relaxed opacity-75">{theme.tagline}</p>
         </div>
 
         <div className="flex items-center justify-between gap-2 pt-2">
@@ -161,8 +132,8 @@ function OverviewContent(): JSX.Element {
   const { activeVision, activeVisionId, setVision } = useVision();
   const counts = {
     themes: visionThemes.length,
-    components: 12,
-    sections: 3,
+    families: themeFamilies.length,
+    primitives: 8,
   };
 
   return (
@@ -191,7 +162,7 @@ function OverviewContent(): JSX.Element {
                 letterSpacing: 'var(--vde-letter-spacing-tight)',
               }}
             >
-              Twenty visions.
+              {counts.themes} visions, {counts.families} families.
               <br />
               <span style={{ color: 'var(--vde-color-accent)' }}>One contract.</span>
             </h1>
@@ -213,23 +184,20 @@ function OverviewContent(): JSX.Element {
             <dl className="grid grid-cols-3 gap-4">
               <div>
                 <dt className="text-[10px] uppercase tracking-[0.18em] opacity-55">Visions</dt>
-                <dd
-                  className="text-3xl"
-                  style={{ fontFamily: 'var(--vde-font-display)' }}
-                >
+                <dd className="text-3xl" style={{ fontFamily: 'var(--vde-font-display)' }}>
                   {counts.themes}
                 </dd>
               </div>
               <div>
-                <dt className="text-[10px] uppercase tracking-[0.18em] opacity-55">Components</dt>
+                <dt className="text-[10px] uppercase tracking-[0.18em] opacity-55">Families</dt>
                 <dd className="text-3xl" style={{ fontFamily: 'var(--vde-font-display)' }}>
-                  {counts.components}
+                  {counts.families}
                 </dd>
               </div>
               <div>
-                <dt className="text-[10px] uppercase tracking-[0.18em] opacity-55">Sections</dt>
+                <dt className="text-[10px] uppercase tracking-[0.18em] opacity-55">Primitives</dt>
                 <dd className="text-3xl" style={{ fontFamily: 'var(--vde-font-display)' }}>
-                  {counts.sections}
+                  {counts.primitives}
                 </dd>
               </div>
             </dl>
@@ -293,7 +261,7 @@ function OverviewContent(): JSX.Element {
           {
             n: '01',
             title: 'Token Contract',
-            body: 'Colors, typography, motion, surface physics — every primitive consumes CSS variables emitted by the VisionProvider.',
+            body: 'Colours, typography, motion, surface physics — every primitive consumes CSS variables emitted by the VisionProvider.',
           },
           {
             n: '02',
@@ -302,8 +270,8 @@ function OverviewContent(): JSX.Element {
           },
           {
             n: '03',
-            title: 'Composable Sections',
-            body: 'Hero, FeatureGrid, MetricStrip and full Page templates compose primitives without locking you into a layout.',
+            title: 'Grouped Families',
+            body: 'Twelve visions organised into five families, each with its own description — a deliberate taxonomy, not a flat dump.',
           },
         ].map(point => (
           <article
@@ -326,9 +294,7 @@ function OverviewContent(): JSX.Element {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <article
-          className="rounded-[14px] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4"
-        >
+        <article className="rounded-[14px] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4">
           <p className="text-[10px] uppercase tracking-[0.28em] opacity-55">04 · Navigation Guide</p>
           <h3
             className="text-xl"
@@ -337,17 +303,14 @@ function OverviewContent(): JSX.Element {
             What's in the sidebar
           </h3>
           <ul className="space-y-2 text-sm leading-relaxed opacity-80 list-none p-0 m-0">
-            <li><strong>Introduction</strong> — you are here. Theme switcher and system overview.</li>
-            <li><strong>Primitives</strong> — Button, Card, Input, Layout, EditorialHeader, NavigationOrb, MediaFrame, GalleryStage, AtmosphereProvider.</li>
-            <li><strong>Sections</strong> — HeroSection, FeatureGridSection, MetricStripSection. Compose into pages.</li>
-            <li><strong>Pages</strong> — MarketingLandingPage, ProductShowcasePage. Full page templates.</li>
-            <li><strong>VDE</strong> — VisionaryExplorer. Deep dive into all 20 themes.</li>
+            <li><strong>Foundations</strong> — you are here. System overview and the theme atlas.</li>
+            <li><strong>Themes</strong> — the {counts.themes} visions grouped into {counts.families} families, plus an interactive explorer.</li>
+            <li><strong>Components</strong> — core primitives: Button, Card, Input, Textarea, Checkbox, Label, Badge, Layout.</li>
+            <li><strong>Showcase</strong> — expressive components, sections, and full page templates.</li>
           </ul>
         </article>
 
-        <article
-          className="rounded-[14px] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4"
-        >
+        <article className="rounded-[14px] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4">
           <p className="text-[10px] uppercase tracking-[0.28em] opacity-55">05 · Install via MCP</p>
           <h3
             className="text-xl"
@@ -370,14 +333,14 @@ function OverviewContent(): JSX.Element {
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t pt-6 [border-color:var(--vde-color-border)] text-[11px] uppercase tracking-[0.22em] opacity-60">
         <span>Visionary Design Engine</span>
-        <span>Sidebar ←  Visions, components, sections, pages</span>
+        <span>Sidebar ←  Foundations · Themes · Components · Showcase</span>
       </footer>
     </div>
   );
 }
 
 const meta = {
-  title: 'Introduction/Overview',
+  title: 'Foundations/Overview',
   component: OverviewContent,
   parameters: {
     vdeFrame: 'edge',

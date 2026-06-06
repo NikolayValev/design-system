@@ -5,6 +5,12 @@ export const terminalTheme: VisionTheme = {
   name: 'Terminal',
   archetype: 'CRT Utility',
   description: 'Monospaced command aesthetic with phosphor glow and rigid framing.',
+  family: 'technical',
+  tagline: 'Command-line certainty rendered as UI.',
+  summary:
+    'Terminal prioritises speed, precision, and semantic clarity for technical workflows. Monospace hierarchy improves data alignment and minimal decoration keeps throughput high for expert users.',
+  bestFor: ['Developer tools', 'Infrastructure consoles', 'Operational control surfaces'],
+  mood: ['utilitarian', 'code-native', 'deterministic'],
   colors: {
     background: 'oklch(0.17 0.03 150)',
     foreground: 'oklch(0.87 0.12 150)',

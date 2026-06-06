@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FeatureGridSection } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Sections/FeatureGridSection',
+  title: 'Showcase/Sections/FeatureGridSection',
   component: FeatureGridSection,
   tags: ['autodocs', 'skip-visual'],
   parameters: {

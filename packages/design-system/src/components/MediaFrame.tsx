@@ -12,11 +12,10 @@ export interface MediaFrameProps extends React.HTMLAttributes<HTMLDivElement> {
 export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
   ({ alt = '', children, className = '', kind = 'image', poster, src, ...props }, ref) => {
     const { activeVision } = useVision();
-    const isMuseum = activeVision.id === 'museum' || activeVision.id === 'the_archive';
-    const isBrutalist = activeVision.id === 'brutalist' || activeVision.id === 'raw_data';
-    const isImmersive = activeVision.id === 'immersive' || activeVision.id === 'the_ether';
+    const isMuseum = activeVision.id === 'museum';
+    const isBrutalist = activeVision.id === 'brutalist';
+    const isImmersive = activeVision.id === 'immersive';
     const isY2KChrome = activeVision.id === 'y2k_chrome';
-    const isDeconstruct = activeVision.id === 'deconstruct';
 
     const classes = [
       'relative',
@@ -30,8 +29,6 @@ export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
       isMuseum
         ? '[box-shadow:var(--vde-media-passpartout-shadow,_inset_0_0_0_0.6rem_rgba(255,_253,_246,_0.9),_inset_0_0_2.3rem_rgba(38,_28,_16,_0.2))]'
         : '[box-shadow:var(--vde-shadow-ambient)]',
-      isDeconstruct ? '[transform:rotate(var(--vde-component-tilt,_-1deg))]' : '',
-      isDeconstruct ? 'z-[4]' : '',
       className,
     ].join(' ');
 

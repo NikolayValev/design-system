@@ -5,6 +5,12 @@ export const noirTheme: VisionTheme = {
   name: 'Noir',
   archetype: 'Cinematic Contrast',
   description: 'Monochrome palette with cold highlights and dramatic depth.',
+  family: 'atmospheric',
+  tagline: 'High-contrast dark system built for focus and mood.',
+  summary:
+    'Noir privileges focus and selective emphasis with tight dark/light relationships and a reduced palette. Strong typographic contrast supports a dramatic, cinematic tone.',
+  bestFor: ['Premium dark products', 'Creative tooling', 'Cinematic admin experiences'],
+  mood: ['moody', 'high-contrast', 'dramatic'],
   colors: {
     background: 'oklch(0.14 0.01 260)',
     foreground: 'oklch(0.93 0.01 255)',

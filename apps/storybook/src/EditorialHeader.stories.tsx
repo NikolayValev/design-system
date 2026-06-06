@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { EditorialHeader } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Primitives/EditorialHeader',
+  title: 'Showcase/EditorialHeader',
   component: EditorialHeader,
   tags: ['autodocs'],
   parameters: {

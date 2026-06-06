@@ -21,7 +21,7 @@ For CI/non-interactive usage:
 
 ```bash
 npx @nikolayvalev/design-system@latest init --modules themes,components
-# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=raw_data,experimental=y2k_chrome
+# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=clay_soft,experimental=y2k_chrome
 ```
 
 This creates:

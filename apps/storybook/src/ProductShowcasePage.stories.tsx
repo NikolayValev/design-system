@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ProductShowcasePage } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Pages/ProductShowcasePage',
+  title: 'Showcase/Pages/ProductShowcasePage',
   component: ProductShowcasePage,
   tags: ['autodocs', 'skip-visual'],
   parameters: {

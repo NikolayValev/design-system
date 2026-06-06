@@ -9,5 +9,5 @@ addons.setConfig({
 });
 
 if (typeof window !== 'undefined' && !new URLSearchParams(window.location.search).has('path')) {
-  window.location.replace('/?path=/story/introduction-overview--welcome');
+  window.location.replace('/?path=/story/foundations-overview--welcome');
 }

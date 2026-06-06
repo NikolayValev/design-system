@@ -50,11 +50,11 @@ async function readVisionVars(page: Parameters<typeof test>[1]['page']): Promise
 }
 
 test.describe('expanded vision integration', () => {
-  test('all 10 expanded styles are selectable and expose expected token contract values', async ({ page }) => {
+  test('all expanded styles are selectable and expose expected token contract values', async ({ page }) => {
     test.setTimeout(Math.max(180000, expandedVisions.length * 10000));
 
     for (const vision of expandedVisions) {
-      await page.goto(storyUrl('design-system-button--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl('components-button--playground', vision), { waitUntil: 'networkidle' });
       await expect
         .poll(
           async () => page.evaluate(() => document.documentElement.getAttribute('data-vde-vision')),
@@ -70,18 +70,6 @@ test.describe('expanded vision integration', () => {
         expect(vars.borderWidth).toBe('1px');
       }
 
-      if (vision === 'raw_data') {
-        expect(vars.vdeAccent.toLowerCase()).toBe('#ccff00');
-      }
-
-      if (vision === 'the_archive') {
-        expect(vars.motionDurationNormal).toBe('800ms');
-      }
-
-      if (vision === 'the_ether') {
-        expect(vars.surfaceBlur).toBe('20px');
-      }
-
       if (vision === 'solarpunk') {
         expect(vars.boundaryRadius).toBe('40px');
       }
@@ -90,33 +78,19 @@ test.describe('expanded vision integration', () => {
         expect(vars.scanlineOpacity).not.toBe('0');
       }
 
-      if (vision === 'deconstruct') {
-        expect(vars.componentTilt).toBe('-1deg');
-      }
-
-      if (vision === 'ma_minimalism') {
-        expect(vars.borderWidth).toBe('0px');
-        expect(vars.shadowAmbient).toBe('none');
-      }
-
       if (vision === 'clay_soft') {
         expect(vars.cardBobAnimation).toContain('vde-card-bob');
-      }
-
-      if (vision === 'zine_collage') {
-        expect(vars.tapeOpacity).not.toBe('0');
-        expect(vars.tornClipPath).not.toBe('none');
       }
 
       expect(Number.parseFloat(vars.archiveOpacity || '0')).toBeGreaterThanOrEqual(0);
     }
   });
 
-  test('section templates render for all 10 expanded styles', async ({ page }) => {
+  test('section templates render for all expanded styles', async ({ page }) => {
     const sectionStories = [
-      { id: 'design-system-sections-herosection--playground', selector: '[data-vde-component="section-hero"]' },
-      { id: 'design-system-sections-featuregridsection--playground', selector: '[data-vde-component="section-feature-grid"]' },
-      { id: 'design-system-sections-metricstripsection--playground', selector: '[data-vde-component="section-metric-strip"]' },
+      { id: 'showcase-sections-herosection--playground', selector: '[data-vde-component="section-hero"]' },
+      { id: 'showcase-sections-featuregridsection--playground', selector: '[data-vde-component="section-feature-grid"]' },
+      { id: 'showcase-sections-metricstripsection--playground', selector: '[data-vde-component="section-metric-strip"]' },
     ] as const;
 
     for (const vision of expandedVisions) {
@@ -133,10 +107,10 @@ test.describe('expanded vision integration', () => {
     }
   });
 
-  test('page templates render for all 10 expanded styles', async ({ page }) => {
+  test('page templates render for all expanded styles', async ({ page }) => {
     const pageStories = [
-      { id: 'design-system-pages-marketinglandingpage--playground', selector: '[data-vde-component="page-marketing-landing"]' },
-      { id: 'design-system-pages-productshowcasepage--playground', selector: '[data-vde-component="page-product-showcase"]' },
+      { id: 'showcase-pages-marketinglandingpage--playground', selector: '[data-vde-component="page-marketing-landing"]' },
+      { id: 'showcase-pages-productshowcasepage--playground', selector: '[data-vde-component="page-product-showcase"]' },
     ] as const;
 
     for (const vision of expandedVisions) {

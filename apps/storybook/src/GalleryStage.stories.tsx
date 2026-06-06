@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { GalleryStage } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Primitives/GalleryStage',
+  title: 'Showcase/GalleryStage',
   component: GalleryStage,
   tags: ['autodocs'],
   parameters: {

@@ -5,6 +5,12 @@ export const synthwaveTheme: VisionTheme = {
   name: 'Synthwave',
   archetype: 'Retro Futurism',
   description: 'Neon gradients, electric glows, and dramatic cinematic pacing.',
+  family: 'atmospheric',
+  tagline: 'Neon drama balanced with clear hierarchy.',
+  summary:
+    'Synthwave balances nostalgia and legibility through neon accents, dark fields, and rhythmic transitions. Vivid glow signatures create memorable action points while contrast hierarchy stays intact.',
+  bestFor: ['Entertainment interfaces', 'Music and creative tools', 'Expressive dark themes'],
+  mood: ['retro-future', 'electric', 'night-mode'],
   colors: {
     background: 'oklch(0.22 0.06 296)',
     foreground: 'oklch(0.95 0.02 270)',

@@ -21,7 +21,7 @@ For non-interactive runs:
 
 ```bash
 npx @nikolayvalev/design-system@latest init --modules themes,components
-# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=raw_data,experimental=y2k_chrome
+# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=clay_soft,experimental=y2k_chrome
 ```
 
 This command scaffolds `src/design-system`, creates MCP config files, and links to
@@ -157,17 +157,13 @@ export default function LaunchPage() {
 }
 ```
 
-Common expanded IDs for `setVision()`:
-- `swiss_international`
-- `raw_data`
-- `the_archive`
-- `the_ether`
-- `solarpunk`
-- `y2k_chrome`
-- `deconstruct`
-- `ma_minimalism`
-- `clay_soft`
-- `zine_collage`
+Vision IDs for `setVision()`, by family:
+
+- **Editorial & Print** — `editorial`, `museum`
+- **Minimal & Structured** — `swiss_international`, `zen`, `clay_soft`
+- **Technical & Utility** — `terminal`, `brutalist`
+- **Atmospheric & Luminous** — `immersive`, `synthwave`, `noir`
+- **Expressive & Statement** — `solarpunk`, `y2k_chrome`
 
 ## Runtime Configuration Override
 

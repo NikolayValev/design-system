@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------------------
+// Core primitives — the professional baseline. Token-driven, accessible,
+// no per-theme branches. These are the components most apps build on.
+// ---------------------------------------------------------------------------
 export { Button } from './Button';
 export type { ButtonProps } from './Button';
 
@@ -7,9 +11,25 @@ export type { CardProps, CardHeaderProps, CardTitleProps, CardContentProps } fro
 export { Input } from './Input';
 export type { InputProps } from './Input';
 
+export { Textarea } from './Textarea';
+export type { TextareaProps } from './Textarea';
+
+export { Checkbox } from './Checkbox';
+export type { CheckboxProps } from './Checkbox';
+
+export { Label } from './Label';
+export type { LabelProps } from './Label';
+
+export { Badge } from './Badge';
+export type { BadgeProps } from './Badge';
+
 export { Layout } from './Layout';
 export type { LayoutProps } from './Layout';
 
+// ---------------------------------------------------------------------------
+// Expressive / showcase components — atmospheric, theme-driven set used to
+// demonstrate the system's range. Separated from the core primitives above.
+// ---------------------------------------------------------------------------
 export { AestheticOrnaments } from './AestheticOrnaments';
 export type { AestheticOrnamentsProps } from './AestheticOrnaments';
 

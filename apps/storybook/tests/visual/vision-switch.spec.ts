@@ -62,7 +62,7 @@ test.describe('vision switch consistency', () => {
     test.setTimeout(Math.max(180000, supportedVisions.length * 8000));
 
     for (const vision of supportedVisions) {
-      await page.goto(storyUrl('design-system-button--playground', vision), { waitUntil: 'domcontentloaded' });
+      await page.goto(storyUrl('components-button--playground', vision), { waitUntil: 'domcontentloaded' });
       await expect
         .poll(
           async () => page.evaluate(() => document.documentElement.getAttribute('data-vde-vision')),
@@ -74,7 +74,7 @@ test.describe('vision switch consistency', () => {
 
   test('EditorialHeader reacts to all core visions', async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('design-system-editorialheader--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl('showcase-editorialheader--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="editorial-header"]');
 
       expect(result.appliedVision).toBe(vision);
@@ -91,7 +91,7 @@ test.describe('vision switch consistency', () => {
 
   test('GalleryStage material ornaments shift by vision', async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('design-system-gallerystage--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl('showcase-gallerystage--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="gallery-stage"]');
 
       expect(result.appliedVision).toBe(vision);
@@ -109,7 +109,7 @@ test.describe('vision switch consistency', () => {
 
   test('MediaFrame effects map to each vision', async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('design-system-mediaframe--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl('showcase-mediaframe--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="media-frame"]');
 
       expect(result.appliedVision).toBe(vision);
@@ -126,7 +126,7 @@ test.describe('vision switch consistency', () => {
 
   test('AtmosphereProvider mode auto resolves archive vs nexus', async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('design-system-atmosphereprovider--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl('showcase-atmosphereprovider--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="atmosphere-provider"]');
 
       expect(result.appliedVision).toBe(vision);
@@ -141,7 +141,7 @@ test.describe('vision switch consistency', () => {
 
   test('NavigationOrb physics differ by vision', async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('design-system-navigationorb--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl('showcase-navigationorb--playground', vision), { waitUntil: 'networkidle' });
       const result = await probe(page, '[data-vde-component="navigation-orb"]');
 
       expect(result.appliedVision).toBe(vision);

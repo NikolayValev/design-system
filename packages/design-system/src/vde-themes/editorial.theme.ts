@@ -5,6 +5,12 @@ export const editorialTheme: VisionTheme = {
   name: 'Editorial',
   archetype: 'Print Modernism',
   description: 'Typographic rigor inspired by print grids and Swiss compositional logic.',
+  family: 'editorial',
+  tagline: 'Publication-grade typography where hierarchy and pacing lead.',
+  summary:
+    'Editorial provides a publication-grade baseline where text hierarchy and story pacing stay central. Balanced spacing keeps long-form layouts scannable and its component vocabulary suits content-first teams.',
+  bestFor: ['Newsrooms and publishing suites', 'Long-form content products', 'Content-first marketing sites'],
+  mood: ['polished', 'authoritative', 'narrative'],
   colors: {
     background: 'oklch(0.99 0 0)',
     foreground: 'oklch(0.22 0.02 250)',

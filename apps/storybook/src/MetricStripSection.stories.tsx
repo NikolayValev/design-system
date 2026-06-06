@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MetricStripSection } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Sections/MetricStripSection',
+  title: 'Showcase/Sections/MetricStripSection',
   component: MetricStripSection,
   tags: ['autodocs', 'skip-visual'],
   parameters: {

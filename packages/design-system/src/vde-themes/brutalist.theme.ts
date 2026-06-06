@@ -5,6 +5,12 @@ export const brutalistTheme: VisionTheme = {
   name: 'Brutalist',
   archetype: 'Bold Utility',
   description: 'High-contrast blocks, sharp edges, and forceful movement.',
+  family: 'technical',
+  tagline: 'Function first — structure over decoration.',
+  summary:
+    'Brutalist strips styling to structural essentials so interaction intent is obvious at a glance. Hard geometry communicates boundaries instantly and high contrast reduces ambiguity in dense UIs.',
+  bestFor: ['Internal tools', 'Data terminals', 'Utility-focused products'],
+  mood: ['direct', 'structural', 'assertive'],
   colors: {
     background: 'oklch(0.98 0 0)',
     foreground: 'oklch(0.18 0 0)',

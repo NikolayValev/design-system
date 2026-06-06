@@ -3,7 +3,7 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from '@nikolayvalev/
 import { ArrowUpRight, TrendingUp, Image as ImageIcon, MapPin } from 'lucide-react';
 
 const meta = {
-  title: 'Primitives/Card',
+  title: 'Components/Card',
   component: Card,
   tags: ['autodocs'],
   parameters: {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MarketingLandingPage } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Pages/MarketingLandingPage',
+  title: 'Showcase/Pages/MarketingLandingPage',
   component: MarketingLandingPage,
   tags: ['autodocs', 'skip-visual'],
   parameters: {

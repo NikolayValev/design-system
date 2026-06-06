@@ -116,7 +116,7 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
         Swapping the theme swaps the entire design language at runtime — no recompile.
       </p>
       <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px">
-        ${['aurora','brutalist','clay_soft','deconstruct','editorial','immersive','ma_minimalism','museum','noir','parchment','raw_data','solarpunk','swiss_international','synthwave','terminal','the_archive','the_ether','y2k_chrome','zen','zine_collage'].map(id => `<article class="card" style="padding:8px 10px"><p style="margin:0;font-family:monospace;font-size:11px;color:var(--brand)">${id}</p></article>`).join('')}
+        ${['editorial','museum','swiss_international','zen','clay_soft','terminal','brutalist','immersive','synthwave','noir','solarpunk','y2k_chrome'].map(id => `<article class="card" style="padding:8px 10px"><p style="margin:0;font-family:monospace;font-size:11px;color:var(--brand)">${id}</p></article>`).join('')}
       </div>
     </section>
 

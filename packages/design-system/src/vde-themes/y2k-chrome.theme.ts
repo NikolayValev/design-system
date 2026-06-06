@@ -5,6 +5,12 @@ export const y2kChromeTheme: VisionTheme = {
   name: 'Y2K_Chrome',
   archetype: 'The Glitch',
   description: 'Brushed metallic surfaces with neon glow accents and retro-futurist scanline energy.',
+  family: 'expressive',
+  tagline: 'Reflective pop futurism with unapologetic energy.',
+  summary:
+    'Y2K Chrome amplifies spectacle with metallic highlights, hyper-clean gradients, and playful saturation. Specular accents create immediate visual signatures that differentiate key actions and support campaign storytelling.',
+  bestFor: ['Fashion and entertainment', 'Youth-centric products', 'High-energy campaigns'],
+  mood: ['flashy', 'synthetic', 'nostalgic-future'],
   colors: {
     background: 'oklch(0.9 0.01 250)',
     foreground: 'oklch(0.2 0.02 250)',

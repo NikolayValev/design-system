@@ -5,6 +5,12 @@ export const museumTheme: VisionTheme = {
   name: 'Museum',
   archetype: 'Editorial Heritage',
   description: 'Warm archival palette with tactile paper texture and restrained motion.',
+  family: 'editorial',
+  tagline: 'Print-era discipline and archival warmth for cultivated reading.',
+  summary:
+    'Museum channels print-era discipline with modern token systems. Serif architecture lends gravity to headings while measured timing and archival warmth make reading-focused flows feel tangible and trustworthy.',
+  bestFor: ['Museum and gallery storytelling', 'Journals and essays', 'Premium long-form reading'],
+  mood: ['warm', 'curated', 'literary'],
   colors: {
     background: 'oklch(0.97 0.01 80)',
     foreground: 'oklch(0.24 0.02 50)',

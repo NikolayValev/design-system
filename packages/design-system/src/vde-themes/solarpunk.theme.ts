@@ -5,6 +5,12 @@ export const solarpunkTheme: VisionTheme = {
   name: 'Solarpunk',
   archetype: 'Optimistic Ecology',
   description: 'Organic optimistic technology with curved super-ellipses and atmospheric living gradients.',
+  family: 'expressive',
+  tagline: 'Engineered optimism for civic and climate products.',
+  summary:
+    'Solarpunk frames digital tools as constructive systems for communities and sustainability. Eco-forward colour signals progress and trust while soft contrast stays informative without alarm.',
+  bestFor: ['Civic and community tools', 'Climate and energy products', 'Public-good platforms'],
+  mood: ['hopeful', 'organic', 'clean-tech'],
   colors: {
     background: 'oklch(0.95 0.03 120)',
     foreground: 'oklch(0.27 0.05 145)',

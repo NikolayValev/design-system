@@ -18,21 +18,17 @@ const sizeClassMap: Record<NonNullable<EditorialHeaderProps['size']>, string> = 
 export const EditorialHeader = React.forwardRef<HTMLHeadingElement, EditorialHeaderProps>(
   ({ as = 'h1', size = 'lg', writingMode = 'horizontal', className = '', ...props }, ref) => {
     const { activeVision } = useVision();
-    const isMuseum = activeVision.id === 'museum' || activeVision.id === 'the_archive';
-    const isBrutalist = activeVision.id === 'brutalist' || activeVision.id === 'raw_data';
-    const isImmersive =
-      activeVision.id === 'immersive' || activeVision.id === 'the_ether' || activeVision.id === 'y2k_chrome';
-    const isMaMinimalism = activeVision.id === 'ma_minimalism';
-    const isDeconstruct = activeVision.id === 'deconstruct';
+    const isMuseum = activeVision.id === 'museum';
+    const isBrutalist = activeVision.id === 'brutalist';
+    const isImmersive = activeVision.id === 'immersive' || activeVision.id === 'y2k_chrome';
     const Tag = as;
-    const resolvedWritingMode = isMaMinimalism && writingMode === 'horizontal' ? 'vertical' : writingMode;
 
     const classes = [
       'relative',
       'inline-block',
       'max-w-full',
       sizeClassMap[size],
-      resolvedWritingMode === 'vertical'
+      writingMode === 'vertical'
         ? '[writing-mode:vertical-rl] [text-orientation:mixed]'
         : '[writing-mode:horizontal-tb] [text-orientation:initial]',
       isMuseum
@@ -44,8 +40,6 @@ export const EditorialHeader = React.forwardRef<HTMLHeadingElement, EditorialHea
       isImmersive
         ? '[color:var(--vde-color-foreground)] [letter-spacing:var(--vde-letter-spacing-wide)] [text-shadow:var(--vde-editorial-glow,_0_0_24px_rgba(157,_95,_255,_0.4))]'
         : '',
-      isMaMinimalism ? 'font-light [letter-spacing:var(--vde-letter-spacing-wide)]' : '',
-      isDeconstruct ? '[transform:rotate(var(--vde-component-tilt,_-1deg))]' : '',
       '[font-family:var(--vde-font-display)]',
       '[line-height:var(--vde-line-height-tight)]',
       'transition-all',

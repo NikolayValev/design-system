@@ -89,11 +89,42 @@ export interface VisionOrnaments {
   texture: boolean;
 }
 
+/**
+ * Theme families group the catalog into a small, legible taxonomy.
+ * Each theme declares exactly one family; family copy lives in
+ * `vde-themes/families.ts`.
+ */
+export const THEME_FAMILY_IDS = [
+  'editorial',
+  'minimal',
+  'technical',
+  'atmospheric',
+  'expressive',
+] as const;
+
+export type ThemeFamilyId = (typeof THEME_FAMILY_IDS)[number];
+
+export interface ThemeFamily {
+  id: ThemeFamilyId;
+  name: string;
+  description: string;
+}
+
 export interface VisionTheme {
   id: string;
   name: string;
   archetype: string;
   description: string;
+  /** Grouping key — see `themeFamilies`. */
+  family: ThemeFamilyId;
+  /** One crisp sentence; the canonical short description. */
+  tagline: string;
+  /** Two to three sentences of longer-form description. */
+  summary: string;
+  /** Concrete use cases this theme is suited to. */
+  bestFor: string[];
+  /** Adjective tags describing the theme's character. */
+  mood: string[];
   colors: VisionColors;
   artisticPillars: ArtisticPillars;
   ornaments: VisionOrnaments;

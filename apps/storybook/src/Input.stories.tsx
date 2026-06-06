@@ -3,7 +3,7 @@ import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@nikola
 import { Search, Mail, Lock, AtSign, AlertCircle } from 'lucide-react';
 
 const meta = {
-  title: 'Primitives/Input',
+  title: 'Components/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: {

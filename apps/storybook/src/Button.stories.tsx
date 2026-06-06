@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@nikolayvalev/design-system';
-import { ArrowUpRight, Sparkles, Trash2, Loader2, Check } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Trash2, Check } from 'lucide-react';
 
 const meta = {
-  title: 'Primitives/Button',
+  title: 'Components/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: {
@@ -24,6 +24,9 @@ const meta = {
     size: {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
+    },
+    loading: {
+      control: 'boolean',
     },
   },
 } satisfies Meta<typeof Button>;
@@ -132,8 +135,8 @@ export const Gallery: Story = {
             <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">disabled</p>
           </div>
           <div className="space-y-2">
-            <Button {...args} className="w-full" disabled>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading
+            <Button {...args} className="w-full" loading>
+              Loading
             </Button>
             <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">pending</p>
           </div>

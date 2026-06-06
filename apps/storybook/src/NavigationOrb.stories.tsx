@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { NavigationOrb } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Primitives/NavigationOrb',
+  title: 'Showcase/NavigationOrb',
   component: NavigationOrb,
   tags: ['autodocs'],
   parameters: {

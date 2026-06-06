@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AtmosphereProvider } from '@nikolayvalev/design-system';
 
 const meta = {
-  title: 'Primitives/AtmosphereProvider',
+  title: 'Showcase/AtmosphereProvider',
   component: AtmosphereProvider,
   tags: ['autodocs'],
   parameters: {

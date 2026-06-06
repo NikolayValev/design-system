@@ -88,6 +88,16 @@ Components reference variables, never raw values:
 
 ## Theme Profiles
 
+> **Status — legacy.** The `public` / `dashboard` / `experimental` profile system
+> described in this section predates the **VDE Vision** system and is no longer the
+> primary theming model. New work should target the curated **vision themes**
+> (`@nikolayvalev/design-system` → `visionThemes`, `themeFamilies`, `VisionProvider`),
+> which components actually consume via the `--vde-*` CSS variables. The
+> `@nikolayvalev/design-tokens` profiles remain for backwards compatibility; a full
+> migration is tracked separately. Where this document and the vision system
+> disagree (for example the `hsl(...)` examples below versus OKLCH), defer to the
+> vision system.
+
 Profiles are named token bundles representing different use cases:
 
 ### Public Profile
