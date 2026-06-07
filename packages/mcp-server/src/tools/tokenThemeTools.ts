@@ -22,12 +22,6 @@ export type ThemeSummary = {
 
 export type ThemeDetail = ThemeSummary & { source: string };
 
-export type TokenProfileSummary = {
-  name: string;
-  density: string;
-  description: string;
-};
-
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function extractThemeMeta(source: string): Record<string, string> {
@@ -95,35 +89,6 @@ export async function getTheme(id: string): Promise<ThemeDetail | null> {
   }
 
   return null;
-}
-
-// ── Token profile tools ──────────────────────────────────────────────────────
-
-export const TOKEN_PROFILES: TokenProfileSummary[] = [
-  {
-    name: 'public',
-    density: 'comfortable',
-    description: 'Marketing sites and public-facing apps. Vibrant, approachable, light mode.',
-  },
-  {
-    name: 'dashboard',
-    density: 'compact',
-    description: 'Internal tools and data-heavy interfaces. Dark mode, high information density.',
-  },
-  {
-    name: 'experimental',
-    density: 'comfortable',
-    description: 'Prototype and exploration canvas with elevated design expression.',
-  },
-];
-
-export async function getTokenProfileSource(): Promise<string | null> {
-  const profilesPath = path.join(DESIGN_SYSTEM_SRC_DIR, 'tokens', 'profiles.ts');
-  try {
-    return await fs.readFile(profilesPath, 'utf-8');
-  } catch {
-    return null;
-  }
 }
 
 export async function getBaseTokenSource(): Promise<string | null> {

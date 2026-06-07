@@ -7,8 +7,8 @@ const DOCS_METADATA = {
   mcpServer: {
     url: 'https://designsystem.nikolayvalev.com/mcp',
     transport: 'streamable-http',
-    toolCount: 17,
-    resourceCount: 6,
+    toolCount: 15,
+    resourceCount: 5,
     tools: [
       { name: 'list_components', category: 'discovery', params: 'query?' },
       { name: 'list_sections', category: 'discovery', params: 'query?' },
@@ -22,10 +22,8 @@ const DOCS_METADATA = {
       { name: 'get_section_bundle', category: 'bundle', params: 'names[]' },
       { name: 'get_page_bundle', category: 'bundle', params: 'names[]' },
       { name: 'get_artifact_bundle', category: 'bundle', params: 'kind, names[]' },
-      { name: 'list_themes', category: 'tokens-themes', params: '' },
-      { name: 'get_theme', category: 'tokens-themes', params: 'id' },
-      { name: 'list_token_profiles', category: 'tokens-themes', params: '' },
-      { name: 'get_token_profile_source', category: 'tokens-themes', params: '' },
+      { name: 'list_themes', category: 'themes', params: '' },
+      { name: 'get_theme', category: 'themes', params: 'id' },
       { name: 'get_contribution_guide', category: 'guide', params: '' },
     ],
     resources: [
@@ -33,7 +31,6 @@ const DOCS_METADATA = {
       'design-system://sections',
       'design-system://pages',
       'design-system://themes',
-      'design-system://token-profiles',
       'design-system://contribution-guide',
     ],
   },
@@ -76,33 +73,21 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
     </section>
 
     <section class="panel" style="margin-top:10px">
-      <h2 style="margin-top:0">Token system — three layers</h2>
+      <h2 style="margin-top:0">Token system — two layers</h2>
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
           <p class="step-title">Base tokens (<code>base.ts</code>)</p>
-          <p>Raw OKLCH values with no semantic meaning. Shared foundation across all profiles. Changes here ripple everywhere.</p>
+          <p>Raw OKLCH values with no semantic meaning. Shared foundation across all themes. Changes here ripple everywhere.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
-          <p class="step-title">Profiles (<code>profiles.ts</code>)</p>
-          <p>
-            Map base tokens to semantic roles (<code>background</code>, <code>primary</code>, <code>foreground</code>, <code>border</code>…) for a specific context.<br />
-            <strong>public</strong> — light + dark mode, vibrant palette, marketing sites.<br />
-            <strong>dashboard</strong> — dark only, compact density, reduced motion, internal tools.<br />
-            <strong>experimental</strong> — pure black background, maximum contrast, zero border-radius, prototypes.
-          </p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-body">
           <p class="step-title">Tailwind preset + CSS variables (output)</p>
           <p>
-            <code>createTailwindPreset(profile)</code> generates utility classes (<code>bg-primary</code>, <code>text-foreground</code>, <code>border-border</code>).<br />
-            The CSS profile import (<code>styles/public.css</code>) emits CSS variables onto <code>:root</code>. Both outputs are derived from the same profile object — no duplication.
+            <code>createTailwindPreset()</code> generates utility classes (<code>bg-primary</code>, <code>text-foreground</code>, <code>border-border</code>).<br />
+            CSS variables are emitted onto <code>:root</code> — a single unified token set consumed by all VDE themes.
           </p>
         </div>
       </div>
@@ -111,7 +96,7 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
     <section class="panel" style="margin-top:10px">
       <h2 style="margin-top:0">VDE Themes — visual identity layer</h2>
       <p style="color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 8px">
-        Profiles set <em>what values</em> the tokens hold. VDE themes set <em>what the UI feels like</em> — typography personality, surface physics, motion curves, ornamental elements.
+        VDE themes define <em>what the UI feels like</em> — typography personality, surface physics, motion curves, ornamental elements.
         Applied via <code>&lt;VisionProvider theme="museum"&gt;</code>; every child component reads from the active vision via <code>useVision()</code>.
         Swapping the theme swaps the entire design language at runtime — no recompile.
       </p>
@@ -121,7 +106,7 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
     </section>
 
     <section class="panel" style="margin-top:10px">
-      <h2 style="margin-top:0">MCP tooling — 17 tools, 6 resources</h2>
+      <h2 style="margin-top:0">MCP tooling — 15 tools, 5 resources</h2>
       <p style="color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 14px">
         AI agents (Claude, Cursor, Windsurf) call these tools directly. No copy-paste, no context switching.
         Connect at <code>https://designsystem.nikolayvalev.com/mcp</code> (streamable HTTP).
@@ -153,12 +138,10 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
           <p style="margin:2px 0;font-size:12px"><code>get_artifact_source(kind, name)</code></p>
         </article>
         <article class="card">
-          <h3>Tokens &amp; themes</h3>
-          <p style="margin-bottom:8px;font-size:12px">All 20 VDE themes and the three OKLCH token profiles.</p>
+          <h3>Themes</h3>
+          <p style="margin-bottom:8px;font-size:12px">Browse and inspect VDE themes by id.</p>
           <p style="margin:2px 0;font-size:12px"><code>list_themes()</code></p>
           <p style="margin:2px 0;font-size:12px"><code>get_theme(id)</code></p>
-          <p style="margin:2px 0;font-size:12px"><code>list_token_profiles()</code></p>
-          <p style="margin:2px 0;font-size:12px"><code>get_token_profile_source()</code></p>
         </article>
         <article class="card">
           <h3>Guide</h3>
@@ -173,7 +156,6 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
         <span class="endpoint">design-system://sections</span>
         <span class="endpoint">design-system://pages</span>
         <span class="endpoint">design-system://themes</span>
-        <span class="endpoint">design-system://token-profiles</span>
         <span class="endpoint">design-system://contribution-guide</span>
       </div>
 

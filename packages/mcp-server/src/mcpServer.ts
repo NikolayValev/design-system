@@ -23,11 +23,8 @@ import { getContributionGuide, getContributionGuideMarkdown } from './tools/cont
 import {
   listThemes,
   getTheme,
-  TOKEN_PROFILES,
-  getTokenProfileSource,
   getBaseTokenSource,
   type ThemeSummary,
-  type TokenProfileSummary,
 } from './tools/tokenThemeTools.js';
 
 export const SERVER_NAME = 'design-system-service';
@@ -478,47 +475,6 @@ export function createMcpServer() {
     },
   );
 
-  server.registerTool(
-    'list_token_profiles',
-    {
-      title: 'List Token Profiles',
-      description:
-        'List the three built-in design-token profiles (public, dashboard, experimental) with their density and purpose. Use this to choose the right CSS import and Tailwind preset for a consuming project.',
-      inputSchema: {},
-    },
-    async () => {
-      const result = { count: TOKEN_PROFILES.length, profiles: TOKEN_PROFILES };
-      return {
-        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
-        structuredContent: result,
-      };
-    },
-  );
-
-  server.registerTool(
-    'get_token_profile_source',
-    {
-      title: 'Get Token Profile Source',
-      description:
-        'Read the full TypeScript source of all token profiles (public, dashboard, experimental) including every OKLCH color, spacing scale, radius, and typography value.',
-      inputSchema: {},
-    },
-    async () => {
-      const [profileSource, baseSource] = await Promise.all([getTokenProfileSource(), getBaseTokenSource()]);
-      if (!profileSource) {
-        return {
-          isError: true,
-          content: [{ type: 'text', text: 'Token profile source could not be read.' }],
-        };
-      }
-      const combined = baseSource ? `// base.ts\n${baseSource}\n\n// profiles.ts\n${profileSource}` : profileSource;
-      return {
-        content: [{ type: 'text', text: combined }],
-        structuredContent: { profileSource, baseSource: baseSource ?? null },
-      };
-    },
-  );
-
   // ── Contribution guide ─────────────────────────────────────────────────────
 
   server.registerTool(
@@ -646,28 +602,6 @@ export function createMcpServer() {
         contents: [
           {
             uri: 'design-system://themes',
-            mimeType: 'application/json',
-            text: JSON.stringify(result, null, 2),
-          },
-        ],
-      };
-    },
-  );
-
-  server.registerResource(
-    'token_profiles',
-    'design-system://token-profiles',
-    {
-      title: 'Token Profiles',
-      description: 'The three built-in design-token profiles: public, dashboard, experimental.',
-      mimeType: 'application/json',
-    },
-    async () => {
-      const result = { count: TOKEN_PROFILES.length, profiles: TOKEN_PROFILES };
-      return {
-        contents: [
-          {
-            uri: 'design-system://token-profiles',
             mimeType: 'application/json',
             text: JSON.stringify(result, null, 2),
           },
