@@ -2,17 +2,58 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import readline from 'node:readline';
-import { BUILT_IN_PROFILE_NAMES, type BuiltInProfileName } from '../tokens/profile-names';
 import {
-  DEFAULT_VISION_SYSTEM,
-  getDefaultProfileVisionAssignments,
-  getVisionSystemThemeIds,
-  isVisionSystemId,
-  resolveProfileVisionAssignments,
-  VISION_SYSTEM_IDS,
-  type ProfileVisionAssignments,
-  type VisionSystemId,
+  getCompiledVisionIds,
+  getVisionThemeIds,
 } from '../vde-themes';
+
+const BUILT_IN_PROFILE_NAMES = ['public', 'dashboard', 'experimental'] as const;
+type BuiltInProfileName = (typeof BUILT_IN_PROFILE_NAMES)[number];
+
+/** Per-profile vision map used by the CLI's output config. */
+type VisionByProfile = Record<BuiltInProfileName, string>;
+
+const VISION_SETS = ['legacy', 'expanded', 'all'] as const;
+type VisionSet = (typeof VISION_SETS)[number];
+
+const DEFAULT_VISION_SET: VisionSet = 'all';
+
+const LEGACY_VISION_IDS = ['museum', 'brutalist', 'immersive', 'editorial', 'zen', 'synthwave', 'noir', 'terminal'];
+const EXPANDED_VISION_IDS = ['swiss_international', 'clay_soft', 'solarpunk', 'y2k_chrome'];
+
+function getVisionSetIds(set: VisionSet): string[] {
+  if (set === 'legacy') return LEGACY_VISION_IDS;
+  if (set === 'expanded') return getCompiledVisionIds(EXPANDED_VISION_IDS);
+  return getVisionThemeIds();
+}
+
+function isVisionSet(value: string): value is VisionSet {
+  return (VISION_SETS as readonly string[]).includes(value);
+}
+
+const DEFAULT_VISION_ASSIGNMENTS: Record<VisionSet, VisionByProfile> = {
+  legacy: { public: 'editorial', dashboard: 'terminal', experimental: 'brutalist' },
+  expanded: { public: 'swiss_international', dashboard: 'clay_soft', experimental: 'y2k_chrome' },
+  all: { public: 'editorial', dashboard: 'terminal', experimental: 'synthwave' },
+};
+
+function getDefaultVisionAssignments(set: VisionSet): VisionByProfile {
+  return { ...DEFAULT_VISION_ASSIGNMENTS[set] };
+}
+
+function buildVisionAssignments(
+  set: VisionSet,
+  overrides: Partial<VisionByProfile> = {},
+): VisionByProfile {
+  const allowed = new Set(getVisionSetIds(set));
+  const next = { ...getDefaultVisionAssignments(set), ...overrides };
+  for (const [profile, visionId] of Object.entries(next)) {
+    if (!allowed.has(visionId)) {
+      throw new Error(`Vision "${visionId}" is not part of "${set}" vision set (profile: ${profile}).`);
+    }
+  }
+  return next;
+}
 
 type ModuleKey = 'themes' | 'components' | 'pages';
 type PackageManager = 'pnpm' | 'yarn' | 'npm';
@@ -28,17 +69,17 @@ type CliOptions = {
   interactive: boolean;
   modules: ModuleKey[];
   modulesExplicit: boolean;
-  visionSystem: VisionSystemId;
-  visionSystemExplicit: boolean;
-  visionAssignments: ProfileVisionAssignments;
-  visionAssignmentOverrides: Partial<ProfileVisionAssignments>;
+  visionSet: VisionSet;
+  visionSetExplicit: boolean;
+  visionAssignments: VisionByProfile;
+  visionAssignmentOverrides: Partial<VisionByProfile>;
   visionAssignmentsExplicit: boolean;
   writeMcpConfig: boolean;
   listModulesOnly: boolean;
   listProfilesOnly: boolean;
-  listVisionSystemsOnly: boolean;
+  listVisionSetsOnly: boolean;
   listVisionsOnly: boolean;
-  listVisionsSystem: VisionSystemId;
+  listVisionsSet: VisionSet;
 };
 
 type WriteResult = {
@@ -52,7 +93,7 @@ const DEFAULT_PROFILE: Profile = BUILT_IN_PROFILE_NAMES[0];
 
 const MODULE_ORDER: readonly ModuleKey[] = ['themes', 'components', 'pages'];
 const PROFILE_ORDER: readonly Profile[] = BUILT_IN_PROFILE_NAMES;
-const VISION_SYSTEM_ORDER: readonly VisionSystemId[] = VISION_SYSTEM_IDS;
+const VISION_SET_ORDER: readonly VisionSet[] = VISION_SETS;
 
 const MODULE_DESCRIPTIONS: Record<ModuleKey, string> = {
   themes: 'Install tokens package + choose a style profile',
@@ -86,7 +127,7 @@ const PROFILE_SWATCHES: Record<Profile, readonly number[]> = {
   experimental: [201, 46, 226],
 };
 
-const VISION_SYSTEM_DESCRIPTIONS: Record<VisionSystemId, string> = {
+const VISION_SET_DESCRIPTIONS: Record<VisionSet, string> = {
   legacy: 'Classic foundational vision set',
   expanded: 'Expanded archetypes and visual directions',
   all: 'Complete registry (legacy + expanded)',
@@ -156,21 +197,21 @@ function isProfile(value: string): value is Profile {
   return (PROFILE_ORDER as readonly string[]).includes(value);
 }
 
-function visionSystemDisplayList(): string {
-  return VISION_SYSTEM_ORDER.join(' | ');
+function visionSetDisplayList(): string {
+  return VISION_SET_ORDER.join(' | ');
 }
 
 function isBuiltInProfile(value: string): value is Profile {
   return (PROFILE_ORDER as readonly string[]).includes(value);
 }
 
-function parseVisionAssignmentPairs(rawValue: string, source: string): Partial<ProfileVisionAssignments> {
+function parseVisionAssignmentPairs(rawValue: string, source: string): Partial<VisionByProfile> {
   const trimmed = rawValue.trim();
   if (!trimmed) {
     throw new Error(`No profile vision assignments provided for ${source}.`);
   }
 
-  const overrides: Partial<ProfileVisionAssignments> = {};
+  const overrides: Partial<VisionByProfile> = {};
   const pairs = trimmed.split(/[,\s]+/).filter(Boolean);
   for (const pair of pairs) {
     const [rawProfile, rawVision] = pair.split('=').map(value => value.trim());
@@ -205,16 +246,16 @@ function printProfiles(): void {
   });
 }
 
-function printVisionSystems(): void {
-  process.stdout.write('Available vision systems:\n');
-  VISION_SYSTEM_ORDER.forEach((system, idx) => {
-    process.stdout.write(`  ${idx + 1}) ${system.padEnd(10)} ${VISION_SYSTEM_DESCRIPTIONS[system]}\n`);
+function printVisionSets(): void {
+  process.stdout.write('Available vision sets:\n');
+  VISION_SET_ORDER.forEach((set, idx) => {
+    process.stdout.write(`  ${idx + 1}) ${set.padEnd(10)} ${VISION_SET_DESCRIPTIONS[set]}\n`);
   });
 }
 
-function printVisionIds(system: VisionSystemId): void {
-  process.stdout.write(`Vision IDs for system "${system}":\n`);
-  getVisionSystemThemeIds(system).forEach((visionId, idx) => {
+function printVisionIds(set: VisionSet): void {
+  process.stdout.write(`Vision IDs for set "${set}":\n`);
+  getVisionSetIds(set).forEach((visionId, idx) => {
     process.stdout.write(`  ${idx + 1}) ${visionId}\n`);
   });
 }
@@ -240,15 +281,15 @@ Options:
   --profile <name>      Style profile: ${profileDisplayList()} (default: ${DEFAULT_PROFILE})
   --modules <list>      Comma-separated module list (${modulesDisplayList()})
   --targets <list>      Alias for --modules
-  --vision-system <id>  Compile-time vision system: ${visionSystemDisplayList()} (default: ${DEFAULT_VISION_SYSTEM})
+  --vision-system <id>  Compile-time vision set: ${visionSetDisplayList()} (default: ${DEFAULT_VISION_SET})
   --vision-map <pairs>  Profile/vision map, e.g. public=editorial,dashboard=terminal
   --vision-public <id>  Assign compile-time vision for public profile
   --vision-dashboard <id> Assign compile-time vision for dashboard profile
   --vision-experimental <id> Assign compile-time vision for experimental profile
   --list-modules        Print selectable modules and exit
   --list-profiles       Print style profiles (colors + vibes) and exit
-  --list-vision-systems Print vision systems and exit
-  --list-visions [sys]  Print available vision IDs for a system and exit (default: selected system)
+  --list-vision-systems Print vision sets and exit
+  --list-visions [sys]  Print available vision IDs for a set and exit (default: selected set)
   --mcp-config          Always write .mcp.json and .cursor/mcp.json
   --no-mcp-config       Skip writing MCP config files
   --interactive         Force interactive selector menus
@@ -269,17 +310,17 @@ function parseArgs(argv: string[]): CliOptions {
     interactive: process.stdin.isTTY && process.stdout.isTTY,
     modules: [...MODULE_ORDER],
     modulesExplicit: false,
-    visionSystem: DEFAULT_VISION_SYSTEM,
-    visionSystemExplicit: false,
-    visionAssignments: getDefaultProfileVisionAssignments(DEFAULT_VISION_SYSTEM),
+    visionSet: DEFAULT_VISION_SET,
+    visionSetExplicit: false,
+    visionAssignments: getDefaultVisionAssignments(DEFAULT_VISION_SET),
     visionAssignmentOverrides: {},
     visionAssignmentsExplicit: false,
     writeMcpConfig: true,
     listModulesOnly: false,
     listProfilesOnly: false,
-    listVisionSystemsOnly: false,
+    listVisionSetsOnly: false,
     listVisionsOnly: false,
-    listVisionsSystem: DEFAULT_VISION_SYSTEM,
+    listVisionsSet: DEFAULT_VISION_SET,
   };
 
   const args = [...argv];
@@ -314,7 +355,7 @@ function parseArgs(argv: string[]): CliOptions {
     }
 
     if (arg === '--list-vision-systems') {
-      options.listVisionSystemsOnly = true;
+      options.listVisionSetsOnly = true;
       continue;
     }
 
@@ -322,11 +363,11 @@ function parseArgs(argv: string[]): CliOptions {
       options.listVisionsOnly = true;
       const value = args[index + 1];
       if (value && !value.startsWith('-')) {
-        if (!isVisionSystemId(value)) {
-          throw new Error(`Unsupported vision system "${value}". Use ${visionSystemDisplayList()}.`);
+        if (!isVisionSet(value)) {
+          throw new Error(`Unsupported vision set "${value}". Use ${visionSetDisplayList()}.`);
         }
 
-        options.listVisionsSystem = value;
+        options.listVisionsSet = value;
         index += 1;
       }
       continue;
@@ -408,13 +449,13 @@ function parseArgs(argv: string[]): CliOptions {
         throw new Error('Missing value for --vision-system');
       }
 
-      if (!isVisionSystemId(value)) {
-        throw new Error(`Unsupported vision system "${value}". Use ${visionSystemDisplayList()}.`);
+      if (!isVisionSet(value)) {
+        throw new Error(`Unsupported vision set "${value}". Use ${visionSetDisplayList()}.`);
       }
 
-      options.visionSystem = value;
-      options.visionSystemExplicit = true;
-      options.listVisionsSystem = value;
+      options.visionSet = value;
+      options.visionSetExplicit = true;
+      options.listVisionsSet = value;
       index += 1;
       continue;
     }
@@ -473,8 +514,8 @@ function parseArgs(argv: string[]): CliOptions {
     throw new Error(`Unknown argument: ${arg}`);
   }
 
-  options.visionAssignments = resolveProfileVisionAssignments(
-    options.visionSystem,
+  options.visionAssignments = buildVisionAssignments(
+    options.visionSet,
     options.visionAssignmentOverrides,
   );
 
@@ -736,11 +777,11 @@ async function selectProfileInteractively(defaultProfile: Profile): Promise<Prof
   );
 }
 
-async function selectVisionSystemInteractively(defaultSystem: VisionSystemId): Promise<VisionSystemId> {
-  return withRawInput<VisionSystemId>(finish =>
-    new Promise<VisionSystemId>((resolve, reject) => {
+async function selectVisionSetInteractively(defaultSet: VisionSet): Promise<VisionSet> {
+  return withRawInput<VisionSet>(finish =>
+    new Promise<VisionSet>((resolve, reject) => {
       const stdin = process.stdin;
-      let cursor = VISION_SYSTEM_ORDER.indexOf(defaultSystem);
+      let cursor = VISION_SET_ORDER.indexOf(defaultSet);
       if (cursor < 0) {
         cursor = 0;
       }
@@ -752,16 +793,16 @@ async function selectVisionSystemInteractively(defaultSystem: VisionSystemId): P
 
       const render = () => {
         const lines: string[] = [
-          style('Vision System Picker', `${ANSI.bold}${ANSI.cyan}`),
-          'Choose the compile-time vision system.',
+          style('Vision Set Picker', `${ANSI.bold}${ANSI.cyan}`),
+          'Choose the compile-time vision set.',
           style('Controls: Up/Down move, Enter confirm, Q cancel', ANSI.dim),
           '',
         ];
 
-        VISION_SYSTEM_ORDER.forEach((system, idx) => {
+        VISION_SET_ORDER.forEach((set, idx) => {
           const isActive = idx === cursor;
           const prefix = isActive ? style('>', ANSI.cyan) : ' ';
-          lines.push(`${prefix} ${system.padEnd(10)} ${VISION_SYSTEM_DESCRIPTIONS[system]}`);
+          lines.push(`${prefix} ${set.padEnd(10)} ${VISION_SET_DESCRIPTIONS[set]}`);
         });
 
         renderFullscreen(lines);
@@ -770,31 +811,31 @@ async function selectVisionSystemInteractively(defaultSystem: VisionSystemId): P
       const onKeypress = (_: string, key: { name?: string; ctrl?: boolean } = {}) => {
         if (key.ctrl && key.name === 'c') {
           cleanup();
-          reject(new Error('Interactive vision system selection cancelled.'));
+          reject(new Error('Interactive vision set selection cancelled.'));
           return;
         }
 
         if (key.name === 'q' || key.name === 'escape') {
           cleanup();
-          reject(new Error('Interactive vision system selection cancelled.'));
+          reject(new Error('Interactive vision set selection cancelled.'));
           return;
         }
 
         if (key.name === 'up') {
-          cursor = (cursor - 1 + VISION_SYSTEM_ORDER.length) % VISION_SYSTEM_ORDER.length;
+          cursor = (cursor - 1 + VISION_SET_ORDER.length) % VISION_SET_ORDER.length;
           render();
           return;
         }
 
         if (key.name === 'down') {
-          cursor = (cursor + 1) % VISION_SYSTEM_ORDER.length;
+          cursor = (cursor + 1) % VISION_SET_ORDER.length;
           render();
           return;
         }
 
         if (key.name === 'return' || key.name === 'enter') {
           cleanup();
-          resolve(VISION_SYSTEM_ORDER[cursor] as VisionSystemId);
+          resolve(VISION_SET_ORDER[cursor] as VisionSet);
         }
       };
 
@@ -806,13 +847,13 @@ async function selectVisionSystemInteractively(defaultSystem: VisionSystemId): P
 
 async function selectVisionForProfileInteractively(
   profile: Profile,
-  system: VisionSystemId,
+  set: VisionSet,
   defaultVisionId: string,
 ): Promise<string> {
   return withRawInput<string>(finish =>
     new Promise<string>((resolve, reject) => {
       const stdin = process.stdin;
-      const options = [...getVisionSystemThemeIds(system)];
+      const options = [...getVisionSetIds(set)];
       let cursor = options.indexOf(defaultVisionId);
       if (cursor < 0) {
         cursor = 0;
@@ -826,7 +867,7 @@ async function selectVisionForProfileInteractively(
       const render = () => {
         const lines: string[] = [
           style(`Vision Assignment: ${profile}`, `${ANSI.bold}${ANSI.green}`),
-          `Choose compile-time vision for profile "${profile}" (${system} system).`,
+          `Choose compile-time vision for profile "${profile}" (${set} set).`,
           style('Controls: Up/Down move, Enter confirm, Q cancel', ANSI.dim),
           '',
         ];
@@ -964,8 +1005,8 @@ Token profile selected during init: \`${options.profile}\`
 Recommended CSS import:
 \`@nikolayvalev/design-tokens/styles/${options.profile}.css\`
 
-Compile-time vision system:
-\`${options.visionSystem}\`
+Compile-time vision set:
+\`${options.visionSet}\`
 
 Compile-time profile vision assignments:
 - \`public\` -> \`${options.visionAssignments.public}\`
@@ -999,7 +1040,7 @@ function makeSetupGuide(options: CliOptions, manager: PackageManager, modules: M
     sections.push(`- \`${options.profile}\`: ${PROFILE_VIBES[options.profile]}`);
     sections.push('');
     sections.push('Compile-time vision assignments for generated profile CSS:');
-    sections.push(`- Vision system: \`${options.visionSystem}\``);
+    sections.push(`- Vision set: \`${options.visionSet}\``);
     sections.push(`- \`public\` -> \`${options.visionAssignments.public}\``);
     sections.push(`- \`dashboard\` -> \`${options.visionAssignments.dashboard}\``);
     sections.push(`- \`experimental\` -> \`${options.visionAssignments.experimental}\``);
@@ -1043,7 +1084,7 @@ function makeSetupGuide(options: CliOptions, manager: PackageManager, modules: M
 
   sections.push('Build-time environment variables (when building the design-system package from source):');
   sections.push('```bash');
-  sections.push(`DESIGN_SYSTEM_VISION_SYSTEM=${options.visionSystem}`);
+  sections.push(`DESIGN_SYSTEM_VISIONS=${options.visionAssignments.public},${options.visionAssignments.dashboard},${options.visionAssignments.experimental}`);
   sections.push(`DESIGN_SYSTEM_VISION_PUBLIC=${options.visionAssignments.public}`);
   sections.push(`DESIGN_SYSTEM_VISION_DASHBOARD=${options.visionAssignments.dashboard}`);
   sections.push(`DESIGN_SYSTEM_VISION_EXPERIMENTAL=${options.visionAssignments.experimental}`);
@@ -1069,7 +1110,7 @@ async function scaffold(options: CliOptions): Promise<WriteResult[]> {
     mcpUrl: options.mcpUrl,
     installRoot: options.installRoot,
     tokenProfile: options.profile,
-    visionSystem: options.visionSystem,
+    visionSet: options.visionSet,
     profileVisions: options.visionAssignments,
     modules: options.modules, // backwards compatibility
     downloadTargets: options.modules,
@@ -1124,13 +1165,13 @@ async function main() {
       process.exit(0);
     }
 
-    if (options.listVisionSystemsOnly) {
-      printVisionSystems();
+    if (options.listVisionSetsOnly) {
+      printVisionSets();
       process.exit(0);
     }
 
     if (options.listVisionsOnly) {
-      printVisionIds(options.listVisionsSystem);
+      printVisionIds(options.listVisionsSet);
       process.exit(0);
     }
 
@@ -1142,17 +1183,17 @@ async function main() {
       options.profile = await selectProfileInteractively(options.profile);
     }
 
-    if (options.interactive && hasModule(options.modules, 'themes') && !options.visionSystemExplicit) {
-      options.visionSystem = await selectVisionSystemInteractively(options.visionSystem);
-      options.listVisionsSystem = options.visionSystem;
+    if (options.interactive && hasModule(options.modules, 'themes') && !options.visionSetExplicit) {
+      options.visionSet = await selectVisionSetInteractively(options.visionSet);
+      options.listVisionsSet = options.visionSet;
     }
 
     if (options.interactive && hasModule(options.modules, 'themes') && !options.visionAssignmentsExplicit) {
-      const assignmentDraft = getDefaultProfileVisionAssignments(options.visionSystem);
+      const assignmentDraft = getDefaultVisionAssignments(options.visionSet);
       for (const profile of PROFILE_ORDER) {
         assignmentDraft[profile] = await selectVisionForProfileInteractively(
           profile,
-          options.visionSystem,
+          options.visionSet,
           assignmentDraft[profile],
         );
       }
@@ -1160,8 +1201,8 @@ async function main() {
       options.visionAssignmentsExplicit = true;
     }
 
-    options.visionAssignments = resolveProfileVisionAssignments(
-      options.visionSystem,
+    options.visionAssignments = buildVisionAssignments(
+      options.visionSet,
       options.visionAssignmentsExplicit ? options.visionAssignmentOverrides : {},
     );
 
@@ -1179,7 +1220,7 @@ async function main() {
     process.stdout.write(`Modules: ${options.modules.join(', ')}\n`);
     if (selected.has('themes')) {
       process.stdout.write(`Style profile: ${options.profile} (${PROFILE_VIBES[options.profile]})\n`);
-      process.stdout.write(`Vision system: ${options.visionSystem}\n`);
+      process.stdout.write(`Vision set: ${options.visionSet}\n`);
       process.stdout.write(`Vision assignments: public=${options.visionAssignments.public}, dashboard=${options.visionAssignments.dashboard}, experimental=${options.visionAssignments.experimental}\n`);
     }
 
@@ -1233,7 +1274,7 @@ async function main() {
     }
 
     if (selected.has('themes')) {
-      process.stdout.write(`  ${step}. For package builds, set DESIGN_SYSTEM_VISION_SYSTEM=${options.visionSystem} (and profile-specific DESIGN_SYSTEM_VISION_* vars as needed)\n`);
+      process.stdout.write(`  ${step}. For package builds, set DESIGN_SYSTEM_VISIONS=<comma-separated-ids> or individual DESIGN_SYSTEM_VISION_* vars\n`);
       step += 1;
     }
   } catch (error) {

@@ -36,14 +36,8 @@ if (!fs.existsSync(distDir)) {
 const requiredFiles = [
   'dist/index.js',
   'dist/index.d.ts',
-  'dist/tailwind/index.js',
-  'dist/tailwind/index.d.ts',
-  'dist/tokens/index.js',
-  'dist/tokens/index.d.ts',
   'dist/styles/global.css',
-  'dist/styles/public.css',
-  'dist/styles/dashboard.css',
-  'dist/styles/experimental.css',
+  'dist/styles/editorial.css',
 ];
 
 console.log('📦 Checking required files:\n');
@@ -67,11 +61,7 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 const expectedExports = {
   '.': 'Root entrypoint',
   './styles': 'Default CSS',
-  './styles/public.css': 'Public profile CSS',
-  './styles/dashboard.css': 'Dashboard profile CSS',
-  './styles/experimental.css': 'Experimental profile CSS',
-  './tailwind': 'Tailwind preset',
-  './tokens': 'Design tokens',
+  './styles/*.css': 'Per-vision CSS wildcard',
 };
 
 Object.entries(expectedExports).forEach(([exportPath, description]) => {
@@ -82,58 +72,14 @@ Object.entries(expectedExports).forEach(([exportPath, description]) => {
   }
 });
 
-// Verify CSS files contain expected content
-console.log('\n🎨 Validating CSS file content:\n');
-
-const cssChecks = [
-  {
-    file: 'dist/styles/public.css',
-    mustContain: [':root', '@import', 'tailwindcss'],
-    description: 'Public CSS has base imports',
-  },
-  {
-    file: 'dist/styles/dashboard.css',
-    mustContain: [':root', '--color-background'],
-    description: 'Dashboard CSS has tokens',
-  },
-  {
-    file: 'dist/styles/experimental.css',
-    mustContain: [':root', '--color-background'],
-    description: 'Experimental CSS has tokens',
-  },
-];
-
-cssChecks.forEach(({ file, mustContain, description }) => {
-  const fullPath = path.join(rootDir, file);
-  if (fs.existsSync(fullPath)) {
-    const content = fs.readFileSync(fullPath, 'utf-8');
-    const hasAll = mustContain.every((str) => content.includes(str));
-    if (hasAll) {
-      pass(`${description}`);
-    } else {
-      fail(`${description} - missing required content`);
-    }
-  }
-});
-
 // Check TypeScript declarations
 console.log('\n📝 Checking TypeScript declarations:\n');
 
 const dtsChecks = [
   {
     file: 'dist/index.d.ts',
-    mustExport: ['Button', 'Card', 'Input', 'createTheme', 'applyTheme'],
+    mustExport: ['Button', 'Card', 'Input', 'VisionProvider', 'visionThemes'],
     description: 'Root exports',
-  },
-  {
-    file: 'dist/tailwind/index.d.ts',
-    mustExport: ['createTailwindPreset', 'publicProfile', 'dashboardProfile'],
-    description: 'Tailwind exports',
-  },
-  {
-    file: 'dist/tokens/index.d.ts',
-    mustExport: ['ThemeProfile', 'publicProfile', 'dashboardProfile'],
-    description: 'Token exports',
   },
 ];
 
