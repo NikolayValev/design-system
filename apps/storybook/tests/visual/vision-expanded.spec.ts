@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { expandedVisionThemeIds } from '@nikolayvalev/design-system';
 
-const expandedVisions = [...expandedVisionThemeIds];
+const expandedVisions = ['editorial', 'swiss_international', 'terminal', 'immersive', 'solarpunk'];
 
 function storyUrl(storyId: string, vision: string): string {
   return `/iframe.html?id=${storyId}&viewMode=story&globals=vision:${vision}`;

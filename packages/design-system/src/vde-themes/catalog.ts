@@ -53,17 +53,6 @@ export const visionThemes: VisionTheme[] = [
   y2kChromeTheme,
 ];
 
-/**
- * A smaller cross-family highlight set, used by the optional compile-time
- * "expanded" vision subset and its visual regression coverage.
- */
-export const expandedVisionThemeIds = [
-  'swiss_international',
-  'clay_soft',
-  'solarpunk',
-  'y2k_chrome',
-] as const;
-
 export function getVisionThemeById(themeId: string): VisionTheme | undefined {
   return visionThemes.find(theme => theme.id === themeId);
 }
