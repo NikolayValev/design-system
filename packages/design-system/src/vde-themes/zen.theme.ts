@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const zenTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const zenTheme: VisionTheme = {
     'Zen minimises stimulus so interfaces feel steady and mentally lightweight. Muted energy levels reduce cognitive overhead while simple geometry and soft pacing support sustained concentration.',
   bestFor: ['Productivity tools', 'Wellness and mindfulness apps', 'Focus-first workflows'],
   mood: ['calm', 'balanced', 'intentional'],
-  colors: {
+  defaultMode: 'light',
+  colors: dualPalette({
     background: 'oklch(0.97 0.01 145)',
     foreground: 'oklch(0.29 0.03 160)',
     surface: 'oklch(0.99 0.01 150)',
@@ -32,7 +34,7 @@ export const zenTheme: VisionTheme = {
     chart3: 'oklch(0.7 0.1 90)',
     chart4: 'oklch(0.58 0.09 200)',
     chart5: 'oklch(0.62 0.1 45)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '0.98', display: '1.1' },

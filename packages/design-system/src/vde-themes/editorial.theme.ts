@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const editorialTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const editorialTheme: VisionTheme = {
     'Editorial provides a publication-grade baseline where text hierarchy and story pacing stay central. Balanced spacing keeps long-form layouts scannable and its component vocabulary suits content-first teams.',
   bestFor: ['Newsrooms and publishing suites', 'Long-form content products', 'Content-first marketing sites'],
   mood: ['polished', 'authoritative', 'narrative'],
-  colors: {
+  defaultMode: 'light',
+  colors: dualPalette({
     background: 'oklch(0.99 0 0)',
     foreground: 'oklch(0.22 0.02 250)',
     surface: 'oklch(1 0 0)',
@@ -32,7 +34,7 @@ export const editorialTheme: VisionTheme = {
     chart3: 'oklch(0.65 0.16 110)',
     chart4: 'oklch(0.7 0.14 70)',
     chart5: 'oklch(0.63 0.14 315)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.28' },

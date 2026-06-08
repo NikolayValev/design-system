@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const terminalTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const terminalTheme: VisionTheme = {
     'Terminal prioritises speed, precision, and semantic clarity for technical workflows. Monospace hierarchy improves data alignment and minimal decoration keeps throughput high for expert users.',
   bestFor: ['Developer tools', 'Infrastructure consoles', 'Operational control surfaces'],
   mood: ['utilitarian', 'code-native', 'deterministic'],
-  colors: {
+  defaultMode: 'dark',
+  colors: dualPalette({
     background: 'oklch(0.17 0.03 150)',
     foreground: 'oklch(0.87 0.12 150)',
     surface: 'oklch(0.2 0.03 150)',
@@ -32,7 +34,7 @@ export const terminalTheme: VisionTheme = {
     chart3: 'oklch(0.76 0.15 100)',
     chart4: 'oklch(0.71 0.16 60)',
     chart5: 'oklch(0.7 0.15 20)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '0.98', display: '1.08' },

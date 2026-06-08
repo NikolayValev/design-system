@@ -110,6 +110,8 @@ export interface ThemeFamily {
   description: string;
 }
 
+export type ThemeMode = 'light' | 'dark';
+
 export interface VisionTheme {
   id: string;
   name: string;
@@ -125,7 +127,8 @@ export interface VisionTheme {
   bestFor: string[];
   /** Adjective tags describing the theme's character. */
   mood: string[];
-  colors: VisionColors;
+  defaultMode: ThemeMode;
+  colors: { light: VisionColors; dark: VisionColors };
   artisticPillars: ArtisticPillars;
   ornaments: VisionOrnaments;
 }
@@ -135,4 +138,7 @@ export interface VisionContextValue {
   activeVision: VisionTheme;
   activeVisionId: string;
   setVision: (visionId: string) => void;
+  mode: ThemeMode;
+  setMode: (mode: ThemeMode) => void;
+  toggleMode: () => void;
 }

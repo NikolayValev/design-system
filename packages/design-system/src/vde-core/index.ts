@@ -9,6 +9,7 @@ export type {
   VisionContextValue,
   ThemeFamily,
   ThemeFamilyId,
+  ThemeMode,
   ArtisticPillars,
   TypographyArchitecture,
   SurfacePhysics,

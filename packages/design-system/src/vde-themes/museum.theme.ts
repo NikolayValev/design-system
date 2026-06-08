@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const museumTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const museumTheme: VisionTheme = {
     'Museum channels print-era discipline with modern token systems. Serif architecture lends gravity to headings while measured timing and archival warmth make reading-focused flows feel tangible and trustworthy.',
   bestFor: ['Museum and gallery storytelling', 'Journals and essays', 'Premium long-form reading'],
   mood: ['warm', 'curated', 'literary'],
-  colors: {
+  defaultMode: 'light',
+  colors: dualPalette({
     background: 'oklch(0.97 0.01 80)',
     foreground: 'oklch(0.24 0.02 50)',
     surface: 'oklch(0.99 0.005 90)',
@@ -32,7 +34,7 @@ export const museumTheme: VisionTheme = {
     chart3: 'oklch(0.43 0.06 230)',
     chart4: 'oklch(0.78 0.17 88)',
     chart5: 'oklch(0.73 0.16 65)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.16' },

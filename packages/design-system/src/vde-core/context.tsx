@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { applyVisionToElement } from './css';
 import type { VisionRegistry } from './registry';
-import type { VisionContextValue } from './types';
+import type { ThemeMode, VisionContextValue } from './types';
 
 const VisionContext = createContext<VisionContextValue | undefined>(undefined);
 
@@ -12,6 +12,9 @@ export interface VisionProviderProps {
   defaultVisionId?: string;
   onVisionChange?: (visionId: string) => void;
   targetElement?: HTMLElement | null;
+  mode?: ThemeMode;
+  defaultMode?: ThemeMode;
+  onModeChange?: (mode: ThemeMode) => void;
 }
 
 export function VisionProvider({
@@ -21,6 +24,9 @@ export function VisionProvider({
   defaultVisionId,
   onVisionChange,
   targetElement,
+  mode,
+  defaultMode,
+  onModeChange,
 }: VisionProviderProps): JSX.Element {
   const availableVisions = registry.list();
   const firstVisionId = availableVisions[0]?.id ?? '';
@@ -28,14 +34,24 @@ export function VisionProvider({
   const activeVisionId = visionId ?? internalVisionId;
   const activeVision = registry.getOrFallback(activeVisionId);
 
-  useEffect(() => {
-    if (!activeVision || typeof document === 'undefined') {
-      return;
+  const resolveInitialMode = (): ThemeMode => {
+    if (mode !== undefined) return mode;
+    if (defaultMode !== undefined) return defaultMode;
+    if (activeVision) {
+      if (typeof window === 'undefined') return activeVision.defaultMode;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
+    return 'light';
+  };
 
+  const [internalMode, setInternalMode] = useState<ThemeMode>(resolveInitialMode);
+  const activeMode: ThemeMode = mode ?? internalMode;
+
+  useEffect(() => {
+    if (!activeVision || typeof document === 'undefined') return;
     const root = targetElement ?? document.documentElement;
-    applyVisionToElement(root, activeVision);
-  }, [activeVision, targetElement]);
+    applyVisionToElement(root, activeVision, activeMode);
+  }, [activeVision, activeMode, targetElement]);
 
   const setVision = useCallback(
     (nextVisionId: string): void => {
@@ -52,6 +68,20 @@ export function VisionProvider({
     [onVisionChange, registry, visionId]
   );
 
+  const setMode = useCallback(
+    (nextMode: ThemeMode): void => {
+      if (mode === undefined) {
+        setInternalMode(nextMode);
+      }
+      onModeChange?.(nextMode);
+    },
+    [mode, onModeChange]
+  );
+
+  const toggleMode = useCallback((): void => {
+    setMode(activeMode === 'light' ? 'dark' : 'light');
+  }, [activeMode, setMode]);
+
   const contextValue = useMemo<VisionContextValue | undefined>(() => {
     if (!activeVision) {
       return undefined;
@@ -62,8 +92,11 @@ export function VisionProvider({
       activeVision,
       activeVisionId: activeVision.id,
       setVision,
+      mode: activeMode,
+      setMode,
+      toggleMode,
     };
-  }, [activeVision, availableVisions, setVision]);
+  }, [activeVision, availableVisions, setVision, activeMode, setMode, toggleMode]);
 
   if (!contextValue) {
     return <>{children}</>;

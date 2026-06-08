@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const swissInternationalTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const swissInternationalTheme: VisionTheme = {
     'Swiss International turns complexity into structure with sober spacing, strict alignment, and low-noise contrast. Typographic rhythm favours readability before decoration and stays coherent under dense content.',
   bestFor: ['Enterprise dashboards', 'Information-dense systems', 'Reference and documentation'],
   mood: ['ordered', 'neutral', 'precise'],
-  colors: {
+  defaultMode: 'light',
+  colors: dualPalette({
     background: 'oklch(0.985 0 0)',
     foreground: 'oklch(0.18 0 0)',
     surface: 'oklch(1 0 0)',
@@ -32,7 +34,7 @@ export const swissInternationalTheme: VisionTheme = {
     chart3: 'oklch(0.65 0.15 100)',
     chart4: 'oklch(0.62 0.13 70)',
     chart5: 'oklch(0.58 0.14 330)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.22' },

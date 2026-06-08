@@ -1,4 +1,4 @@
-import type { VisionTheme } from './types';
+import type { ThemeMode, VisionTheme } from './types';
 
 const baseAtmosphericVariables: Record<string, string> = {
   '--vde-editorial-massive-size': 'clamp(4rem, 10vw, 9rem)',
@@ -104,8 +104,9 @@ function getAtmosphericVariables(vision: VisionTheme): Record<string, string> {
   };
 }
 
-export function visionToCSSVariables(vision: VisionTheme): Record<string, string> {
-  const { colors, artisticPillars } = vision;
+export function visionToCSSVariables(vision: VisionTheme, mode: ThemeMode = vision.defaultMode): Record<string, string> {
+  const colors = vision.colors[mode];
+  const { artisticPillars } = vision;
   const { typographyArchitecture, surfacePhysics, boundaryLogic, shadowLightEngine, motionSignature } =
     artisticPillars;
   const atmosphericVariables = getAtmosphericVariables(vision);
@@ -192,12 +193,13 @@ export function visionToCSSVariables(vision: VisionTheme): Record<string, string
   };
 }
 
-export function applyVisionToElement(element: HTMLElement, vision: VisionTheme): void {
-  const variables = visionToCSSVariables(vision);
+export function applyVisionToElement(element: HTMLElement, vision: VisionTheme, mode: ThemeMode = vision.defaultMode): void {
+  const variables = visionToCSSVariables(vision, mode);
   for (const [property, value] of Object.entries(variables)) {
     element.style.setProperty(property, value);
   }
 
   element.setAttribute('data-vde-vision', vision.id);
   element.setAttribute('data-vde-archetype', vision.archetype);
+  element.setAttribute('data-vde-mode', mode);
 }

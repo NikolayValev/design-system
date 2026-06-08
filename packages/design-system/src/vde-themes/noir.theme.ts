@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const noirTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const noirTheme: VisionTheme = {
     'Noir privileges focus and selective emphasis with tight dark/light relationships and a reduced palette. Strong typographic contrast supports a dramatic, cinematic tone.',
   bestFor: ['Premium dark products', 'Creative tooling', 'Cinematic admin experiences'],
   mood: ['moody', 'high-contrast', 'dramatic'],
-  colors: {
+  defaultMode: 'dark',
+  colors: dualPalette({
     background: 'oklch(0.14 0.01 260)',
     foreground: 'oklch(0.93 0.01 255)',
     surface: 'oklch(0.2 0.01 260)',
@@ -32,7 +34,7 @@ export const noirTheme: VisionTheme = {
     chart3: 'oklch(0.74 0.12 80)',
     chart4: 'oklch(0.64 0.15 22)',
     chart5: 'oklch(0.65 0.12 320)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.14' },

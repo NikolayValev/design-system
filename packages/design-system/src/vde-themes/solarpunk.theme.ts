@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const solarpunkTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const solarpunkTheme: VisionTheme = {
     'Solarpunk frames digital tools as constructive systems for communities and sustainability. Eco-forward colour signals progress and trust while soft contrast stays informative without alarm.',
   bestFor: ['Civic and community tools', 'Climate and energy products', 'Public-good platforms'],
   mood: ['hopeful', 'organic', 'clean-tech'],
-  colors: {
+  defaultMode: 'light',
+  colors: dualPalette({
     background: 'oklch(0.95 0.03 120)',
     foreground: 'oklch(0.27 0.05 145)',
     surface: 'oklch(0.98 0.03 120)',
@@ -32,7 +34,7 @@ export const solarpunkTheme: VisionTheme = {
     chart3: 'oklch(0.74 0.13 215)',
     chart4: 'oklch(0.68 0.12 85)',
     chart5: 'oklch(0.66 0.14 22)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.15' },

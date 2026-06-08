@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const synthwaveTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const synthwaveTheme: VisionTheme = {
     'Synthwave balances nostalgia and legibility through neon accents, dark fields, and rhythmic transitions. Vivid glow signatures create memorable action points while contrast hierarchy stays intact.',
   bestFor: ['Entertainment interfaces', 'Music and creative tools', 'Expressive dark themes'],
   mood: ['retro-future', 'electric', 'night-mode'],
-  colors: {
+  defaultMode: 'dark',
+  colors: dualPalette({
     background: 'oklch(0.22 0.06 296)',
     foreground: 'oklch(0.95 0.02 270)',
     surface: 'oklch(0.28 0.08 300)',
@@ -32,7 +34,7 @@ export const synthwaveTheme: VisionTheme = {
     chart3: 'oklch(0.75 0.22 285)',
     chart4: 'oklch(0.78 0.2 120)',
     chart5: 'oklch(0.74 0.2 60)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1.01', display: '1.2' },

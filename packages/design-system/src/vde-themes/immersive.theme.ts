@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const immersiveTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const immersiveTheme: VisionTheme = {
     'Immersive treats the page as a stage, using layered backgrounds, glow, and blur to create spatial orientation. Longer eased motion supports cinematic pacing without harsh separators.',
   bestFor: ['Media and entertainment', 'Immersive onboarding', 'Premium storytelling canvases'],
   mood: ['atmospheric', 'fluid', 'high-fidelity'],
-  colors: {
+  defaultMode: 'dark',
+  colors: dualPalette({
     background: 'oklch(0.21 0.04 260)',
     foreground: 'oklch(0.95 0.02 250)',
     surface: 'oklch(0.26 0.05 262)',
@@ -32,7 +34,7 @@ export const immersiveTheme: VisionTheme = {
     chart3: 'oklch(0.75 0.2 138)',
     chart4: 'oklch(0.8 0.21 70)',
     chart5: 'oklch(0.7 0.2 18)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.12' },

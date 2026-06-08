@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const y2kChromeTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const y2kChromeTheme: VisionTheme = {
     'Y2K Chrome amplifies spectacle with metallic highlights, hyper-clean gradients, and playful saturation. Specular accents create immediate visual signatures that differentiate key actions and support campaign storytelling.',
   bestFor: ['Fashion and entertainment', 'Youth-centric products', 'High-energy campaigns'],
   mood: ['flashy', 'synthetic', 'nostalgic-future'],
-  colors: {
+  defaultMode: 'light',
+  colors: dualPalette({
     background: 'oklch(0.9 0.01 250)',
     foreground: 'oklch(0.2 0.02 250)',
     surface:
@@ -33,7 +35,7 @@ export const y2kChromeTheme: VisionTheme = {
     chart3: 'oklch(0.72 0.18 294)',
     chart4: 'oklch(0.8 0.2 76)',
     chart5: 'oklch(0.72 0.18 22)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1.02', display: '1.24' },

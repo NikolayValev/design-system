@@ -1,10 +1,14 @@
 import { getVisionThemeById, getVisionThemeIds, visionToCSSVariables } from '../dist/index.js';
+const REQUIRED = ['--vde-color-background', '--vde-color-accent', '--background', '--primary'];
 const failures = [];
 for (const id of getVisionThemeIds()) {
   const theme = getVisionThemeById(id);
-  const vars = visionToCSSVariables(theme);
-  if (!String(vars['--vde-surface-texture'] ?? '').trim()) failures.push(`${id}: missing --vde-surface-texture`);
-  if (!String(vars['--vde-atmosphere-mesh-gradient'] ?? '').trim()) failures.push(`${id}: missing --vde-atmosphere-mesh-gradient`);
+  for (const mode of ['light', 'dark']) {
+    const vars = visionToCSSVariables(theme, mode);
+    for (const key of REQUIRED) {
+      if (!vars[key] || !String(vars[key]).trim()) failures.push(`${id} [${mode}]: missing ${key}`);
+    }
+  }
 }
 if (failures.length) { console.error(failures.join('\n')); process.exit(1); }
-console.log('Vision registry verification passed.');
+console.log('Vision mode resolution verification passed.');

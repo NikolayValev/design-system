@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const claySoftTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const claySoftTheme: VisionTheme = {
     'Clay Soft mixes tactile warmth with modern component rigor. Rounded surfaces reduce intimidation in first-use contexts while the UI retains clear interaction boundaries and a welcoming brand voice.',
   bestFor: ['Consumer onboarding flows', 'Approachable product UIs', 'Friendly brand experiences'],
   mood: ['rounded', 'friendly', 'handcrafted'],
-  colors: {
+  defaultMode: 'light',
+  colors: dualPalette({
     background: 'oklch(0.94 0.04 320)',
     foreground: 'oklch(0.31 0.04 320)',
     surface: 'oklch(0.97 0.03 320)',
@@ -32,7 +34,7 @@ export const claySoftTheme: VisionTheme = {
     chart3: 'oklch(0.84 0.1 120)',
     chart4: 'oklch(0.8 0.1 70)',
     chart5: 'oklch(0.79 0.11 300)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1.04', display: '1.2' },

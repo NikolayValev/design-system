@@ -1,3 +1,4 @@
+import { dualPalette } from './dual-palette';
 import type { VisionTheme } from '../vde-core';
 
 export const brutalistTheme: VisionTheme = {
@@ -11,7 +12,8 @@ export const brutalistTheme: VisionTheme = {
     'Brutalist strips styling to structural essentials so interaction intent is obvious at a glance. Hard geometry communicates boundaries instantly and high contrast reduces ambiguity in dense UIs.',
   bestFor: ['Internal tools', 'Data terminals', 'Utility-focused products'],
   mood: ['direct', 'structural', 'assertive'],
-  colors: {
+  defaultMode: 'dark',
+  colors: dualPalette({
     background: 'oklch(0.98 0 0)',
     foreground: 'oklch(0.18 0 0)',
     surface: 'oklch(0.96 0 0)',
@@ -32,7 +34,7 @@ export const brutalistTheme: VisionTheme = {
     chart3: 'oklch(0.73 0.23 87)',
     chart4: 'oklch(0.58 0.24 150)',
     chart5: 'oklch(0.52 0.21 335)',
-  },
+  }),
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1.03', display: '1.22' },
