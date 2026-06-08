@@ -15,12 +15,14 @@ function ThemeTile({
   isActive: boolean;
   onSelect: () => void;
 }): JSX.Element {
+  // Each tile renders in its own default mode to show its true character.
+  const colors = theme.colors[theme.defaultMode];
   const swatches = [
-    theme.colors.background,
-    theme.colors.surface,
-    theme.colors.accent,
-    theme.colors.secondary,
-    theme.colors.chart1,
+    colors.background,
+    colors.surface,
+    colors.accent,
+    colors.secondary,
+    colors.chart1,
   ];
 
   return (
@@ -35,22 +37,22 @@ function ThemeTile({
           : 'hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-30px_rgba(0,0,0,0.35)]',
       ].join(' ')}
       style={{
-        background: theme.colors.surface,
-        color: theme.colors.surfaceForeground,
-        borderColor: isActive ? theme.colors.accent : theme.colors.border,
+        background: colors.surface,
+        color: colors.surfaceForeground,
+        borderColor: isActive ? colors.accent : colors.border,
         borderWidth: isActive ? 2 : 1,
       }}
     >
       <div
         aria-hidden
         className="relative h-32 w-full overflow-hidden"
-        style={{ background: theme.colors.background }}
+        style={{ background: colors.background }}
       >
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(135deg, ${theme.colors.accent} 0%, transparent 55%), radial-gradient(120% 100% at 100% 100%, ${theme.colors.secondary} 0%, transparent 65%)`,
+            background: `linear-gradient(135deg, ${colors.accent} 0%, transparent 55%), radial-gradient(120% 100% at 100% 100%, ${colors.secondary} 0%, transparent 65%)`,
             opacity: 0.85,
           }}
         />
@@ -58,9 +60,9 @@ function ThemeTile({
           <span
             className="rounded-full px-2 py-0.5"
             style={{
-              background: theme.colors.surface,
-              color: theme.colors.surfaceForeground,
-              border: `1px solid ${theme.colors.border}`,
+              background: colors.surface,
+              color: colors.surfaceForeground,
+              border: `1px solid ${colors.border}`,
             }}
           >
             {theme.id}
@@ -69,8 +71,8 @@ function ThemeTile({
             <span
               className="rounded-full px-2 py-0.5 text-[9px]"
               style={{
-                background: theme.colors.accent,
-                color: theme.colors.accentForeground,
+                background: colors.accent,
+                color: colors.accentForeground,
               }}
             >
               active
@@ -81,7 +83,7 @@ function ThemeTile({
           className="absolute bottom-3 left-4 text-2xl"
           style={{
             fontFamily: theme.artisticPillars.typographyArchitecture.fontStack.display,
-            color: theme.colors.foreground,
+            color: colors.foreground,
             letterSpacing: theme.artisticPillars.typographyArchitecture.letterSpacing.tight,
           }}
         >
@@ -114,7 +116,7 @@ function ThemeTile({
                   background: swatch,
                   borderWidth: 1,
                   borderStyle: 'solid',
-                  borderColor: theme.colors.border,
+                  borderColor: colors.border,
                 }}
               />
             ))}
@@ -129,7 +131,7 @@ function ThemeTile({
 }
 
 function OverviewContent(): JSX.Element {
-  const { activeVision, activeVisionId, setVision } = useVision();
+  const { activeVision, activeVisionId, setVision, mode } = useVision();
   const counts = {
     themes: visionThemes.length,
     families: themeFamilies.length,
@@ -143,7 +145,7 @@ function OverviewContent(): JSX.Element {
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-70"
           style={{
-            background: `radial-gradient(60% 80% at 0% 0%, ${activeVision.colors.accent}, transparent 60%), radial-gradient(70% 90% at 100% 100%, ${activeVision.colors.secondary}, transparent 65%)`,
+            background: `radial-gradient(60% 80% at 0% 0%, ${activeVision.colors[mode].accent}, transparent 60%), radial-gradient(70% 90% at 100% 100%, ${activeVision.colors[mode].secondary}, transparent 65%)`,
             mixBlendMode: 'multiply',
           }}
         />

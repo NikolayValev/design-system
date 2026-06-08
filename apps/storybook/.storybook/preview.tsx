@@ -24,9 +24,11 @@ const withVisionProvider: Decorator = (Story, context) => {
   const visionId = forcedVision ?? (typeof context.globals.vision === 'string' ? context.globals.vision : defaultVisionId);
   const frameMode = parameters.vdeFrame ?? 'default';
 
+  const modeGlobal = typeof context.globals.mode === 'string' ? context.globals.mode as 'light' | 'dark' : undefined;
+
   if (frameMode === 'edge') {
     return (
-      <VisionProvider registry={defaultVisionRegistry} visionId={visionId}>
+      <VisionProvider registry={defaultVisionRegistry} visionId={visionId} mode={modeGlobal}>
         <div className={baseFrame}>
           <Story />
         </div>
@@ -39,7 +41,7 @@ const withVisionProvider: Decorator = (Story, context) => {
   const storyName = typeof context.name === 'string' ? context.name : undefined;
 
   return (
-    <VisionProvider registry={defaultVisionRegistry} visionId={visionId}>
+    <VisionProvider registry={defaultVisionRegistry} visionId={visionId} mode={modeGlobal}>
       <div className={`${baseFrame} relative`}>
         <div
           aria-hidden
@@ -96,6 +98,19 @@ const preview: Preview = {
         icon: 'paintbrush',
         dynamicTitle: true,
         items: visionToolbarItems,
+      },
+    },
+    mode: {
+      name: 'Mode',
+      description: 'Light or dark mode for the active vision',
+      defaultValue: 'light',
+      toolbar: {
+        icon: 'circlehollow',
+        dynamicTitle: true,
+        items: [
+          { value: 'light', title: 'Light' },
+          { value: 'dark', title: 'Dark' },
+        ],
       },
     },
   },

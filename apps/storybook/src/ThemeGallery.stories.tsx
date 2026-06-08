@@ -6,43 +6,71 @@ function primaryFont(stack: string): string {
   return first.trim().replace(/"/g, '');
 }
 
-function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
+function SwatchRow({ colors, label }: { colors: VisionTheme['colors']['light']; label: string }): JSX.Element {
   const swatches = [
-    theme.colors.background,
-    theme.colors.surface,
-    theme.colors.accent,
-    theme.colors.secondary,
-    theme.colors.chart1,
+    colors.background,
+    colors.surface,
+    colors.accent,
+    colors.secondary,
+    colors.chart1,
   ];
+
+  return (
+    <div
+      className="flex items-center gap-2 rounded-md px-3 py-2"
+      style={{ background: colors.background, border: `1px solid ${colors.border}` }}
+    >
+      <span
+        className="text-[9px] uppercase tracking-[0.14em]"
+        style={{ color: colors.mutedForeground, minWidth: '2.8rem' }}
+      >
+        {label}
+      </span>
+      <div className="flex">
+        {swatches.map((swatch, idx) => (
+          <span
+            key={idx}
+            className="-ml-1 h-4 w-4 rounded-full first:ml-0"
+            style={{ background: swatch, border: `1px solid ${colors.border}` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
+  const light = theme.colors.light;
+  const dark = theme.colors.dark;
 
   return (
     <article
       className="flex flex-col overflow-hidden rounded-[14px] border"
       style={{
-        background: theme.colors.surface,
-        color: theme.colors.surfaceForeground,
-        borderColor: theme.colors.border,
+        background: light.surface,
+        color: light.surfaceForeground,
+        borderColor: light.border,
       }}
     >
       <div
         aria-hidden
         className="relative h-28 w-full overflow-hidden"
-        style={{ background: theme.colors.background }}
+        style={{ background: light.background }}
       >
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(135deg, ${theme.colors.accent} 0%, transparent 55%), radial-gradient(120% 100% at 100% 100%, ${theme.colors.secondary} 0%, transparent 65%)`,
+            background: `linear-gradient(135deg, ${light.accent} 0%, transparent 55%), radial-gradient(120% 100% at 100% 100%, ${light.secondary} 0%, transparent 65%)`,
             opacity: 0.85,
           }}
         />
         <span
           className="absolute left-4 top-3 rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.22em]"
           style={{
-            background: theme.colors.surface,
-            color: theme.colors.surfaceForeground,
-            border: `1px solid ${theme.colors.border}`,
+            background: light.surface,
+            color: light.surfaceForeground,
+            border: `1px solid ${light.border}`,
           }}
         >
           {theme.id}
@@ -51,7 +79,7 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
           className="absolute bottom-2 left-4 text-2xl"
           style={{
             fontFamily: theme.artisticPillars.typographyArchitecture.fontStack.display,
-            color: theme.colors.foreground,
+            color: light.foreground,
             letterSpacing: theme.artisticPillars.typographyArchitecture.letterSpacing.tight,
           }}
         >
@@ -80,7 +108,7 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
             <span
               key={word}
               className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.1em]"
-              style={{ border: `1px solid ${theme.colors.border}` }}
+              style={{ border: `1px solid ${light.border}` }}
             >
               {word}
             </span>
@@ -96,16 +124,12 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
           ))}
         </ul>
 
-        <div className="flex items-center justify-between gap-2 pt-1">
-          <div className="flex">
-            {swatches.map((swatch, idx) => (
-              <span
-                key={`${theme.id}-sw-${idx}`}
-                className="-ml-1.5 h-5 w-5 rounded-full first:ml-0"
-                style={{ background: swatch, border: `1px solid ${theme.colors.border}` }}
-              />
-            ))}
-          </div>
+        <div className="flex flex-col gap-1.5 pt-1">
+          <SwatchRow colors={light} label="Light" />
+          <SwatchRow colors={dark} label="Dark" />
+        </div>
+
+        <div className="flex items-center justify-end pt-0.5">
           <span className="text-[9px] uppercase tracking-[0.16em] opacity-55">
             {primaryFont(theme.artisticPillars.typographyArchitecture.fontStack.display)}
           </span>

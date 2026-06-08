@@ -49,25 +49,34 @@ function pillarFacts(theme: VisionTheme): PillarFact[] {
 }
 
 function ThemeExplorer(): JSX.Element {
-  const { activeVision, activeVisionId, setVision } = useVision();
+  const { activeVision, activeVisionId, setVision, mode, toggleMode } = useVision();
   const family = getThemeFamily(activeVision.family);
   const facts = pillarFacts(activeVision);
   const swatches = [
-    { label: 'Background', value: activeVision.colors.background },
-    { label: 'Surface', value: activeVision.colors.surface },
-    { label: 'Accent', value: activeVision.colors.accent },
-    { label: 'Secondary', value: activeVision.colors.secondary },
-    { label: 'Chart 1', value: activeVision.colors.chart1 },
-    { label: 'Chart 2', value: activeVision.colors.chart2 },
+    { label: 'Background', value: activeVision.colors[mode].background },
+    { label: 'Surface', value: activeVision.colors[mode].surface },
+    { label: 'Accent', value: activeVision.colors[mode].accent },
+    { label: 'Secondary', value: activeVision.colors[mode].secondary },
+    { label: 'Chart 1', value: activeVision.colors[mode].chart1 },
+    { label: 'Chart 2', value: activeVision.colors[mode].chart2 },
   ];
 
   return (
     <div className="min-h-screen bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)]">
       <div className="mx-auto max-w-7xl space-y-8 p-6 md:p-10">
         <header className="space-y-4 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-xs uppercase tracking-[0.2em] opacity-70">Theme Explorer</p>
-            {family ? <Badge variant="outline">{family.name}</Badge> : null}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-xs uppercase tracking-[0.2em] opacity-70">Theme Explorer</p>
+              {family ? <Badge variant="outline">{family.name}</Badge> : null}
+            </div>
+            <button
+              type="button"
+              onClick={toggleMode}
+              className="rounded-full border px-3 py-1.5 text-xs transition-all [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] [border-color:var(--vde-color-border)] hover:opacity-80"
+            >
+              {mode === 'light' ? 'Light' : 'Dark'}
+            </button>
           </div>
           <h1 className="text-4xl [font-family:var(--vde-font-display)]">{activeVision.name}</h1>
           <p className="max-w-[70ch] text-base font-medium">{activeVision.tagline}</p>
