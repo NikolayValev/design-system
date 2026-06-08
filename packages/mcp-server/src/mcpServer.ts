@@ -23,7 +23,6 @@ import { getContributionGuide, getContributionGuideMarkdown } from './tools/cont
 import {
   listThemes,
   getTheme,
-  getBaseTokenSource,
   type ThemeSummary,
 } from './tools/tokenThemeTools.js';
 

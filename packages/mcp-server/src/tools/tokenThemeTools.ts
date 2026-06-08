@@ -90,12 +90,3 @@ export async function getTheme(id: string): Promise<ThemeDetail | null> {
 
   return null;
 }
-
-export async function getBaseTokenSource(): Promise<string | null> {
-  const basePath = path.join(DESIGN_SYSTEM_SRC_DIR, 'tokens', 'base.ts');
-  try {
-    return await fs.readFile(basePath, 'utf-8');
-  } catch {
-    return null;
-  }
-}
