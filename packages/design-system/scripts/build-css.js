@@ -13,12 +13,21 @@ function parseSelectedVisions() {
   return raw.split(',').map(s => s.trim()).filter(Boolean);
 }
 
-function visionRootBlock(vision) {
-  const vars = visionToCSSVariables(vision);
-  const lines = [`/* vision: ${vision.id} (${vision.name}) */`, ':root {'];
-  for (const [key, value] of Object.entries(vars)) lines.push(`  ${key}: ${value};`);
+function blockFromVars(selector, vars) {
+  const lines = [`${selector} {`];
+  for (const [k, v] of Object.entries(vars)) if (k.startsWith('--')) lines.push(`  ${k}: ${v};`);
   lines.push('}');
   return lines.join('\n');
+}
+
+function visionCSS(vision) {
+  const other = vision.defaultMode === 'light' ? 'dark' : 'light';
+  return [
+    `/* vision: ${vision.id} (${vision.name}) — default ${vision.defaultMode} */`,
+    blockFromVars(':root', visionToCSSVariables(vision, vision.defaultMode)),
+    blockFromVars(`[data-vde-mode="${other}"]`, visionToCSSVariables(vision, other)),
+    blockFromVars(other === 'dark' ? '.dark' : '.light', visionToCSSVariables(vision, other)),
+  ].join('\n\n');
 }
 
 if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
@@ -29,7 +38,7 @@ const selected = getCompiledVisionIds(parseSelectedVisions());
 for (const id of selected) {
   const vision = getVisionThemeById(id);
   if (!vision) throw new Error(`Vision "${id}" not found.`);
-  fs.writeFileSync(path.join(distDir, `${id}.css`), `${globalCSS}\n\n${visionRootBlock(vision)}\n`);
+  fs.writeFileSync(path.join(distDir, `${id}.css`), `${globalCSS}\n\n${visionCSS(vision)}\n`);
 }
 
 fs.writeFileSync(
