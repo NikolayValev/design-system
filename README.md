@@ -169,6 +169,21 @@ function VisionPicker() {
 }
 ```
 
+### Light & Dark Mode
+
+Every vision ships a hand-tuned **light and dark** palette and declares a native `defaultMode`. The active mode resolves from: an explicit `mode` prop → a `defaultMode` prop → the browser's `prefers-color-scheme` (falling back to the vision's `defaultMode` during SSR). Toggle it at runtime:
+
+```tsx
+import { useVision } from '@nikolayvalev/design-system';
+
+function ModeToggle() {
+  const { mode, toggleMode } = useVision();
+  return <button onClick={toggleMode}>{mode === 'dark' ? 'Light' : 'Dark'}</button>;
+}
+```
+
+`VisionProvider` accepts `mode`, `defaultMode`, and `onModeChange`. The active mode is written to `data-vde-mode` on the target element, and each per-vision CSS file includes a default-mode `:root` block plus `[data-vde-mode="…"]` (and `.dark`/`.light`) overrides — so non-React consumers switch modes with the attribute or class.
+
 ### Intent-Based Style Recipes
 
 Use intent variants through explicit design intent: `goal + feeling + purpose`.

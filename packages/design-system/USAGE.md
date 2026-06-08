@@ -222,6 +222,34 @@ function VisionSwitcher() {
 }
 ```
 
+## Light & Dark Mode
+
+Every vision has a `light` and a `dark` palette plus a native `defaultMode`. Read and control the mode through `useVision()`:
+
+```tsx
+import { useVision } from '@nikolayvalev/design-system';
+
+function ModeToggle() {
+  const { mode, setMode, toggleMode } = useVision();
+  return (
+    <div>
+      <span>Mode: {mode}</span>
+      <button onClick={toggleMode}>Toggle</button>
+      <button onClick={() => setMode('dark')}>Force dark</button>
+    </div>
+  );
+}
+```
+
+`VisionProvider` resolves the initial mode as: `mode` prop → `defaultMode` prop → the browser's `prefers-color-scheme` (falling back to the vision's `defaultMode` during SSR). The active mode is written to `data-vde-mode` on the document element.
+
+For non-React / compile-time consumers, the per-vision CSS exposes both modes — set the attribute or class to switch:
+
+```html
+<html data-vde-mode="dark"> … </html>
+<!-- or use the .dark / .light alias classes the vision CSS also emits -->
+```
+
 ## Authoring a Custom Vision
 
 Visions are `VisionTheme` objects defined in the design-system source (`src/vde-themes`). To add one to the shared catalog, propose it there (see CONTRIBUTING). Advanced consumers can build a `VisionTheme` and register it locally:
