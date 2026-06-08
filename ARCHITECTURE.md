@@ -86,86 +86,91 @@ Components reference variables, never raw values:
 <div style={{ background: '#3b82f6' }} />
 ```
 
-## Theme Profiles
+## Vision Themes
 
-> **Status — legacy.** The `public` / `dashboard` / `experimental` profile system
-> described in this section predates the **VDE Vision** system and is no longer the
-> primary theming model. New work should target the curated **vision themes**
-> (`@nikolayvalev/design-system` → `visionThemes`, `themeFamilies`, `VisionProvider`),
-> which components actually consume via the `--vde-*` CSS variables. The
-> `@nikolayvalev/design-tokens` profiles remain for backwards compatibility; a full
-> migration is tracked separately. Where this document and the vision system
-> disagree (for example the `hsl(...)` examples below versus OKLCH), defer to the
-> vision system.
+The design system ships **12 curated visions** across five families. Each vision provides a complete set of `--vde-*` CSS custom properties (colors, spacing, radius, typography motion) plus shadcn-compatible aliases (`--primary`, `--background`, `--foreground`, etc.).
 
-Profiles are named token bundles representing different use cases:
+Families and vision IDs:
 
-### Public Profile
-- **Use case**: Marketing sites, public-facing applications
-- **Characteristics**: Clean, approachable, includes dark mode variant
-- **Colors**: OKLCH light mode with `.dark` class support
-- **Radius**: Comfortable (0.625rem base)
-- **Density**: Comfortable
-- **Typography**: Geist font family
+- **Editorial & Print** — `editorial`, `museum`
+- **Minimal & Structured** — `swiss_international`, `zen`, `clay_soft`
+- **Technical & Utility** — `terminal`, `brutalist`
+- **Atmospheric & Luminous** — `immersive`, `synthwave`, `noir`
+- **Expressive & Statement** — `solarpunk`, `y2k_chrome`
 
-### Dashboard Profile
-- **Use case**: Internal tools, data-heavy interfaces
-- **Characteristics**: Dark-first, efficient, high information density
-- **Colors**: OKLCH dark palette optimized for prolonged use
-- **Radius**: Comfortable (0.625rem base)
-- **Density**: Compact (reduced spacing)
-- **Typography**: Geist font family
+### Selecting a Vision
 
-### Experimental Profile
-- **Use case**: Prototypes, creative projects
-- **Characteristics**: Bold, unconventional, high contrast
-- **Colors**: OKLCH black background with vibrant accents
-- **Radius**: Zero (sharp corners)
-- **Density**: Comfortable
-- **Typography**: Geist font family
-
-Profiles override **values**, not logic. Component behavior remains identical.
-
-## Configuration API
-
-### Static Configuration (Build Time)
-
-Select profile in Tailwind config:
-
-```ts
-import { createTailwindPreset, dashboardProfile } from '@nikolayvalev/design-system/tailwind';
-
-export default {
-  presets: [createTailwindPreset(dashboardProfile)],
-};
-```
-
-Import corresponding CSS:
+Import the per-vision CSS in your root layout (one file per app):
 
 ```tsx
-import '@nikolayvalev/design-system/styles/dashboard.css';
+// app/layout.tsx
+import '@nikolayvalev/design-system/styles/editorial.css';
 ```
 
-### Dynamic Configuration (Runtime)
+Wrap the React tree in `VisionProvider` and supply a default vision:
 
-Override tokens programmatically:
+```tsx
+import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <VisionProvider registry={defaultVisionRegistry} defaultVisionId="editorial">
+          {children}
+        </VisionProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+Switch visions at runtime via the `useVision` hook:
+
+```tsx
+import { useVision } from '@nikolayvalev/design-system';
+
+function VisionPicker() {
+  const { setVision } = useVision();
+  return <button onClick={() => setVision('synthwave')}>Switch to Synthwave</button>;
+}
+```
+
+### CSS Variable Contract
+
+All tokens are exposed under the `--vde-*` namespace. The vision layer also emits the shadcn-compatible aliases so components work without changes:
+
+```css
+:root {
+  /* Vision layer */
+  --vde-color-primary: oklch(0.6 0.25 280);
+  --vde-radius-base: 0.625rem;
+
+  /* shadcn aliases emitted by the vision */
+  --primary: var(--vde-color-primary);
+  --background: var(--vde-color-background);
+  --foreground: var(--vde-color-foreground);
+  --radius: var(--vde-radius-base);
+}
+```
+
+Components reference `--primary`, `--background`, etc. and automatically reflect whichever vision is active.
+
+### Runtime Helpers
 
 ```ts
-import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-system';
+import {
+  visionThemes,
+  themeFamilies,
+  getVisionThemeById,
+  defaultVisionRegistry,
+  groupThemesByFamily,
+} from '@nikolayvalev/design-system';
 
-const theme = createTheme({
-  profile: publicProfile,
-  tokens: {
-    colors: { primary: 'oklch(0.6 0.25 280)' },
-    spacing: { md: '1.25rem' },
-  },
-  density: 'compact',
-});
-
-applyTheme(document.documentElement, theme);
+const editorial = getVisionThemeById('editorial');
+const byFamily = groupThemesByFamily(visionThemes);
+defaultVisionRegistry.get('terminal');
 ```
-
-Changes apply immediately without rebuilding.
 
 ## Component Architecture
 
@@ -222,23 +227,13 @@ CSS variables resolve at runtime based on active theme.
 }
 ```
 
-### Fallback Values
-
-CSS variables include fallback values from selected profile:
-
-```ts
-primary: `hsl(var(--color-primary, ${hslToTailwind(profile.colors.primary)}))`
-```
-
-Ensures styles work even if variables aren't injected.
-
 ### Extension Pattern
 
-Projects extend theme **without** breaking the base:
+Projects extend the Tailwind theme **without** breaking the base:
 
 ```ts
 export default {
-  presets: [createTailwindPreset(publicProfile)],
+  content: ['./app/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -249,7 +244,7 @@ export default {
 };
 ```
 
-Semantic tokens remain unchanged. New tokens coexist.
+Semantic tokens (sourced from the active vision via CSS variables) remain unchanged. Project-specific tokens coexist.
 
 ## Density Modes
 
@@ -291,7 +286,7 @@ Visual changes that affect user perception are **major**:
 
 - Adding new tokens (with new names)
 - Adding new component variants
-- Adding new theme profiles
+- Adding new vision themes
 - Improving accessibility (if no visual change)
 
 ### Upgrade Strategy
@@ -312,38 +307,44 @@ Visual updates are **intentional**, not automatic.
 
 ```
 dist/
-├── index.js                    # Main entry (components + theme API)
+├── index.js                    # Main entry (components + vision API)
 ├── index.d.ts
-├── tokens/
-│   ├── index.js               # Token exports
-│   └── index.d.ts
-├── tailwind/
-│   ├── index.js               # Preset factory
-│   └── index.d.ts
 └── styles/
-    ├── global.css             # Base normalization
-    ├── public.css             # Public profile + global
-    ├── dashboard.css          # Dashboard profile + global
-    └── experimental.css       # Experimental profile + global
+    ├── global.css              # Base normalization
+    ├── editorial.css           # Editorial vision
+    ├── museum.css              # Museum vision
+    ├── swiss_international.css # Swiss International vision
+    ├── zen.css                 # Zen vision
+    ├── clay_soft.css           # Clay Soft vision
+    ├── terminal.css            # Terminal vision
+    ├── brutalist.css           # Brutalist vision
+    ├── immersive.css           # Immersive vision
+    ├── synthwave.css           # Synthwave vision
+    ├── noir.css                # Noir vision
+    ├── solarpunk.css           # Solarpunk vision
+    └── y2k_chrome.css          # Y2K Chrome vision
 ```
 
 ## Extension Points
 
-### 1. Token Override
+### 1. Vision Selection
 
-```ts
-createTheme({
-  tokens: { colors: { primary: '...' } }
-})
+```tsx
+import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
+// Wrap your tree; switch at runtime with useVision().setVision(id)
+<VisionProvider registry={defaultVisionRegistry} defaultVisionId="zen">
+  {children}
+</VisionProvider>
 ```
 
-### 2. Custom Profile
+### 2. CSS Variable Override
 
-```ts
-const customProfile: ThemeProfile = {
-  name: 'custom',
-  tokens: { ...baseTokens, colors: { ... } },
-};
+Override individual `--vde-*` or shadcn-alias variables in your own CSS after the vision import:
+
+```css
+:root {
+  --primary: oklch(0.6 0.25 280);  /* project-level override */
+}
 ```
 
 ### 3. Tailwind Extension

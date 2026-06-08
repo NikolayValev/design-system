@@ -1,6 +1,6 @@
 # Quick Start: Next.js App Router
 
-Get `@nikolayvalev/design-tokens` working in a Next.js App Router project in 5 minutes, with components installed as source files via MCP.
+Get `@nikolayvalev/design-system` working in a Next.js App Router project in 5 minutes, with components installed as source files via MCP.
 
 ## Prerequisites
 
@@ -15,13 +15,11 @@ npx @nikolayvalev/design-system@latest init
 ```
 
 In interactive terminals, the CLI shows an arrow-key selector for modules (`themes`, `components`, `pages`).
-If `themes` is selected, it also shows a color/vibe profile picker (`public`, `dashboard`, `experimental`).
-It also supports compile-time vision mapping per profile via `--vision-system` and `--vision-map`.
-For CI/non-interactive usage:
+If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 12 visions.
+For CI/non-interactive usage, pass a vision directly:
 
 ```bash
-npx @nikolayvalev/design-system@latest init --modules themes,components
-# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=clay_soft,experimental=y2k_chrome
+npx @nikolayvalev/design-system@latest init --modules themes,components --vision editorial
 ```
 
 This creates:
@@ -30,23 +28,24 @@ This creates:
 - `.mcp.json` and `.cursor/mcp.json` with `https://designsystem.nikolayvalev.com/mcp`
 - `DESIGN_SYSTEM_SETUP.md` and `design-system.config.json`
 
-## Step 1: Install Tokens Package
+## Step 1: Install the Package
 
 ```bash
-npm install @nikolayvalev/design-tokens
+npm install @nikolayvalev/design-system
 # or
-pnpm add @nikolayvalev/design-tokens
+pnpm add @nikolayvalev/design-system
 ```
 
 For components, use MCP `get_component_bundle` and commit files into `src/design-system`.
 
-## Step 2: Import CSS in Root Layout
+## Step 2: Import Vision CSS and Add VisionProvider
 
-Choose a profile and import its CSS. The `public` profile is great for marketing sites:
+Choose a vision and import its CSS. `editorial` is a great starting point for most sites:
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-tokens/styles/public.css';
+import '@nikolayvalev/design-system/styles/editorial.css';
+import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -61,40 +60,43 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <VisionProvider registry={defaultVisionRegistry} defaultVisionId="editorial">
+          {children}
+        </VisionProvider>
+      </body>
     </html>
   );
 }
 ```
 
-**Profile Options:**
-- `public.css` - Light mode with dark variant, vibrant colors
-- `dashboard.css` - Dark mode, compact spacing, muted palette  
-- `experimental.css` - High contrast, zero border radius, bold
+**Vision options** (import exactly one):
+- `editorial.css` — clean editorial, light with dark variant
+- `museum.css` — refined, gallery-like atmosphere
+- `swiss_international.css` — structured, typographic grid
+- `zen.css` — minimal, calm, generous whitespace
+- `clay_soft.css` — soft, organic, warm
+- `terminal.css` — dark, monospaced, technical
+- `brutalist.css` — high contrast, raw, structural
+- `immersive.css` — atmospheric, luminous depth
+- `synthwave.css` — neon gradients, retro-future
+- `noir.css` — dark, moody, cinematic
+- `solarpunk.css` — vivid, optimistic, green
+- `y2k_chrome.css` — chrome gradients, expressive statement
 
-## Step 3: Configure Tailwind
+## Step 3: Use Semantic Tailwind Classes
 
-Create or update your Tailwind config to use the design system preset:
+The vision CSS exposes `--primary`, `--background`, `--foreground`, etc. as CSS variables — Tailwind's semantic classes work without any preset configuration:
 
-```ts
-// tailwind.config.ts
-import type { Config } from 'tailwindcss';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
-
-const config: Config = {
-  presets: [createTailwindPreset(publicProfile)],
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-};
-
-export default config;
+```tsx
+<div className="bg-background text-foreground">
+  <button className="bg-primary text-primary-foreground px-4 py-2 rounded">
+    Submit
+  </button>
+</div>
 ```
 
-The preset gives you semantic color classes like `bg-primary`, `text-foreground`, etc.
-
-## Step 4: Use Source-Installed Components
+## Step 4: Use Source-Installed Components (optional)
 
 Install components through MCP (`get_component_bundle`) and use the generated local files:
 
@@ -145,10 +147,10 @@ Visit `http://localhost:3000` and you should see your styled components.
 **Problem:** Import errors or type mismatches  
 **Solution:** Ensure `@types/react` version matches your React version
 
-### Dark Mode Not Working (publicProfile)
+### Dark Mode Not Working
 
 **Problem:** Dark mode doesn't activate  
-**Solution:** Add `dark` class to `<html>` element:
+**Solution:** Add `dark` class to `<html>` element (supported by the `editorial` and other light-default visions):
 
 ```tsx
 <html lang="en" className="dark">
@@ -170,8 +172,9 @@ export function ThemeToggle() {
 
 ## Next Steps
 
-- **Customize:** Override tokens with `createTheme()` and `applyTheme()`
-- **Extend:** Add your own components using design system tokens
+- **Switch visions at runtime:** Use `useVision().setVision(id)` inside a `VisionProvider`
+- **Override tokens:** Add CSS variable overrides after the vision import
+- **Extend:** Add your own components using the `--vde-*` and shadcn-alias variables
 - **Learn:** Read `USAGE.md` for advanced patterns
 - **Deploy:** The CSS is fully compiled, no PostCSS needed in production
 

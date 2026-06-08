@@ -1,11 +1,10 @@
 # NPM Publish Setup
 
-Three packages are published to npm under `@nikolayvalev`:
+Two packages are published to npm under `@nikolayvalev`:
 
 | Package | npm |
 |---|---|
-| `@nikolayvalev/design-system` | Components, CLI, VDE themes |
-| `@nikolayvalev/design-tokens` | Tokens, Tailwind preset, CSS profiles |
+| `@nikolayvalev/design-system` | Components, CLI, VDE visions + per-vision CSS |
 | `@nikolayvalev/design-system-mcp` | MCP server binary (stdio + HTTP) |
 
 Publishing is handled by [Changesets](https://github.com/changesets/changesets) via the `release.yml` GitHub Action, which runs on every push to `main`.
@@ -66,6 +65,5 @@ NPM_TOKEN=npm_xxx pnpm run release
 
 ```bash
 npm info @nikolayvalev/design-system
-npm info @nikolayvalev/design-tokens
 npm info @nikolayvalev/design-system-mcp
 ```

@@ -5,7 +5,7 @@
 This file defines the authoritative rules for using, extending, and contributing to the design system in this monorepo. **All contributors and AI agents must comply.**
 
 ## 1. Component Usage
-- **Install design tokens as a package dependency:** `@nikolayvalev/design-tokens`.
+- **Install the design system package:** `@nikolayvalev/design-system`. Import one per-vision CSS file (`@nikolayvalev/design-system/styles/<visionId>.css`) and wrap the app in `VisionProvider`.
 - **Install UI components as source files (shadcn-style) via MCP `get_component_bundle`**, then commit those files in the consuming repo.
 - **Do NOT treat design-system components as runtime package dependencies for new app work.** Source-installed components are the default model.
 - **Do NOT create local CSS/Sass outside token-driven patterns** if a system token or provided component source already covers the use case.
@@ -23,7 +23,7 @@ This file defines the authoritative rules for using, extending, and contributing
 
 ## 4. Extension & Customization
 - Extend source-installed components locally inside your app/repo (while preserving token semantics).
-- For new tokens or themes, propose them in `@nikolayvalev/design-tokens`.
+- For new tokens or themes, propose them as vision themes in `src/vde-themes` of the `@nikolayvalev/design-system` package.
 - When adding or changing component source templates, update MCP install-bundle behavior and docs in `packages/mcp-server`.
 
 ## 5. Enforcement

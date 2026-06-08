@@ -11,7 +11,7 @@ This package follows **strict semantic versioning** with visual-first breaking c
 - Token value changes (colors, spacing, typography, radii)
 - Component markup or class name changes
 - CSS output changes that affect rendering
-- Profile token adjustments
+- Vision token adjustments
 - Dark mode behavior changes
 
 **Rationale**: Consumer applications lock visual appearance. Any change that affects screenshots or visual regression tests is breaking.
@@ -56,7 +56,7 @@ Follow the prompts:
 ```bash
 pnpm changeset
 # Select: major
-# Summary: "Change primary color from blue to purple in publicProfile"
+# Summary: "Shift the editorial vision accent from red to purple"
 ```
 
 **Minor (feature)**:

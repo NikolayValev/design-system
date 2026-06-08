@@ -26,10 +26,8 @@ The design-system ships an MCP (Model Context Protocol) server that lets AI agen
 | `get_page_source` / `get_page_bundle` | Read / install pages |
 | `list_artifacts` | Unified list across component/section/page |
 | `get_artifact_source` / `get_artifact_bundle` | Unified read / install |
-| `list_themes` | Browse all 12 VDE themes |
-| `get_theme` | Full token + motion + typography of a theme |
-| `list_token_profiles` | public / dashboard / experimental profiles |
-| `get_token_profile_source` | Raw OKLCH token values for all profiles |
+| `list_themes` | Browse all 12 VDE visions |
+| `get_theme` | Full token + motion + typography of a vision |
 | `get_contribution_guide` | How to add components/sections/pages |
 
 ---

@@ -22,7 +22,6 @@ Tools:
 
 `list_components` returns component entries with an `origin` field (`local` or `remote`).
 `get_component_bundle` includes:
-- `tokenPackage` (`@nikolayvalev/design-tokens`)
 - `installRoot` (`src/design-system`)
 - `files` (relative source file map to write)
 - `externalDependencies` (non-React packages detected from imports)

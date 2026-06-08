@@ -6,8 +6,7 @@ Production-grade design system and component library by [Nikolay Valev](https://
 
 | Package | npm | Description |
 | --- | --- | --- |
-| `@nikolayvalev/design-system` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system)](https://www.npmjs.com/package/@nikolayvalev/design-system) | React components, VDE themes, Tailwind preset, CLI |
-| `@nikolayvalev/design-tokens` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-tokens)](https://www.npmjs.com/package/@nikolayvalev/design-tokens) | Tokens only — OKLCH colors, spacing, CSS profiles |
+| `@nikolayvalev/design-system` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system)](https://www.npmjs.com/package/@nikolayvalev/design-system) | React components, VDE vision themes, per-vision CSS, CLI |
 | `@nikolayvalev/design-system-mcp` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system-mcp)](https://www.npmjs.com/package/@nikolayvalev/design-system-mcp) | MCP server for AI agents |
 
 ## MCP Server (AI-native tooling)
@@ -37,9 +36,8 @@ DESIGN_SYSTEM_SRC_DIR=/path/to/packages/design-system/src \
 
 ## Consumption Model
 
-- `@nikolayvalev/design-tokens`: runtime dependency for tokens, profiles, Tailwind preset, and CSS profiles.
+- `@nikolayvalev/design-system`: the single runtime dependency — vision themes, per-vision CSS, `VisionProvider`, and component source templates.
 - Components: installed as source files via MCP `get_component_bundle` and committed per consuming repo.
-- `@nikolayvalev/design-system`: compatibility package for existing consumers.
 
 ## Architecture
 
@@ -47,42 +45,45 @@ DESIGN_SYSTEM_SRC_DIR=/path/to/packages/design-system/src \
 src/
 |-- components/          # Token-driven primitives (Button, Card, Input)
 |-- intent/              # Goal/feeling/purpose style recipes (lab, pop, zen, museum, brutal, immersive)
-|-- tokens/              # Design token definitions and types
-|   |-- types.ts         # Core token contracts
-|   |-- base.ts          # Shared foundation tokens
-|   `-- profiles.ts      # Theme profiles (public, dashboard, experimental)
-|-- tailwind/            # Tailwind preset with semantic naming
-|-- styles/              # Global CSS with minimal normalization
-`-- theme.ts             # Configuration API (createTheme, applyTheme)
+|-- vde-themes/          # Vision theme definitions (12 themes across 5 families)
+|-- vde-core/            # VisionProvider, useVision, registry types
+|-- styles/              # Per-vision CSS files (one per vision ID)
 ```
 
 ## Installation
 
 ```bash
-npm install @nikolayvalev/design-tokens
+npm install @nikolayvalev/design-system
 ```
 
 Component source is installed separately via MCP (`get_component_bundle`) and committed into the consuming repo (shadcn-style).
 
 ## Quick Start
 
-### 1. Import theme styles
+### 1. Import vision styles
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-tokens/styles/public.css';
+import '@nikolayvalev/design-system/styles/editorial.css';
 ```
 
-### 2. Configure Tailwind
+### 2. Wrap the app in VisionProvider
 
-```ts
-// tailwind.config.ts
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
+```tsx
+// app/layout.tsx
+import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
 
-export default {
-  presets: [createTailwindPreset(publicProfile)],
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
-};
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <VisionProvider registry={defaultVisionRegistry} defaultVisionId="editorial">
+          {children}
+        </VisionProvider>
+      </body>
+    </html>
+  );
+}
 ```
 
 ### 3. Install and use components (source files)
@@ -107,15 +108,12 @@ Use the design-system CLI to scaffold source folders and MCP config in a consumi
 npx @nikolayvalev/design-system@latest init
 ```
 
-The CLI now supports an arrow-key selector (`themes`, `components`, `pages`) in TTY terminals.
-When `themes` is selected, it also opens a style picker with color swatches and vibe descriptions (`public`, `dashboard`, `experimental`).
-It also supports compile-time vision system assignment per profile (`legacy`, `expanded`, `all`).
-You can also run non-interactive:
+The CLI supports an arrow-key selector (`themes`, `components`, `pages`) in TTY terminals.
+When `themes` is selected it opens a vision picker with color swatches and vibe descriptions for all 12 visions.
+You can also run non-interactive and pick a vision directly:
 
 ```bash
-npx @nikolayvalev/design-system@latest init --modules themes,components
-# optional compile-time vision mapping
-# --vision-system expanded --vision-map public=swiss_international,dashboard=clay_soft,experimental=y2k_chrome
+npx @nikolayvalev/design-system@latest init --modules themes,components --vision editorial
 ```
 
 By default it links your MCP client config to:
@@ -139,19 +137,18 @@ The full platform is browsable from:
 
 ### Design Tokens as Contract
 
-Colors, spacing, typography, radii defined as semantic tokens using **OKLCH color space** for perceptual uniformity. Expressed as CSS variables + TypeScript exports.
+Colors, spacing, typography, radii defined as semantic tokens using **OKLCH color space** for perceptual uniformity. Expressed as `--vde-*` CSS variables with shadcn-compatible aliases (`--primary`, `--background`, etc.).
 
-```ts
-import { baseTokens } from '@nikolayvalev/design-tokens/tokens';
+### Vision Themes
+
+12 curated visions across five families replace the old profile model. Import one per-vision CSS file and wrap the tree in `VisionProvider`:
+
+```tsx
+import '@nikolayvalev/design-system/styles/synthwave.css';
+import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
 ```
 
-### Theme Profiles
-
-Select from predefined profiles or create custom ones:
-
-- `public` - Marketing sites (light with dark mode, vibrant)
-- `dashboard` - Internal tools (dark mode, compact)
-- `experimental` - Prototypes (high contrast, sharp edges)
+Switch visions at runtime with `useVision().setVision(id)`.
 
 ### Modern CSS with Tailwind v4
 
@@ -161,22 +158,15 @@ Built on Tailwind CSS v4 with:
 - `@custom-variant dark` for dark mode support
 - OKLCH color space throughout
 
-### Runtime Configuration
+### Runtime Vision Switching
 
 ```tsx
-import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-tokens';
+import { useVision } from '@nikolayvalev/design-system';
 
-const theme = createTheme({
-  profile: publicProfile,
-  tokens: {
-    colors: {
-      primary: 'oklch(0.6 0.25 280)',
-    },
-  },
-  density: 'compact',
-});
-
-applyTheme(document.documentElement, theme);
+function VisionPicker() {
+  const { setVision } = useVision();
+  return <button onClick={() => setVision('noir')}>Switch to Noir</button>;
+}
 ```
 
 ### Intent-Based Style Recipes
@@ -206,7 +196,7 @@ const primaryButtonClass = getDesignStyleByIntent({
 </div>
 ```
 
-No hardcoded colors. Styles adapt to active theme profile.
+No hardcoded colors. Styles adapt to the active vision.
 
 ## Components
 
@@ -268,23 +258,22 @@ const byFamily = groupThemesByFamily(visionThemes);
 
 ## Extending Per Project
 
-### Override tokens
+### Override CSS variables
 
-```ts
-const theme = createTheme({
-  profile: publicProfile,
-  tokens: {
-    spacing: { md: '1.25rem' },
-    radius: { lg: '2rem' },
-  },
-});
+After importing the per-vision CSS, override individual tokens in your own stylesheet:
+
+```css
+:root {
+  --primary: oklch(0.6 0.25 280);  /* project-level override */
+  --radius: 1rem;
+}
 ```
 
 ### Extend Tailwind theme
 
 ```ts
 export default {
-  presets: [createTailwindPreset(publicProfile)],
+  content: ['./app/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -302,20 +291,21 @@ Extensions don't break the base system.
 All public API is accessed through these stable entrypoints:
 
 ```ts
-// Tokens/runtime theming
-import { createTheme, applyTheme } from '@nikolayvalev/design-tokens';
+// Vision API
+import {
+  VisionProvider,
+  useVision,
+  visionThemes,
+  themeFamilies,
+  getVisionThemeById,
+  defaultVisionRegistry,
+  groupThemesByFamily,
+} from '@nikolayvalev/design-system';
 
-// Tokens - profiles and types
-import { publicProfile, dashboardProfile, experimentalProfile } from '@nikolayvalev/design-tokens/tokens';
-import type { ThemeProfile, ColorTokens } from '@nikolayvalev/design-tokens/tokens';
-
-// Tailwind - preset factory and profiles
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
-
-// Styles - choose one CSS file per app
-import '@nikolayvalev/design-tokens/styles/public.css'; // Light + dark mode
-import '@nikolayvalev/design-tokens/styles/dashboard.css'; // Dark mode, compact
-import '@nikolayvalev/design-tokens/styles/experimental.css'; // High contrast
+// Styles — import exactly one per-vision CSS file per app
+import '@nikolayvalev/design-system/styles/editorial.css';
+// or: museum | swiss_international | zen | clay_soft | terminal | brutalist
+//     immersive | synthwave | noir | solarpunk | y2k_chrome
 
 // Components - source-installed in your app/repo via MCP get_component_bundle
 import { Button } from '@/design-system/components/Button';
@@ -323,9 +313,8 @@ import { Card } from '@/design-system/components/Card';
 ```
 
 **Do NOT import from:**
-- `@nikolayvalev/design-tokens/dist/*` (internals)
-- `@nikolayvalev/design-tokens/src/*` (source files)
-- `@nikolayvalev/design-system` for new runtime component dependencies in app repos
+- `@nikolayvalev/design-system/dist/*` (internals)
+- `@nikolayvalev/design-system/src/*` (source files)
 - Deep paths not listed above
 
 ## DO / DON'T
@@ -333,82 +322,27 @@ import { Card } from '@/design-system/components/Card';
 ### DO
 
 - **Use stable import paths** as documented above
-- **Pick one CSS profile** per application
-- **Override tokens** via `createTheme()` for customization
+- **Import exactly one per-vision CSS file** per application
+- **Override CSS variables** after the vision import for per-project customization
 - **Lock major version** in package.json to control visual updates
 - **Use semantic classes** like `bg-primary` instead of hardcoded colors
 - **Install components as source** via MCP `get_component_bundle` and commit them in each consuming repo
-- **Import profiles** from `/tailwind` or `/tokens` entrypoints
 
 ### DON'T
 
 - **Deep import** from `dist` or `src` folders
-- **Import multiple CSS profiles** in the same app (causes conflicts)
-- **Hardcode OKLCH values** in your code - use tokens instead
+- **Import multiple vision CSS files** in the same app (causes conflicts)
+- **Hardcode OKLCH values** in your code — use CSS variables instead
 - **Rely on CSS class names** as API (implementation detail)
-- **Modify node_modules** - use override patterns instead
+- **Modify node_modules** — use CSS variable overrides instead
 - **Assume monorepo paths** in your Tailwind content globs
-- **Use `@nikolayvalev/design-system` as a new runtime component dependency** in app repos
-
-## Profile Details
-
-### `public` Profile
-
-**Use case:** Marketing sites, landing pages, public-facing apps
-
-**Characteristics:**
-- Light mode by default with dark mode support via `.dark` class
-- Vibrant, accessible color palette
-- Comfortable spacing (density: comfortable)
-- Moderate border radius
-- OKLCH colors optimized for wide gamut displays
-
-**Import:**
-```ts
-import '@nikolayvalev/design-tokens/styles/public.css';
-import { publicProfile } from '@nikolayvalev/design-tokens/tailwind';
-```
-
-### `dashboard` Profile
-
-**Use case:** Internal tools, admin panels, data-heavy interfaces
-
-**Characteristics:**
-- Dark mode only
-- Muted, professional palette
-- Compact spacing (density: compact) for information density
-- Reduced contrast for long sessions
-- Sidebar theming included
-
-**Import:**
-```ts
-import '@nikolayvalev/design-tokens/styles/dashboard.css';
-import { dashboardProfile } from '@nikolayvalev/design-tokens/tailwind';
-```
-
-### `experimental` Profile
-
-**Use case:** Prototypes, creative projects, unconventional designs
-
-**Characteristics:**
-- Pure black background
-- High contrast colors
-- Zero border radius (sharp corners)
-- Bold, neon-like accent colors
-- Comfortable spacing
-
-**Import:**
-```ts
-import '@nikolayvalev/design-tokens/styles/experimental.css';
-import { experimentalProfile } from '@nikolayvalev/design-tokens/tailwind';
-```
 
 ## Versioning
 
 Follows **strict semantic versioning** with visual-first breaking change policy:
 
 - **Major (x.0.0):** Any visual change (token values, component rendering, CSS output)
-- **Minor (x.y.0):** New features, new components, new profiles (backward compatible)  
+- **Minor (x.y.0):** New features, new components, new vision themes (backward compatible)
 - **Patch (x.y.z):** Fixes with zero visual impact (types, docs, internal refactoring)
 
 Lock to major version to control when visual updates happen:
@@ -416,7 +350,7 @@ Lock to major version to control when visual updates happen:
 ```json
 {
   "dependencies": {
-    "@nikolayvalev/design-tokens": "~1.0.0"
+    "@nikolayvalev/design-system": "^2.0.0"
   }
 }
 ```

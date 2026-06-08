@@ -36,7 +36,7 @@ npx @nikolayvalev/design-system@latest init
 Generated defaults:
 
 - `.mcp.json` and `.cursor/mcp.json` include `https://designsystem.nikolayvalev.com/mcp`
-- `design-system.config.json` stores install root and profile
+- `design-system.config.json` stores install root and selected vision(s)
 - `src/design-system` scaffold for source-installed components/sections/pages
 
 This contract should remain stable so future agents can bootstrap consuming repos without manual setup.

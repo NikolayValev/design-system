@@ -5,7 +5,7 @@ This demonstrates how to consume the design system in a Next.js application.
 ## Installation
 
 ```bash
-npm install @nikolayvalev/design-tokens
+npm install @nikolayvalev/design-system
 ```
 
 Optional scaffold (recommended in new repos):
@@ -15,13 +15,11 @@ npx @nikolayvalev/design-system@latest init
 ```
 
 In interactive terminals, the CLI shows an arrow-key module selector (`themes`, `components`, `pages`).
-If `themes` is selected, it shows a style picker with color swatches and vibe descriptions.
-It can also set compile-time vision assignments with `--vision-system` and profile-specific overrides.
-For non-interactive runs:
+If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 12 visions.
+For non-interactive runs, pass a vision directly:
 
 ```bash
-npx @nikolayvalev/design-system@latest init --modules themes,components
-# optionally: --vision-system expanded --vision-map public=swiss_international,dashboard=clay_soft,experimental=y2k_chrome
+npx @nikolayvalev/design-system@latest init --modules themes,components --vision editorial
 ```
 
 This command scaffolds `src/design-system`, creates MCP config files, and links to
@@ -31,45 +29,37 @@ Install components separately as source files through MCP `get_component_bundle`
 
 ## Setup
 
-### 1. Import global styles
+### 1. Import vision styles and add VisionProvider
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-tokens/styles/public.css';
-// or import '@nikolayvalev/design-tokens/styles/dashboard.css';
-// or import '@nikolayvalev/design-tokens/styles/experimental.css';
+import '@nikolayvalev/design-system/styles/editorial.css';
+// Choose one vision — see Vision IDs section below for all options
+import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <VisionProvider registry={defaultVisionRegistry} defaultVisionId="editorial">
+          {children}
+        </VisionProvider>
+      </body>
     </html>
   );
 }
 ```
 
-### 2. Configure Tailwind
+### 2. Use semantic Tailwind classes
 
-```ts
-// tailwind.config.ts
-import type { Config } from 'tailwindcss';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
+The vision CSS emits `--primary`, `--background`, `--foreground`, and other shadcn-compatible aliases as CSS variables. Tailwind's semantic classes work without any preset configuration:
 
-const config: Config = {
-  presets: [createTailwindPreset(publicProfile)],
-  content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {
-      // Project-specific extensions go here
-      // These will NOT break the design system base
-    },
-  },
-};
-
-export default config;
+```tsx
+<div className="bg-background text-foreground p-4">
+  <button className="bg-primary text-primary-foreground px-4 py-2 rounded">
+    Submit
+  </button>
+</div>
 ```
 
 ### 3. Use source-installed components
@@ -165,68 +155,47 @@ Vision IDs for `setVision()`, by family:
 - **Atmospheric & Luminous** — `immersive`, `synthwave`, `noir`
 - **Expressive & Statement** — `solarpunk`, `y2k_chrome`
 
-## Runtime Configuration Override
+## Overriding Tokens
 
-Override specific tokens at runtime using OKLCH color values:
+Visions are token-driven, so you override by setting CSS variables — no build step or theme factory. Scope overrides to a wrapper element or `:root`:
 
 ```tsx
-// app/layout.tsx
-'use client';
+// Override a couple of tokens for a subtree
+<div
+  style={{
+    ['--vde-color-accent' as string]: 'oklch(0.6 0.25 280)',
+    ['--primary' as string]: 'oklch(0.6 0.25 280)',
+  }}
+>
+  {children}
+</div>
+```
 
-import { useEffect } from 'react';
-import { createTheme, applyTheme, publicProfile } from '@nikolayvalev/design-tokens';
+Or in global CSS:
 
-export default function RootLayout({ children }) {
-  useEffect(() => {
-    // Override specific tokens at runtime
-    const customTheme = createTheme({
-      profile: publicProfile,
-      tokens: {
-        colors: {
-          primary: 'oklch(0.6 0.25 280)',
-          primaryForeground: 'oklch(1 0 0)',
-        },
-        radius: {
-          base: '1rem',
-        },
-      },
-      density: 'compact',
-    });
-
-    applyTheme(document.documentElement, customTheme);
-  }, []);
-
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+```css
+:root {
+  --vde-color-accent: oklch(0.6 0.25 280);
+  --primary: var(--vde-color-accent);
 }
 ```
 
 ## Per-Project Tailwind Extension
 
+No preset is required — the active vision's CSS emits the shadcn-compatible aliases (`--primary`, `--background`, …), so Tailwind's semantic classes resolve automatically. Add project-specific tokens with a normal `theme.extend`:
+
 ```ts
 // tailwind.config.ts
 import type { Config } from 'tailwindcss';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
 
 const config: Config = {
-  presets: [createTailwindPreset(publicProfile)],
   content: ['./app/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      // Project-specific colors that don't conflict with the system
       colors: {
-        brand: {
-          coral: 'hsl(16 100% 66%)',
-          navy: 'hsl(216 100% 12%)',
-        },
+        brand: { coral: 'hsl(16 100% 66%)', navy: 'hsl(216 100% 12%)' },
       },
-      // Override spacing for this specific project
-      spacing: {
-        '128': '32rem',
-      },
+      spacing: { '128': '32rem' },
     },
   },
 };
@@ -234,59 +203,38 @@ const config: Config = {
 export default config;
 ```
 
-## Switching Profiles
+## Switching Visions
 
-### Public Site (marketing)
-
-```tsx
-import '@nikolayvalev/design-tokens/styles/public.css';
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
-```
-
-### Dashboard (internal tools)
+Import a different per-vision CSS, or switch at runtime with `setVision`:
 
 ```tsx
-import '@nikolayvalev/design-tokens/styles/dashboard.css';
-import { createTailwindPreset, dashboardProfile } from '@nikolayvalev/design-tokens/tailwind';
+// Compile-time: import the vision you want
+import '@nikolayvalev/design-system/styles/terminal.css';
 ```
-
-### Experimental (prototypes)
 
 ```tsx
-import '@nikolayvalev/design-tokens/styles/experimental.css';
-import { createTailwindPreset, experimentalProfile } from '@nikolayvalev/design-tokens/tailwind';
+// Runtime: switch via the hook — the active vision's variables update live
+import { useVision } from '@nikolayvalev/design-system';
+
+function VisionSwitcher() {
+  const { setVision } = useVision();
+  return <button onClick={() => setVision('synthwave')}>Synthwave</button>;
+}
 ```
 
-## Custom Profile
+## Authoring a Custom Vision
 
-Create a custom profile with OKLCH colors:
+Visions are `VisionTheme` objects defined in the design-system source (`src/vde-themes`). To add one to the shared catalog, propose it there (see CONTRIBUTING). Advanced consumers can build a `VisionTheme` and register it locally:
 
 ```ts
-// lib/custom-theme.ts
-import type { ThemeProfile } from '@nikolayvalev/design-tokens/tokens';
-import { baseTokens } from '@nikolayvalev/design-tokens/tokens';
+import { VisionRegistry, visionThemes, type VisionTheme } from '@nikolayvalev/design-system';
 
-export const customProfile: ThemeProfile = {
-  name: 'custom',
-  tokens: {
-    ...baseTokens,
-    colors: {
-      ...baseTokens.colors,
-      primary: 'oklch(0.6 0.28 340)',
-      secondary: 'oklch(0.55 0.22 290)',
-    },
-  },
-  density: 'comfortable',
-};
+const myVision = {
+  /* id, name, family, tagline, summary, bestFor, mood, colors, artisticPillars, ornaments */
+} as VisionTheme;
 
-// Use in Tailwind config
-import { createTailwindPreset } from '@nikolayvalev/design-tokens/tailwind';
-import { customProfile } from './lib/custom-theme';
-
-const config = {
-  presets: [createTailwindPreset(customProfile)],
-  // ...
-};
+const registry = new VisionRegistry([...visionThemes, myVision]);
+// pass `registry` to <VisionProvider registry={registry} defaultVisionId={myVision.id}>
 ```
 
 ## Versioning Strategy
@@ -294,7 +242,7 @@ const config = {
 The design system follows semantic versioning:
 
 - **Major**: Breaking changes to tokens, component APIs, or visual appearance
-- **Minor**: New components, new tokens, backwards-compatible changes
+- **Minor**: New components, new visions, backwards-compatible changes
 - **Patch**: Bug fixes, documentation updates
 
 Lock to a specific major version to prevent unexpected visual changes:
@@ -302,7 +250,7 @@ Lock to a specific major version to prevent unexpected visual changes:
 ```json
 {
   "dependencies": {
-    "@nikolayvalev/design-tokens": "^1.0.0"
+    "@nikolayvalev/design-system": "^2.0.0"
   }
 }
 ```

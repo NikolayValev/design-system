@@ -10,7 +10,24 @@ Visual changes are treated as breaking. If upgrading changes how your app looks,
 
 ## Unreleased Breaking Changes
 
-*None currently planned*
+### Token profiles removed (next major)
+
+The legacy token-profile system is gone. Removed exports / entry points:
+
+- `createTheme`, `applyTheme`, `ThemeConfig`, `Theme`
+- `publicProfile`, `dashboardProfile`, `experimentalProfile`, `ThemeProfile`, `DesignTokens`, `baseTokens`
+- `createTailwindPreset` and the `./tailwind` entry point
+- the `./tokens` entry point
+- the `styles/public.css`, `styles/dashboard.css`, `styles/experimental.css` files
+- the `@nikolayvalev/design-tokens` package (discontinued)
+
+**Migrate:**
+
+- Replace profile CSS imports with a per-vision import: `import '@nikolayvalev/design-system/styles/<visionId>.css'`.
+- Replace `createTheme`/`applyTheme` + a profile with `<VisionProvider registry={defaultVisionRegistry} defaultVisionId="…">` and the `useVision()` hook.
+- Drop `createTailwindPreset(profile)` — the active vision emits `--primary`/`--background`/… so Tailwind semantic classes resolve without a preset.
+- Override tokens by pinning CSS variables (`--vde-color-*` / the shadcn aliases) instead of building a custom profile.
+- CLI: use `--vision <id>` / `--list-visions` instead of `--profile` / `--vision-map`.
 
 ---
 
@@ -78,16 +95,12 @@ Use tilde (`~`) for patch updates only, or exact version for complete lock.
 
 If a visual change doesn't work for you:
 
-```ts
-// Override specific tokens in your theme
-const customTheme = createTheme({
-  profile: publicProfile,
-  tokens: {
-    colors: {
-      primary: 'oklch(0.55 0.20 250)' // Keep old value
-    }
-  }
-});
+```css
+/* Override specific tokens by pinning CSS variables */
+:root {
+  --vde-color-accent: oklch(0.55 0.20 250); /* keep the old value */
+  --primary: var(--vde-color-accent);
+}
 ```
 
 ### Staging Environment
@@ -96,7 +109,7 @@ Always test major upgrades in staging first. Check:
 - Landing pages
 - Dashboard views  
 - Mobile responsive behavior
-- Dark mode (if using publicProfile)
+- Dark mode
 - Print styles
 
 ### Gradual Rollout

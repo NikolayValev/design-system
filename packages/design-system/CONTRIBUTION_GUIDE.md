@@ -3,7 +3,7 @@
 This guide must be referenced by all contributors and AI agents before submitting a PR that affects UI or styles.
 
 ## 1. Always Use the Core Design System
-- Install tokens from `@nikolayvalev/design-tokens`.
+- Install the design system: `@nikolayvalev/design-system` (vision themes + components). Wrap the app in `VisionProvider` and import the per-vision CSS (`@nikolayvalev/design-system/styles/<visionId>.css`).
 - Install UI components as source code via MCP `get_component_bundle` (shadcn-style), then commit the files in the target repo.
 - Do not create local CSS/Sass files if a tokenized component pattern already exists.
 
@@ -18,7 +18,7 @@ This guide must be referenced by all contributors and AI agents before submittin
 
 ## 4. Extension
 - Extend source-installed components directly in the consuming repo while preserving token semantics.
-- Propose new tokens/themes in `@nikolayvalev/design-tokens`.
+- Propose new visions (`VisionTheme`s) in `src/vde-themes` of the design system package.
 - If component source structure changes, update MCP bundle resolution logic and docs.
 
 ## 5. Enforcement
