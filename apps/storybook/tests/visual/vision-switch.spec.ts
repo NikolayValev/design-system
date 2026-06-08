@@ -153,4 +153,14 @@ test.describe('vision switch consistency', () => {
       }
     }
   });
+
+  test('mode toggle swaps the active palette', async ({ page }) => {
+    const read = (n: string) => page.evaluate(name => getComputedStyle(document.documentElement).getPropertyValue(name).trim(), n);
+    await page.goto('/iframe.html?id=components-button--playground&viewMode=story&globals=mode:dark', { waitUntil: 'networkidle' });
+    await expect.poll(() => page.evaluate(() => document.documentElement.getAttribute('data-vde-mode'))).toBe('dark');
+    const darkBg = await read('--vde-color-background');
+    await page.goto('/iframe.html?id=components-button--playground&viewMode=story&globals=mode:light', { waitUntil: 'networkidle' });
+    await expect.poll(() => page.evaluate(() => document.documentElement.getAttribute('data-vde-mode'))).toBe('light');
+    expect(await read('--vde-color-background')).not.toBe(darkBg);
+  });
 });
