@@ -11,8 +11,8 @@
   - `scripts/ci/dry-run-design-system-impact.mjs`
 - Validates platform contracts through one extracted command:
   - `pnpm validate:platform-contracts`
-- Enforces all required apps listed in `.github/dependent-apps.json` (Game, Second Brain, Strata).
-- Runs linked external manifest validation using:
+- Enforces all required apps listed in `.github/dependent-apps.json` (`storybook`).
+- Runs linked external manifest validation for the product repos (Game, Second Brain, Strata) using:
   - `.github/dependent-apps.json -> linkedRepositories`
   - `scripts/ci/validate-linked-repo-manifests.mjs`
   - extracted runner: `scripts/ci/validate-linked-contracts.mjs`
@@ -122,7 +122,7 @@ Workflow support:
 
 ### 2) Monorepo Deploy (`.github/workflows/monorepo-deploy.yml`)
 
-- Deploys `game`, `second-brain`, `strata`, `design-system-mcp`, and `storybook` with Vercel from one workflow.
+- Deploys `design-system-mcp` and `storybook` with Vercel from one workflow.
 - Uses per-app matrix entries with app path + Vercel project secret.
 - Skips missing apps for deploy (CI impact checks enforce app presence on design-system changes).
 
@@ -130,9 +130,6 @@ Required GitHub secrets:
 
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID_GAME`
-- `VERCEL_PROJECT_ID_SECOND_BRAIN`
-- `VERCEL_PROJECT_ID_STRATA`
 - `VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP`
 - `VERCEL_PROJECT_ID_STORYBOOK`
 

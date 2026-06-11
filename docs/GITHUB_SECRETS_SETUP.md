@@ -25,9 +25,6 @@ Both require secrets configured at **Settings → Secrets and variables → Acti
 | `VERCEL_ORG_ID` | `team_cdPyQNoQWU4a7VqcxHcotDLm` |
 | `VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP` | `prj_wx3jdcy1uR5nCyByCdWllmJ1BqLh` |
 | `VERCEL_PROJECT_ID_STORYBOOK` | Vercel project ID for the `storybook` app (create via `vercel link` in `apps/storybook`) |
-| `VERCEL_PROJECT_ID_GAME` | Vercel project ID for `apps/game` (optional — workflow skips if missing) |
-| `VERCEL_PROJECT_ID_SECOND_BRAIN` | Vercel project ID for `apps/second-brain` (optional) |
-| `VERCEL_PROJECT_ID_STRATA` | Vercel project ID for `apps/strata` (optional) |
 
 > The `design-system` Vercel project (`prj_iHsjr9uW1WdibFDfbkiiOrEu2T4H`) is deployed via
 > Vercel's native GitHub integration — it does **not** need a secret.

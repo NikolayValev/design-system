@@ -20,15 +20,6 @@ jobs:
       fail-fast: false
       matrix:
         app:
-          - id: game
-            path: apps/game
-            project_id_secret: VERCEL_PROJECT_ID_GAME
-          - id: second-brain
-            path: apps/second-brain
-            project_id_secret: VERCEL_PROJECT_ID_SECOND_BRAIN
-          - id: strata
-            path: apps/strata
-            project_id_secret: VERCEL_PROJECT_ID_STRATA
           - id: design-system-mcp
             path: packages/mcp-server
             project_id_secret: VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP

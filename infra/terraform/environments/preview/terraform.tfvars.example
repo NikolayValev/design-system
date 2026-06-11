@@ -1,25 +1,18 @@
 aws_region = "us-east-1"
 
+# Frontend apps deployed from this monorepo (Vercel).
 frontend_apps = {
-  "game" = {
-    root_directory = "apps/game"
+  "storybook" = {
+    root_directory = "apps/storybook"
   }
-  "second-brain" = {
-    root_directory = "apps/second-brain"
-  }
-  "strata" = {
-    root_directory = "apps/strata"
+  "design-system-mcp" = {
+    root_directory = "packages/mcp-server"
   }
 }
 
+# FastAPI backends are illustrative — replace with your own service(s).
 fastapi_services = {
-  "game-api" = {
-    image_tag = "preview"
-  }
-  "second-brain-api" = {
-    image_tag = "preview"
-  }
-  "strata-api" = {
+  "example-api" = {
     image_tag = "preview"
   }
 }

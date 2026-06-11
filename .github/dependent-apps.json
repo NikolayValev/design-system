@@ -2,23 +2,9 @@
   "designSystemPackage": "@nikolayvalev/design-system",
   "apps": [
     {
-      "id": "game",
-      "path": "apps/game",
-      "required": true,
-      "repository": "https://github.com/NikolayValev/mandate-zero"
-    },
-    {
-      "id": "second-brain",
-      "path": "apps/second-brain",
-      "required": true,
-      "repository": "https://github.com/NikolayValev/SecondBrain"
-    },
-    {
-      "id": "strata",
-      "path": "apps/strata",
-      "required": true,
-      "repository": "https://github.com/NikolayValev/kami_times",
-      "productionUrl": "https://www.strategemalgo.com/"
+      "id": "storybook",
+      "path": "apps/storybook",
+      "required": true
     }
   ],
   "linkedRepositories": [
@@ -26,7 +12,6 @@
       "id": "game",
       "role": "frontend",
       "repository": "https://github.com/NikolayValev/mandate-zero",
-      "manifestId": "game",
       "manifestPath": "app.manifest.json",
       "requiredManifest": false,
       "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
@@ -36,7 +21,6 @@
       "id": "second-brain-api",
       "role": "backend",
       "repository": "https://github.com/NikolayValev/SecondBrain",
-      "manifestId": "second-brain",
       "manifestPath": "app.manifest.json",
       "requiredManifest": false,
       "openapiPath": "openapi/openapi.json",
@@ -49,7 +33,6 @@
       "id": "second-brain-ui",
       "role": "frontend",
       "repository": "https://github.com/NikolayValev/second-brain-ui",
-      "manifestId": "second-brain",
       "manifestPath": "app.manifest.json",
       "requiredManifest": false,
       "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
@@ -59,7 +42,6 @@
       "id": "strata",
       "role": "frontend",
       "repository": "https://github.com/NikolayValev/kami_times",
-      "manifestId": "strata",
       "manifestUrl": "https://www.strategemalgo.com/app.manifest.json",
       "manifestPath": "app.manifest.json",
       "requiredManifest": false,

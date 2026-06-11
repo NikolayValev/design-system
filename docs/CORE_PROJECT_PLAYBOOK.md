@@ -11,11 +11,13 @@ Build one coherent platform with shared primitives and predictable delivery:
 
 ## Platform Shape
 
-- `apps/game`: interactive product surface
-- `apps/second-brain`: knowledge workflow product
-- `apps/strata`: consultancy operations product (canonical repo: `https://github.com/NikolayValev/kami_times`, production: `https://www.strategemalgo.com/`)
-- `packages/*`: reusable platform contracts and shared tooling
+- `apps/storybook`: the component workbench and the only app deployed from this repo
+- `packages/*`: reusable platform contracts and shared tooling (`design-system`, `auth`, `state`, `utils`, `config`, `mcp-server`)
 - `infra/terraform`: deployment architecture as code
+- **Linked product repos** (consume the contracts but live in their own repositories, validated via `.github/dependent-apps.json`):
+  - `game` — interactive product surface (`https://github.com/NikolayValev/mandate-zero`)
+  - `second-brain` — knowledge workflow product (`https://github.com/NikolayValev/SecondBrain`, `second-brain-ui`)
+  - `strata` — consultancy operations product (`https://github.com/NikolayValev/kami_times`, production: `https://www.strategemalgo.com/`)
 
 ## Engineering Rules
 
