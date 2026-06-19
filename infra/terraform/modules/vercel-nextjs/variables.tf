@@ -20,3 +20,9 @@ variable "environment_variables" {
   default     = {}
 }
 
+variable "environment_variables_sensitive" {
+  description = "Whether the synced environment variables should be stored as sensitive in Vercel."
+  type        = bool
+  default     = false
+}
+

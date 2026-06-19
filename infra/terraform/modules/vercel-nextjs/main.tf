@@ -11,5 +11,6 @@ resource "vercel_project_environment_variable" "this" {
   key        = each.key
   value      = each.value
   target     = ["production", "preview", "development"]
+  sensitive  = var.environment_variables_sensitive
 }
 
