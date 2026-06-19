@@ -60,8 +60,18 @@ jobs:
         if: steps.changed-files.outputs.design_system == 'true'
         run: node scripts/ci/dry-run-design-system-impact.mjs
 
-      - name: Validate platform contracts
+      # Contracts owned by this repo — these gate the build.
+      - name: Validate platform contracts (local)
         shell: bash
+        run: pnpm validate:platform-contracts:local
+
+      # Contracts against external linked repos. These depend on repos this
+      # build does not control (and which may not have published their contract
+      # files yet), so they are advisory: they run and report, but do not fail
+      # CI. Readiness is tracked by the "Report linked contract readiness" step.
+      - name: Validate linked external contracts (advisory)
+        shell: bash
+        continue-on-error: true
         run: |
           args=()
           if [ "${{ vars.LINKED_MANIFESTS_STRICT }}" = "true" ]; then
@@ -73,7 +83,7 @@ jobs:
           if [ "${{ vars.LINKED_ERROR_ENVELOPE_STRICT }}" = "true" ]; then
             args+=("--strict-error-envelope")
           fi
-          pnpm validate:platform-contracts -- "${args[@]}"
+          pnpm validate:platform-contracts:linked -- "${args[@]}"
 
       - name: Report linked contract readiness
         run: pnpm report:linked-contract-readiness:write

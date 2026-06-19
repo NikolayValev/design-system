@@ -31,6 +31,8 @@
     "report:linked-contract-readiness:write": "node scripts/ci/report-linked-contract-readiness.mjs --out docs/linked-contract-readiness.md",
     "validate:platform-contracts": "node scripts/ci/validate-platform-contracts.mjs",
     "validate:platform-contracts:strict": "node scripts/ci/validate-platform-contracts.mjs --strict",
+    "validate:platform-contracts:local": "node scripts/ci/validate-platform-contracts.mjs --scope=local",
+    "validate:platform-contracts:linked": "node scripts/ci/validate-platform-contracts.mjs --scope=linked",
     "validate:linked-contracts": "node scripts/ci/validate-linked-contracts.mjs",
     "validate:linked-contracts:strict": "node scripts/ci/validate-linked-contracts.mjs --strict",
     "validate:linked-manifests": "node scripts/ci/validate-linked-repo-manifests.mjs",
