@@ -1,0 +1,46 @@
+name: Update Visual Baselines
+
+# Run this once (Actions tab -> "Update Visual Baselines" -> Run workflow) to
+# (re)generate Storybook visual-regression baselines inside the same Playwright
+# image the CI visual job uses, then commit them back. After it runs, the
+# "Storybook Visual Regression" job in CI matches byte-for-byte.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Regenerate visual baselines
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+    env:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Regenerate visual baselines
+        run: pnpm --filter @apps/storybook test:visual:update
+
+      - name: Commit and push updated baselines
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apps/storybook/tests/visual
+          if git diff --staged --quiet; then
+            echo "No baseline changes to commit."
+          else
+            git commit -m "chore(storybook): regenerate visual baselines in Playwright container"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
