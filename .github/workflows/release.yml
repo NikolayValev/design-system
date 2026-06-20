@@ -67,13 +67,18 @@ jobs:
           echo "npm registry: $(npm config get registry)"
           pnpm changeset status || echo "No pending changesets (or no changeset metadata to report)."
 
-      - name: Verify npm authentication
+      # Advisory only. `npm whoami` returns 401 for package-scoped granular
+      # tokens that can still publish, so a hard gate here produces false
+      # negatives and blocks the changesets "Version Packages" PR (which only
+      # needs GITHUB_TOKEN). The publish step below is the source of truth for
+      # npm auth.
+      - name: Check npm authentication (advisory)
         shell: bash
         run: |
-          if ! npm whoami --registry=https://registry.npmjs.org; then
-            echo "::error::npm authentication failed. Ensure NPM_TOKEN is a valid npm automation token with publish access for @nikolayvalev/design-system."
-            echo "::error::Use the raw token value (e.g. npm_xxx), not an .npmrc line."
-            exit 1
+          if npm whoami --registry=https://registry.npmjs.org; then
+            echo "npm authentication OK."
+          else
+            echo "::warning::npm whoami did not succeed. This is expected for package-scoped granular tokens; publishing is validated by the publish step. If publishing fails, ensure NPM_TOKEN is a valid token with publish access for @nikolayvalev and is the raw token value (npm_xxx), not an .npmrc line."
           fi
 
       - name: Build packages
