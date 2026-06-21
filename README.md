@@ -23,10 +23,11 @@ The full platform is browsable online:
 
 ## Packages
 
-| Package                           | npm                                                                                                                                   | Description                                          |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `@nikolayvalev/design-system`     | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system)](https://www.npmjs.com/package/@nikolayvalev/design-system)         | React components, vision themes, per-vision CSS, CLI |
-| `@nikolayvalev/design-system-mcp` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system-mcp)](https://www.npmjs.com/package/@nikolayvalev/design-system-mcp) | MCP server for AI agents                             |
+| Package                       | npm                                                                                                                           | Description                                          |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `@nikolayvalev/design-system` | [![npm](https://img.shields.io/npm/v/@nikolayvalev/design-system)](https://www.npmjs.com/package/@nikolayvalev/design-system) | React components, vision themes, per-vision CSS, CLI |
+
+The MCP server ships as a **hosted endpoint** (see below), not an npm package.
 
 ## Quick Start
 
@@ -112,11 +113,12 @@ Add to your MCP client config:
 }
 ```
 
-Or run locally via stdio:
+Or run it locally from source (clone this repo, then build and start the stdio server):
 
 ```bash
+pnpm --filter @nikolayvalev/design-system-mcp build
 DESIGN_SYSTEM_SRC_DIR=/path/to/packages/design-system/src \
-  npx @nikolayvalev/design-system-mcp --transport stdio
+  node packages/mcp-server/dist/index.js --transport stdio
 ```
 
 ## Consumption Model

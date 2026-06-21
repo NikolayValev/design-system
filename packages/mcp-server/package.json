@@ -1,6 +1,7 @@
 {
   "name": "@nikolayvalev/design-system-mcp",
   "version": "0.1.0",
+  "private": true,
   "description": "MCP server for the Nikolay Valev design system — lets AI agents browse, fetch, and install components, sections, pages, tokens, and themes.",
   "type": "module",
   "bin": {
@@ -11,10 +12,6 @@
   "files": [
     "dist"
   ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "scripts": {
     "dev": "tsx src/index.ts --transport stdio",
     "dev:http": "tsx src/index.ts --transport http",

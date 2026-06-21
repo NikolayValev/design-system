@@ -1,11 +1,12 @@
 # NPM Publish Setup
 
-Two packages are published to npm under `@nikolayvalev`:
+One package is published to npm under `@nikolayvalev`:
 
-| Package | npm |
-|---|---|
+| Package                       | npm                                           |
+| ----------------------------- | --------------------------------------------- |
 | `@nikolayvalev/design-system` | Components, CLI, VDE visions + per-vision CSS |
-| `@nikolayvalev/design-system-mcp` | MCP server binary (stdio + HTTP) |
+
+The MCP server (`@nikolayvalev/design-system-mcp`) is **not** published to npm — it is marked `private` and ships as a hosted Vercel endpoint, so Changesets skips it.
 
 Publishing is handled by [Changesets](https://github.com/changesets/changesets) via the `release.yml` GitHub Action, which runs on every push to `main`.
 
@@ -15,11 +16,18 @@ Publishing is handled by [Changesets](https://github.com/changesets/changesets) 
 
 ### 1. Create an npm automation token
 
-1. Log in to [npmjs.com](https://www.npmjs.com)
-2. **Account → Access Tokens → Generate New Token → Granular Access Token**
-3. Set scope: `@nikolayvalev` (or all packages)
-4. Permission: **Read and write**
-5. Copy the token (starts with `npm_…`)
+1. Log in to [npmjs.com](https://www.npmjs.com) as the account that owns the `@nikolayvalev` scope
+2. **Account → Access Tokens → Generate New Token → Classic Token → Automation**
+3. Copy the token (starts with `npm_…`)
+
+> Use a **Classic Automation** token, not a Granular one. Automation tokens authenticate with `npm whoami`, bypass 2FA in CI, and can create new packages in the scope. Granular tokens often return `401` on `whoami` and `E404` on publish (npm masks auth failures as 404).
+>
+> Verify the token locally before adding it to CI — it should print your username:
+>
+> ```bash
+> printf '//registry.npmjs.org/:_authToken=%s\n' "npm_YOURTOKEN" > /tmp/npmrc
+> npm whoami --registry=https://registry.npmjs.org --userconfig /tmp/npmrc
+> ```
 
 ### 2. Add the token to GitHub secrets
 
@@ -65,5 +73,4 @@ NPM_TOKEN=npm_xxx pnpm run release
 
 ```bash
 npm info @nikolayvalev/design-system
-npm info @nikolayvalev/design-system-mcp
 ```
