@@ -62,6 +62,7 @@ describe('validateWidgetSource — rejects', () => {
   it('dynamic/computed property access', () => {
     expect(ok("const k = 'constructor'; return [][k];")).toBe(false);
     expect(ok("return ({})['con' + 'structor'];")).toBe(false);
+    expect(ok('return ({})[`constructor`];')).toBe(false);
     expect(ok('const i = 0; const a = [1]; return a[i].toString();')).toBe(false);
   });
   it('spread attributes on registered components', () => {
