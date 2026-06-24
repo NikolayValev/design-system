@@ -12,6 +12,12 @@ import {
 
 export interface WidgetRendererProps {
   source: string;
+  /**
+   * Pass a STABLE registry reference (module scope, or memoized via `useMemo`).
+   * The widget is rebuilt (validate → transpile → `new Function`) whenever this
+   * object identity changes, so a fresh registry created inline on every parent
+   * render forces a rebuild each render.
+   */
   registry: ComponentRegistry;
   className?: string;
 }
