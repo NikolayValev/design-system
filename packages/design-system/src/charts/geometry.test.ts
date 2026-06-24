@@ -82,4 +82,11 @@ describe('buildDonutArcs', () => {
     const [arc] = buildDonutArcs([1], { cx: 50, cy: 50, rOuter: 50, rInner: 30 });
     expect(arc.d.startsWith('M50,0 ')).toBe(true);
   });
+  it('renders a non-degenerate near-full ring for a single 100% slice', () => {
+    const [arc] = buildDonutArcs([5], { cx: 50, cy: 50, rOuter: 50, rInner: 30 });
+    expect(arc.d.startsWith('M50,0 ')).toBe(true);
+    // A 360° sweep would return the outer arc to its start point ("1 1 50,0"),
+    // which SVG draws as nothing. The clamp keeps the endpoint distinct.
+    expect(arc.d).not.toContain('1 1 50,0');
+  });
 });

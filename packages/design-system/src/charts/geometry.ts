@@ -75,7 +75,10 @@ export function buildDonutArcs(
   if (total === 0) return [];
   let angle = 0;
   return values.map((v, i) => {
-    const sweep = (Math.max(0, v) / total) * 360;
+    // Clamp just under a full turn: a 360° sweep makes the outer arc's start
+    // and end points coincide, which SVG renders as nothing. 359.99° keeps the
+    // endpoint distinct after 2-decimal rounding; the gap is sub-pixel.
+    const sweep = Math.min((Math.max(0, v) / total) * 360, 359.99);
     const start = angle;
     const end = angle + sweep;
     angle = end;
