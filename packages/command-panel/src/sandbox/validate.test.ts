@@ -68,6 +68,18 @@ describe('validateWidgetSource — rejects', () => {
   it('spread attributes on registered components', () => {
     expect(ok('return <Card {...{ dangerouslySetInnerHTML: { __html: "x" } }} />;')).toBe(false);
   });
+  it('dynamic import()', () => {
+    expect(ok("return import('node:fs');")).toBe(false);
+    expect(ok("import('x').then(() => null); return null;")).toBe(false);
+    expect(ok("return import('data:text/javascript,export default 1');")).toBe(false);
+  });
+  it('async and generator functions', () => {
+    expect(ok('const f = async () => 1; return f();')).toBe(false);
+    expect(ok('function* g() { yield 1; } return g();')).toBe(false);
+  });
+  it('labeled statements', () => {
+    expect(ok('loop: for (;;) { break loop; } return null;')).toBe(false);
+  });
   it('a syntax error', () => {
     expect(ok('return <Card;')).toBe(false);
     expect(errs('return <Card;').join(' ')).toMatch(/syntax error/i);

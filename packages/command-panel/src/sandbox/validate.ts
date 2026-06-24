@@ -91,8 +91,22 @@ export function validateWidgetSource(source: string, allowedComponents: Set<stri
       case 'ExportAllDeclaration':
         errors.push('Imports and exports are not allowed.');
         break;
+      case 'Import':
+        // The callee of a dynamic import() in script-mode parsing.
+        errors.push('Dynamic import() is not allowed.');
+        break;
       case 'TaggedTemplateExpression':
         errors.push('Tagged template expressions are not allowed.');
+        break;
+      case 'FunctionDeclaration':
+      case 'FunctionExpression':
+      case 'ArrowFunctionExpression':
+        if (node.async || node.generator) {
+          errors.push('Async and generator functions are not allowed.');
+        }
+        break;
+      case 'LabeledStatement':
+        errors.push('Labeled statements are not allowed.');
         break;
       case 'Identifier':
         if (DISALLOWED_IDENTIFIERS.has(node.name) && isReference(parent, key)) {

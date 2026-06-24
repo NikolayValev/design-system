@@ -35,6 +35,3 @@ export const SHADOWED_GLOBALS: readonly string[] = [
   'Function', 'require', 'process', 'global', 'Buffer',
   'setTimeout', 'setInterval', 'postMessage', 'alert', 'prompt', 'confirm', 'open', 'opener',
 ];
-
-/** React hooks (plus useMetric) injected into the evaluator scope. */
-export const HOOK_NAMES: readonly string[] = ['useState', 'useMemo', 'useRef', 'useMetric'];
