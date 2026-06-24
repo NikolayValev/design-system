@@ -1,4 +1,5 @@
 export * from './components';
+export * from './charts';
 export * from './sections';
 export * from './pages';
 export * from './intent';
