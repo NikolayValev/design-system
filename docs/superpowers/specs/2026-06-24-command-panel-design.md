@@ -71,7 +71,9 @@ surface.
   only use what is registered.
 - **LLM:** `claude-opus-4-8` via the Vercel AI SDK + `@ai-sdk/anthropic`,
   streaming, with a structured `propose_widget` tool call.
-- **Charts live in the design system**, not the engine.
+- **Charts live in the design system**, not the engine, and are **hand-rolled
+  dependency-free SVG** (no charting library) to preserve the design system's
+  zero-runtime-dependency property.
 - **Persistence:** pinned dashboard state via `@repo/state` (zustand) +
   `localStorage`.
 
@@ -229,15 +231,18 @@ untrusted prompts.
 
 ## Charts in the design system
 
-Add themeable chart primitives to `@nikolayvalev/design-system`, wrapping
-Recharts and wired to the existing `--chart-1..5` tokens and theme variables:
+Add themeable chart primitives to `@nikolayvalev/design-system` as
+**dependency-free, hand-rolled SVG** components wired to the existing
+`--chart-1..5` tokens and theme variables:
 
 - `LineChart`, `BarChart`, `AreaChart`, `Donut` (initial set).
+- Pure SVG — **no charting library, no new runtime dependency.** The design
+  system ships with zero runtime dependencies today and stays that way.
 - Token-driven colors only (no hardcoded hex), consistent with the design
-  system's anti-hardcoding rules.
-- Storybook stories + Playwright visual snapshots (existing infra). Snapshots use
-  **deterministic fixture data** so they are stable.
-- Adds a `recharts` dependency to the design system.
+  system's anti-hardcoding rules; series colors read `var(--chart-1..5)`.
+- Storybook stories + Playwright visual snapshots (existing infra; the suite
+  auto-discovers every story). Snapshots use **deterministic fixture data** so
+  they are stable.
 
 These become part of the engine's default allow-list but are reusable far beyond
 it.
@@ -299,7 +304,8 @@ plan.)
 ## Open questions / to confirm during planning
 
 - Final package name (`@nikolayvalev/command-panel` vs alternatives).
-- Recharts vs a lighter charting primitive — confirm bundle-size acceptable for
-  the design system; revisit if it bloats the published package.
+- ~~Recharts vs a lighter charting primitive~~ **Resolved (2026-06-24):**
+  hand-rolled dependency-free SVG, to preserve the design system's zero-runtime-
+  dependency property.
 - Exact default `useMetric` transport (per-id GET endpoint vs batched) — settle
   in the engine plan.
