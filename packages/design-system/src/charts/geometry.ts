@@ -53,7 +53,7 @@ export function computeBars(
   const slot = width / n;
   const barWidth = Math.max(0, slot - gap);
   return values.map((v, i) => {
-    const h = max === 0 ? 0 : (v / max) * height;
+    const h = max === 0 ? 0 : (Math.max(0, v) / max) * height;
     return {
       x: round(i * slot + gap / 2),
       y: round(height - h),
@@ -97,15 +97,15 @@ function arcPath(
   end: number,
 ): string {
   const largeArc = end - start > 180 ? 1 : 0;
-  const oStart = polarToCartesian(cx, cy, rOuter, end);
-  const oEnd = polarToCartesian(cx, cy, rOuter, start);
-  const iEnd = polarToCartesian(cx, cy, rInner, start);
+  const oStart = polarToCartesian(cx, cy, rOuter, start);
+  const oEnd = polarToCartesian(cx, cy, rOuter, end);
   const iStart = polarToCartesian(cx, cy, rInner, end);
+  const iEnd = polarToCartesian(cx, cy, rInner, start);
   return [
     `M${round(oStart.x)},${round(oStart.y)}`,
-    `A${rOuter},${rOuter} 0 ${largeArc} 0 ${round(oEnd.x)},${round(oEnd.y)}`,
-    `L${round(iEnd.x)},${round(iEnd.y)}`,
-    `A${rInner},${rInner} 0 ${largeArc} 1 ${round(iStart.x)},${round(iStart.y)}`,
+    `A${rOuter},${rOuter} 0 ${largeArc} 1 ${round(oEnd.x)},${round(oEnd.y)}`,
+    `L${round(iStart.x)},${round(iStart.y)}`,
+    `A${rInner},${rInner} 0 ${largeArc} 0 ${round(iEnd.x)},${round(iEnd.y)}`,
     'Z',
   ].join(' ');
 }

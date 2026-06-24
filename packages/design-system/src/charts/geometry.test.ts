@@ -58,6 +58,11 @@ describe('computeBars', () => {
     expect(bars[0].height).toBe(0);
     expect(bars[0].y).toBe(100);
   });
+  it('clamps a negative value to zero height at the baseline', () => {
+    const bars = computeBars([-5, 10], { width: 200, height: 100, gap: 0 });
+    expect(bars[0].height).toBe(0);
+    expect(bars[0].y).toBe(100);
+  });
 });
 
 describe('buildDonutArcs', () => {
@@ -72,5 +77,9 @@ describe('buildDonutArcs', () => {
   it('produces closed arc paths', () => {
     const arcs = buildDonutArcs([2, 3], { cx: 50, cy: 50, rOuter: 50, rInner: 30 });
     for (const a of arcs) expect(a.d.endsWith('Z')).toBe(true);
+  });
+  it('starts the first slice at the top (12 o’clock)', () => {
+    const [arc] = buildDonutArcs([1], { cx: 50, cy: 50, rOuter: 50, rInner: 30 });
+    expect(arc.d.startsWith('M50,0 ')).toBe(true);
   });
 });
