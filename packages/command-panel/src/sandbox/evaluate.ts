@@ -32,7 +32,7 @@ export function buildWidgetComponent(
   );
 
   const body = `"use strict";\n${transpiledCode}\nreturn Widget;`;
-  // eslint-disable-next-line @typescript-eslint/no-implied-eval, no-new-func
+  // eslint-disable-next-line no-new-func
   const factory = new Function(...paramNames, body) as (...a: unknown[]) => React.ComponentType<any>;
   return factory(...args);
 }
