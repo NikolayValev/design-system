@@ -1,0 +1,50 @@
+{
+  "name": "@nikolayvalev/command-panel",
+  "version": "0.0.0",
+  "description": "Portable chat-driven generative-UI command panel engine for the Nikolay Valev design system.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "license": "MIT",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "@nikolayvalev/design-system": "workspace:*"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.29.0",
+    "sucrase": "^3.35.0"
+  },
+  "devDependencies": {
+    "@nikolayvalev/design-system": "workspace:*",
+    "@repo/config": "workspace:*",
+    "@testing-library/react": "^16.1.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "jsdom": "^25.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.0"
+  },
+  "eslintConfig": {
+    "extends": "@repo/config/eslint-design-system.config.js"
+  }
+}
