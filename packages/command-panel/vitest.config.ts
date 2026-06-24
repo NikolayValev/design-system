@@ -8,5 +8,8 @@ export default defineConfig({
     // pragma at the top of the file (used by *.dom.test.tsx files).
     environment: 'node',
     include: ['src/**/*.test.{ts,tsx}'],
+    // Expose afterEach/beforeEach/etc. as globals so that @testing-library/react
+    // can register its automatic cleanup hook between jsdom tests.
+    globals: true,
   },
 });
