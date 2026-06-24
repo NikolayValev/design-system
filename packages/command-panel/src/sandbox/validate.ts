@@ -102,17 +102,28 @@ export function validateWidgetSource(source: string, allowedComponents: Set<stri
       case 'MemberExpression':
       case 'OptionalMemberExpression': {
         const prop = node.property;
-        if (!node.computed && prop?.type === 'Identifier' && FORBIDDEN_MEMBER_PROPS.has(prop.name)) {
+        if (node.computed) {
+          if (prop?.type === 'StringLiteral' && FORBIDDEN_MEMBER_PROPS.has(prop.value)) {
+            errors.push(`Access to "${prop.value}" is not allowed.`);
+          } else if (prop?.type !== 'NumericLiteral' && prop?.type !== 'StringLiteral') {
+            // Dynamic keys can resolve to constructor/__proto__ etc. — only literal
+            // array indices and literal property names are statically verifiable.
+            errors.push('Dynamic (computed) property access is not allowed; use a literal property name or array index.');
+          }
+        } else if (prop?.type === 'Identifier' && FORBIDDEN_MEMBER_PROPS.has(prop.name)) {
           errors.push(`Access to "${prop.name}" is not allowed.`);
-        }
-        if (node.computed && prop?.type === 'StringLiteral' && FORBIDDEN_MEMBER_PROPS.has(prop.value)) {
-          errors.push(`Access to "${prop.value}" is not allowed.`);
         }
         break;
       }
       case 'JSXOpeningElement': {
         const name = jsxName(node.name);
         const isComponent = /^[A-Z]/.test(name);
+        // Spread attributes are opaque to static analysis on any element — reject them.
+        for (const attr of node.attributes ?? []) {
+          if (attr.type === 'JSXSpreadAttribute') {
+            errors.push('Spread attributes are not allowed.');
+          }
+        }
         if (isComponent) {
           if (!allowedComponents.has(name)) {
             errors.push(`Component "${name}" is not in the allow-list.`);
@@ -121,10 +132,7 @@ export function validateWidgetSource(source: string, allowedComponents: Set<stri
           errors.push(`HTML element "<${name}>" is not allowed.`);
         } else {
           for (const attr of node.attributes ?? []) {
-            if (attr.type === 'JSXSpreadAttribute') {
-              errors.push(`Spread attributes on <${name}> are not allowed.`);
-              continue;
-            }
+            if (attr.type === 'JSXSpreadAttribute') continue; // already reported above
             const attrName = jsxName(attr.name);
             if (!ALLOWED_HOST_ATTRS.has(attrName)) {
               errors.push(`Attribute "${attrName}" on <${name}> is not allowed.`);
