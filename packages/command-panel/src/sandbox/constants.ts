@@ -14,7 +14,7 @@ export const DISALLOWED_IDENTIFIERS: ReadonlySet<string> = new Set([
   'localStorage', 'sessionStorage', 'indexedDB', 'caches', 'crypto',
   'eval', 'Function', 'require', 'module', 'exports', 'process', 'global', 'Buffer',
   'setTimeout', 'setInterval', 'setImmediate', 'queueMicrotask', 'requestAnimationFrame',
-  'arguments', 'postMessage', 'alert', 'prompt', 'confirm', 'open',
+  'arguments', 'postMessage', 'alert', 'prompt', 'confirm', 'open', 'opener',
 ]);
 
 /** Property names whose access enables prototype/constructor escapes. */
@@ -33,7 +33,7 @@ export const SHADOWED_GLOBALS: readonly string[] = [
   'fetch', 'XMLHttpRequest', 'WebSocket', 'EventSource', 'Worker',
   'localStorage', 'sessionStorage', 'indexedDB', 'caches', 'crypto',
   'Function', 'require', 'process', 'global', 'Buffer',
-  'setTimeout', 'setInterval', 'postMessage', 'alert', 'prompt', 'confirm', 'open',
+  'setTimeout', 'setInterval', 'postMessage', 'alert', 'prompt', 'confirm', 'open', 'opener',
 ];
 
 /** React hooks (plus useMetric) injected into the evaluator scope. */
