@@ -69,5 +69,11 @@ describe('createCommandPanelHandler', () => {
     const res = await handler(req);
     expect(res).toBeInstanceOf(Response);
     expect(res.ok).toBe(true);
+    const body = await res.text();
+    // The streamed body must not carry a top-level error part. A non-awaited
+    // convertToModelMessages (passing a Promise to streamText) produces
+    // {"type":"error"} here even though res.ok is true.
+    expect(body).toContain('"type":"start"');
+    expect(body).not.toContain('"type":"error"');
   });
 });

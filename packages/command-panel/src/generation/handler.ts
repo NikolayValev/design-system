@@ -54,7 +54,7 @@ export function createCommandPanelHandler(config: CommandPanelHandlerConfig) {
       dataRegistry: config.dataRegistry,
       model: config.model,
       system: config.system,
-      messages: convertToModelMessages(messages),
+      messages: await convertToModelMessages(messages),
     });
     return result.toUIMessageStreamResponse();
   };
