@@ -5,5 +5,13 @@ export default defineConfig({
   format: ['esm'],
   dts: true,
   clean: true,
-  external: ['react', 'react-dom', '@nikolayvalev/design-system', 'ai', '@ai-sdk/anthropic', 'zod'],
+  external: [
+    'react',
+    'react-dom',
+    '@nikolayvalev/design-system',
+    'ai',
+    '@ai-sdk/anthropic',
+    '@ai-sdk/provider-utils',
+    'zod',
+  ],
 });
