@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.0",
+    "@ai-sdk/provider-utils": "^5.0.0",
     "@babel/parser": "^7.29.0",
     "ai": "^7.0.0",
     "sucrase": "^3.35.0",

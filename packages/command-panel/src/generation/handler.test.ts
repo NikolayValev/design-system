@@ -15,18 +15,22 @@ const dataRegistry = createDataRegistry([
 /** A mock model that emits a single propose_widget tool call. */
 function mockProposing(input: unknown) {
   return new MockLanguageModelV4({
-    doStream: async () => ({
+    doStream: {
       stream: simulateReadableStream({
         chunks: [
-          { type: 'tool-call', toolCallId: 'c1', toolName: 'propose_widget', input },
+          // LanguageModelV4ToolCall requires input: string (JSON-encoded args).
+          { type: 'tool-call', toolCallId: 'c1', toolName: 'propose_widget', input: JSON.stringify(input) },
           {
             type: 'finish',
-            finishReason: { unified: 'tool-calls', raw: undefined },
-            usage: { inputTokens: { total: 1 }, outputTokens: { total: 1 } },
+            finishReason: { unified: 'tool-calls' as const, raw: undefined },
+            usage: {
+              inputTokens: { total: 1, noCache: undefined, cacheRead: undefined, cacheWrite: undefined },
+              outputTokens: { total: 1, text: undefined, reasoning: undefined },
+            },
           },
         ],
       }),
-    }),
+    },
   });
 }
 

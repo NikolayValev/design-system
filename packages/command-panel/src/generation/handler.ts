@@ -5,6 +5,8 @@ import {
   type UIMessage,
   type LanguageModel,
 } from 'ai';
+import type { StreamTextResult } from 'ai';
+import type { Context, ToolSet } from '@ai-sdk/provider-utils';
 import { anthropic } from '@ai-sdk/anthropic';
 import type { ComponentRegistry } from '../registry/component-registry';
 import type { DataRegistry } from '../registry/data-registry';
@@ -24,8 +26,10 @@ export interface RunGenerationParams {
   system?: string;
 }
 
+type ProposalToolSet = { propose_widget: typeof proposeWidgetTool } & ToolSet;
+
 /** Testable core: builds the system prompt and runs the model with the propose_widget tool. */
-export function runGeneration(params: RunGenerationParams) {
+export function runGeneration(params: RunGenerationParams): StreamTextResult<ProposalToolSet, Context, any> {
   const { componentRegistry, dataRegistry, messages, model, system } = params;
   return streamText({
     model: model ?? anthropic(DEFAULT_MODEL_ID),

@@ -23,7 +23,8 @@ describe('proposeWidgetSchema', () => {
 
 describe('proposeWidgetTool', () => {
   it('is a tool with a description', () => {
-    expect(typeof proposeWidgetTool.description).toBe('string');
-    expect(proposeWidgetTool.description.length).toBeGreaterThan(0);
+    // description is string | undefined in the AI SDK type; assert it is defined.
+    expect(proposeWidgetTool.description).toBeDefined();
+    expect((proposeWidgetTool.description as string).length).toBeGreaterThan(0);
   });
 });

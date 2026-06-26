@@ -22,3 +22,6 @@ export { validateWidgetSource, type ValidationResult } from './sandbox/validate'
 export { WidgetRenderer, type WidgetRendererProps } from './sandbox/WidgetRenderer';
 export { WidgetErrorBoundary } from './sandbox/ErrorBoundary';
 export { DataResolverProvider, useMetric, type MetricState } from './sandbox/use-metric';
+
+// Client-side data transport for useMetric (no AI SDK — safe in client bundles).
+export { createHttpDataResolver } from './generation/http-resolver';
