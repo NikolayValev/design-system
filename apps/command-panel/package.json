@@ -28,6 +28,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "ai": "^7",
     "eslint": "^9.39.2",
     "fast-glob": "^3.3.2",
     "jsdom": "^25.0.0",

@@ -26,6 +26,9 @@ export { DataResolverProvider, useMetric, type MetricState } from './sandbox/use
 // Client-side data transport for useMetric (no AI SDK — safe in client bundles).
 export { createHttpDataResolver } from './generation/http-resolver';
 
+// Server-side data route handler (no AI SDK — safe to import anywhere).
+export { createDataRouteHandler } from './generation/data-route';
+
 // Panel UI (client-safe).
 export { CommandPanel, type CommandPanelProps } from './ui/CommandPanel';
 export { ChatPane, type ChatPaneProps } from './ui/ChatPane';
