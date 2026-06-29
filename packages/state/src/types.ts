@@ -4,8 +4,11 @@ export type AnyStateReducer<State> = (state: State, payload: unknown) => State;
 
 export type StateReducers<State> = Record<string, AnyStateReducer<State>>;
 
+// `state: never` (contravariant) lets this match reducers of any concrete
+// `(state: State, payload) => State` shape under strictFunctionTypes while still
+// inferring the payload type — avoids `any` (and its no-explicit-any warning).
 export type ReducerPayload<Reducer> = Reducer extends (
-  state: any,
+  state: never,
   payload: infer Payload,
 ) => unknown
   ? Payload
