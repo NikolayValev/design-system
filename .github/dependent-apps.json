@@ -5,6 +5,11 @@
       "id": "storybook",
       "path": "apps/storybook",
       "required": true
+    },
+    {
+      "id": "command-panel",
+      "path": "apps/command-panel",
+      "required": true
     }
   ],
   "linkedRepositories": [
