@@ -36,6 +36,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.0",
     "@ai-sdk/provider-utils": "^5.0.0",
+    "@ai-sdk/react": "^4.0.5",
     "@babel/parser": "^7.29.0",
     "ai": "^7.0.0",
     "sucrase": "^3.35.0",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@nikolayvalev/design-system": "workspace:*",
     "@repo/config": "workspace:*",
+    "@repo/state": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",

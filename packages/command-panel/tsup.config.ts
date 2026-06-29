@@ -12,6 +12,10 @@ export default defineConfig({
     'ai',
     '@ai-sdk/anthropic',
     '@ai-sdk/provider-utils',
+    '@ai-sdk/react',
     'zod',
   ],
+  // @repo/state is a PRIVATE workspace package; bundle it so the published
+  // engine is self-contained (it has zero runtime deps of its own).
+  noExternal: ['@repo/state'],
 });
