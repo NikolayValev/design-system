@@ -16,6 +16,12 @@ export function createDataRouteHandler(dataRegistry: DataRegistry) {
     if (!body.id) {
       return Response.json({ error: 'Missing data source id.' }, { status: 400 });
     }
+    if (
+      body.params !== undefined &&
+      (typeof body.params !== 'object' || body.params === null || Array.isArray(body.params))
+    ) {
+      return Response.json({ error: 'Invalid params: expected an object.' }, { status: 400 });
+    }
     const source = getDataSource(dataRegistry, body.id);
     if (!source) {
       return Response.json({ error: `Unknown data source: ${body.id}` }, { status: 404 });

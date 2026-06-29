@@ -53,4 +53,21 @@ describe('createDataRouteHandler', () => {
     const res = await createDataRouteHandler(registry)(post({}));
     expect(res.status).toBe(400);
   });
+
+  it('400s a non-object params (string)', async () => {
+    const res = await createDataRouteHandler(registry)(post({ id: 'revenue.monthly', params: 'nope' }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/params/i);
+  });
+
+  it('400s an array params', async () => {
+    const res = await createDataRouteHandler(registry)(post({ id: 'revenue.monthly', params: [1, 2] }));
+    expect(res.status).toBe(400);
+  });
+
+  it('still resolves when params is omitted', async () => {
+    const res = await createDataRouteHandler(registry)(post({ id: 'revenue.monthly' }));
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ p: null });
+  });
 });
