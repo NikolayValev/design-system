@@ -25,3 +25,24 @@ export { DataResolverProvider, useMetric, type MetricState } from './sandbox/use
 
 // Client-side data transport for useMetric (no AI SDK — safe in client bundles).
 export { createHttpDataResolver } from './generation/http-resolver';
+
+// Panel UI (client-safe).
+export { CommandPanel, type CommandPanelProps } from './ui/CommandPanel';
+export { ChatPane, type ChatPaneProps } from './ui/ChatPane';
+export { DashboardGrid, type DashboardGridProps } from './ui/DashboardGrid';
+export { WidgetPreviewCard, type WidgetPreviewCardProps, type WidgetProposal } from './ui/WidgetPreviewCard';
+
+// Pinned dashboard state.
+export {
+  PinnedStoreProvider,
+  usePinnedStore,
+  type PinnedStoreApi,
+} from './state/use-pinned-store';
+export {
+  createPinnedStore,
+  DEFAULT_STORAGE_KEY,
+  type PinnedStore,
+  type PinnedStoreOptions,
+  type PinnedWidget,
+  type StorageLike,
+} from './state/pinned-store';
