@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-06-29T06:14:08.556Z",
+  "components": 17,
+  "sections": 3,
+  "pages": 2,
+  "stories": 24,
+  "bundle": [
+    {
+      "file": "index.js",
+      "bytes": 64612
+    },
+    {
+      "file": "chunk-LVHW7DHE.js",
+      "bytes": 61305
+    }
+  ]
+}
