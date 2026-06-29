@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { Readable } from 'node:stream';
-import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import { toWebRequest } from './handlers-middleware';
 
 function fakeReq(method: string, url: string, body?: string): IncomingMessage {

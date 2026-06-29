@@ -55,7 +55,6 @@ async function main(): Promise<void> {
   const metrics = await generateMetrics(repoRoot);
   const out = path.join(here, 'metrics.generated.json');
   writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
-  // eslint-disable-next-line no-console
   console.log(`metrics written: ${out}`);
 }
 

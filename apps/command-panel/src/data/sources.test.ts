@@ -8,7 +8,11 @@ const byId = (id: string) => {
 };
 
 const isSeries = (v: unknown): v is { label: string; value: number }[] =>
-  Array.isArray(v) && v.every((d) => typeof (d as any).label === 'string' && typeof (d as any).value === 'number');
+  Array.isArray(v) &&
+  v.every((d) => {
+    const o = d as { label?: unknown; value?: unknown };
+    return typeof o.label === 'string' && typeof o.value === 'number';
+  });
 
 describe('reference data sources', () => {
   it('exposes the expected ids, each with a description', () => {
