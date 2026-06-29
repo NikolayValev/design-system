@@ -5,7 +5,7 @@ export type AnyStateReducer<State> = (state: State, payload: unknown) => State;
 export type StateReducers<State> = Record<string, AnyStateReducer<State>>;
 
 export type ReducerPayload<Reducer> = Reducer extends (
-  state: unknown,
+  state: any,
   payload: infer Payload,
 ) => unknown
   ? Payload
