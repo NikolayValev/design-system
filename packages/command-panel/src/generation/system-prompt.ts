@@ -27,6 +27,19 @@ export function buildSystemPrompt(
     ? data.sources.map((s) => `- "${s.id}" — ${s.description}`).join('\n')
     : '- (none)';
 
+  // If a chart component is registered, show how to feed it metric data so the
+  // model passes the series straight through (a common failure is reshaping it
+  // into raw numbers, which yields empty/NaN charts).
+  const chartName = components.entries.find((e) => /chart/i.test(e.name))?.name;
+  const exampleId = data.sources[0]?.id ?? 'metric.id';
+  const chartGuidance = chartName
+    ? [
+        '',
+        `Charts (e.g. <${chartName}>) take a \`data\` prop shaped as \`{ label: string; value: number }[]\` plus a \`colorIndex\` (1-5). When a metric returns that shape, pass it straight through — do NOT reshape it into raw numbers or other forms (that produces empty/NaN charts):`,
+        `  const m = useMetric('${exampleId}'); return <${chartName} data={m.data ?? []} colorIndex={1} />;`,
+      ]
+    : [];
+
   return [
     'You are a generative-UI assistant for a "command panel". When a request is best answered visually, call the `propose_widget` tool to propose one or more widgets. You may also reply with plain text.',
     '',
@@ -39,6 +52,7 @@ export function buildSystemPrompt(
     '',
     'Data comes ONLY from `useMetric(id)`, which returns `{ data, loading, error }`. You may ONLY reference these data source ids — never invent data or ids:',
     dataLines,
+    ...chartGuidance,
     '',
     'Rules:',
     "- List every data source id a widget uses in the tool's `dataSources` field.",

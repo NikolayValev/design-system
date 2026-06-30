@@ -35,4 +35,20 @@ describe('buildSystemPrompt', () => {
     const p = buildSystemPrompt(components, data, { appendix: 'EXTRA-GUIDANCE-XYZ' });
     expect(p).toContain('EXTRA-GUIDANCE-XYZ');
   });
+  it('includes chart-data guidance (shape + pass-through example) when a chart is registered', () => {
+    const p = buildSystemPrompt(components, data);
+    expect(p).toContain('{ label: string; value: number }[]');
+    expect(p).toContain('colorIndex');
+    expect(p).toContain('data={m.data ?? []}');
+    // the example uses a real registered chart name + data id
+    expect(p).toContain('<LineChart data={m.data ?? []} colorIndex={1} />');
+    expect(p).toContain("useMetric('revenue.monthly')");
+  });
+  it('omits chart guidance when no chart component is registered', () => {
+    const noCharts = createComponentRegistry([
+      { name: 'StatChip', component: () => null, description: 'A compact metric token.' },
+    ]);
+    const p = buildSystemPrompt(noCharts, data);
+    expect(p).not.toContain('colorIndex');
+  });
 });
