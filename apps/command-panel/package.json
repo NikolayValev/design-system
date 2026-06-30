@@ -16,6 +16,7 @@
     "lint": "eslint src api"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4",
     "@nikolayvalev/command-panel": "workspace:*",
     "@nikolayvalev/design-system": "workspace:*",
     "react": "^18.2.0",
