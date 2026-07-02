@@ -1,0 +1,24 @@
+/*
+ * Reference-host styling. The design system ships each vision as Tailwind v4
+ * SOURCE (`@import 'tailwindcss'` + `@theme` + the `--vde-*` / `--chart-1..5`
+ * tokens), so we compile it here via `@tailwindcss/vite`. Importing a vision
+ * brings in Tailwind + that vision's tokens; `@source` points the class scanner
+ * at the design system's built output so the utility classes the DS components
+ * use (flex, space-y-1.5, arbitrary `--vde-*` values, …) are actually generated.
+ */
+@import '@nikolayvalev/design-system/styles/editorial.css';
+
+@source '../../../packages/design-system/dist';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--vde-color-background);
+  color: var(--vde-color-foreground);
+  font-family: var(--vde-font-body, system-ui, sans-serif);
+}
