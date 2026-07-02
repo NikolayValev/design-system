@@ -1,6 +1,6 @@
 {
   "name": "@nikolayvalev/command-panel",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Portable chat-driven generative-UI command panel engine for the Nikolay Valev design system.",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,7 +29,7 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "@nikolayvalev/design-system": "workspace:*",
+    "@nikolayvalev/design-system": "workspace:^",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
