@@ -27,6 +27,19 @@ describe('buildSystemPrompt', () => {
     expect(p).toContain('propose_widget');
     expect(p).toMatch(/return/i);
   });
+  it('surfaces a data source resultSchema shape when present', () => {
+    const withSchema = createDataRegistry([
+      { id: 'x.count', description: 'A count.', resultSchema: { count: 'number' }, load: async () => ({ count: 1 }) },
+    ]);
+    const p = buildSystemPrompt(components, withSchema);
+    expect(p).toContain('Returns:');
+    expect(p).toContain('{"count":"number"}');
+  });
+  it('omits the Returns shape when a source has no resultSchema', () => {
+    // `data` fixture's revenue.monthly has no resultSchema.
+    const p = buildSystemPrompt(components, data);
+    expect(p).not.toContain('Returns:');
+  });
   it('shows (none) when there are no data sources', () => {
     const p = buildSystemPrompt(components, createDataRegistry([]));
     expect(p).toContain('(none)');

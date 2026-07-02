@@ -24,7 +24,14 @@ export function buildSystemPrompt(
     .join('\n');
 
   const dataLines = data.sources.length
-    ? data.sources.map((s) => `- "${s.id}" — ${s.description}`).join('\n')
+    ? data.sources
+        .map((s) => {
+          // Surface the author's shape doc so the model accesses `data` correctly
+          // (e.g. `{ count: number }` → use `m.data.count`, not `m.data`).
+          const shape = s.resultSchema ? ` Returns: ${JSON.stringify(s.resultSchema)}` : '';
+          return `- "${s.id}" — ${s.description}${shape}`;
+        })
+        .join('\n')
     : '- (none)';
 
   // If a chart component is registered, show how to feed it metric data so the
