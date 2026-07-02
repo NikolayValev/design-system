@@ -11,8 +11,10 @@ story count, design-system bundle sizes).
 pnpm --filter @apps/command-panel dev
 ```
 
-Set `ANTHROPIC_API_KEY` (see `.env.example`) for live chat. The Vite dev server mounts
-the chat (`/api/chat`) and data (`/api/data`) routes via an in-process middleware.
+Set a provider key for live chat (see `.env.example`). Provider priority: **GitHub Models**
+(free — `GITHUB_MODELS_TOKEN`) → Vercel AI Gateway (`AI_GATEWAY_API_KEY`) → OpenRouter
+(`OPENROUTER_API_KEY`) → Anthropic (`ANTHROPIC_API_KEY`). The Vite dev server mounts the chat
+(`/api/chat`) and data (`/api/data`) routes via an in-process middleware.
 
 ## How it works
 
