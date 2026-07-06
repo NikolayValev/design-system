@@ -44,6 +44,15 @@
       "requiredErrorEnvelope": false
     },
     {
+      "id": "bondviz",
+      "role": "frontend",
+      "repository": "https://github.com/NikolayValev/bondviz",
+      "manifestPath": "app.manifest.json",
+      "requiredManifest": false,
+      "errorEnvelopeSamplePath": "contracts/examples/error-envelope.sample.json",
+      "requiredErrorEnvelope": false
+    },
+    {
       "id": "strata",
       "role": "frontend",
       "repository": "https://github.com/NikolayValev/kami_times",
