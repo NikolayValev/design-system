@@ -67,23 +67,41 @@ jobs:
 
       # Contracts against external linked repos. These depend on repos this
       # build does not control (and which may not have published their contract
-      # files yet), so they are advisory: they run and report, but do not fail
-      # CI. Readiness is tracked by the "Report linked contract readiness" step.
-      - name: Validate linked external contracts (advisory)
+      # files yet). Each check is advisory by default and can be promoted to
+      # blocking independently by setting the matching repo variable to "true":
+      #   - LINKED_MANIFESTS_STRICT
+      #   - LINKED_OPENAPI_STRICT
+      #   - LINKED_ERROR_ENVELOPE_STRICT
+      # Readiness is tracked by the "Report linked contract readiness" step.
+      - name: Validate linked manifests
         shell: bash
-        continue-on-error: true
+        continue-on-error: ${{ vars.LINKED_MANIFESTS_STRICT != 'true' }}
+        env:
+          STRICT: ${{ vars.LINKED_MANIFESTS_STRICT }}
         run: |
           args=()
-          if [ "${{ vars.LINKED_MANIFESTS_STRICT }}" = "true" ]; then
-            args+=("--strict-manifests")
-          fi
-          if [ "${{ vars.LINKED_OPENAPI_STRICT }}" = "true" ]; then
-            args+=("--strict-openapi")
-          fi
-          if [ "${{ vars.LINKED_ERROR_ENVELOPE_STRICT }}" = "true" ]; then
-            args+=("--strict-error-envelope")
-          fi
-          pnpm validate:platform-contracts:linked -- "${args[@]}"
+          if [ "$STRICT" = "true" ]; then args+=("--strict"); fi
+          node scripts/ci/validate-linked-repo-manifests.mjs "${args[@]}"
+
+      - name: Validate linked backend OpenAPI snapshots
+        shell: bash
+        continue-on-error: ${{ vars.LINKED_OPENAPI_STRICT != 'true' }}
+        env:
+          STRICT: ${{ vars.LINKED_OPENAPI_STRICT }}
+        run: |
+          args=(--check)
+          if [ "$STRICT" = "true" ]; then args+=("--strict"); fi
+          node scripts/contracts/sync-linked-openapi-snapshots.mjs "${args[@]}"
+
+      - name: Validate linked error-envelope samples
+        shell: bash
+        continue-on-error: ${{ vars.LINKED_ERROR_ENVELOPE_STRICT != 'true' }}
+        env:
+          STRICT: ${{ vars.LINKED_ERROR_ENVELOPE_STRICT }}
+        run: |
+          args=()
+          if [ "$STRICT" = "true" ]; then args+=("--strict"); fi
+          node scripts/contracts/validate-linked-error-envelopes.mjs "${args[@]}"
 
       - name: Report linked contract readiness
         run: pnpm report:linked-contract-readiness:write
