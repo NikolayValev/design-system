@@ -37,6 +37,7 @@
     "validate:linked-contracts:strict": "node scripts/ci/validate-linked-contracts.mjs --strict",
     "validate:linked-manifests": "node scripts/ci/validate-linked-repo-manifests.mjs",
     "validate:linked-manifests:strict": "node scripts/ci/validate-linked-repo-manifests.mjs --strict",
+    "smoke:prod": "node scripts/smoke/prod-smoke.mjs",
     "changeset": "changeset",
     "version": "changeset version",
     "version-packages": "changeset version",

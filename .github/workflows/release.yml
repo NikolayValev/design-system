@@ -81,6 +81,17 @@ jobs:
             echo "::warning::npm whoami did not succeed. This is expected for package-scoped granular tokens; publishing is validated by the publish step. If publishing fails, ensure NPM_TOKEN is a valid token with publish access for @nikolayvalev and is the raw token value (npm_xxx), not an .npmrc line."
           fi
 
+      # Prod-domain smoke check for Storybook proxy + MCP endpoint.
+      # Blocks the release when prod integration is broken. Set repo variable
+      # PROD_SMOKE_STRICT=false to demote to advisory (warns but does not fail).
+      - name: Prod-domain smoke check
+        shell: bash
+        continue-on-error: ${{ vars.PROD_SMOKE_STRICT == 'false' }}
+        env:
+          PROD_SMOKE_STRICT: ${{ vars.PROD_SMOKE_STRICT || 'true' }}
+          PROD_BASE_URL: ${{ vars.PROD_BASE_URL }}
+        run: pnpm smoke:prod
+
       - name: Build packages
         run: pnpm turbo run build --filter=@nikolayvalev/*
 
