@@ -1,0 +1,125 @@
+name: Uptime
+
+# Portal + related-property uptime monitor (NIK-20).
+# Cron pings the target URLs every 15 minutes. On failure an issue is opened
+# (or re-used if one is already open with the "uptime" label) so the failure is
+# durably surfaced without a paid third-party monitor.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    name: Probe endpoints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run uptime probe
+        id: probe
+        shell: bash
+        env:
+          # Portal routes on the design-system prod domain plus the peer
+          # portfolio properties. One URL per line; comment lines (# …) and
+          # blank lines are ignored.
+          UPTIME_TARGETS: |
+            # design-system portal
+            https://designsystem.nikolayvalev.com/
+            https://designsystem.nikolayvalev.com/engineers
+            https://designsystem.nikolayvalev.com/recruiters
+            https://designsystem.nikolayvalev.com/catalog
+            https://designsystem.nikolayvalev.com/docs
+            https://designsystem.nikolayvalev.com/storybook/
+            # personal router
+            https://www.nikolayvalev.com/
+            # idle dungeon life
+            https://dungeonlife.nikolayvalev.com/
+            # mandate zero
+            https://mandatezero.com/
+        run: node scripts/uptime/probe.mjs
+
+      - name: Open or update failure issue
+        if: failure() && steps.probe.outputs.failed_summary != ''
+        uses: actions/github-script@v7
+        env:
+          FAILED_SUMMARY: ${{ steps.probe.outputs.failed_summary }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const label = 'uptime';
+            const title = 'Uptime probe: one or more endpoints failing';
+            const body = [
+              'The scheduled uptime probe detected failing endpoints.',
+              '',
+              '**Failing checks**',
+              '',
+              '```',
+              process.env.FAILED_SUMMARY,
+              '```',
+              '',
+              `Run: ${process.env.RUN_URL}`,
+              '',
+              'The workflow will keep this issue open while any target is failing. Close it manually once the underlying issue is resolved.',
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+
+            const existing = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              labels: label,
+              per_page: 50,
+            });
+
+            if (existing.length > 0) {
+              const issue = existing[0];
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issue.number,
+                body,
+              });
+              return;
+            }
+
+            // Ensure the label exists before creating the issue.
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: label });
+            } catch (error) {
+              if (error.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: label,
+                  color: 'd93f0b',
+                  description: 'Automated uptime probe failure',
+                });
+              } else {
+                throw error;
+              }
+            }
+
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              body,
+              labels: [label],
+            });
