@@ -16,10 +16,16 @@ const STRICT = (process.env.PROD_SMOKE_STRICT ?? 'true').toLowerCase() !== 'fals
 const TIMEOUT_MS = Number(process.env.PROD_SMOKE_TIMEOUT_MS ?? 15_000);
 const RETRIES = Number(process.env.PROD_SMOKE_RETRIES ?? 2);
 
+// The portal handlers content-negotiate via `wantsHtml()` (api/_lib/site.ts):
+// without an HTML Accept header they return JSON. A check asserting text/html
+// must therefore ask for it, or it fails against a perfectly healthy portal.
+const HTML_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8';
+
 const checks = [
   {
     name: 'portal root',
     path: '/',
+    headers: { accept: HTML_ACCEPT },
     expectStatus: [200],
     expectContentType: /text\/html/,
   },
@@ -31,12 +37,14 @@ const checks = [
   {
     name: 'engineers route',
     path: '/engineers',
+    headers: { accept: HTML_ACCEPT },
     expectStatus: [200],
     expectContentType: /text\/html/,
   },
   {
     name: 'recruiters route',
     path: '/recruiters',
+    headers: { accept: HTML_ACCEPT },
     expectStatus: [200],
     expectContentType: /text\/html/,
   },
@@ -53,6 +61,7 @@ const checks = [
   {
     name: 'Storybook proxy',
     path: '/storybook/',
+    headers: { accept: HTML_ACCEPT },
     expectStatus: [200],
     expectContentType: /text\/html/,
     expectBody: /storybook/i,
