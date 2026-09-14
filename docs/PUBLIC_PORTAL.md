@@ -58,13 +58,27 @@ Beyond the secrets, production needs:
    alias record exists; Vercel's edge then answers `DEPLOYMENT_NOT_FOUND` for every
    route. Compare against a working sibling such as `bondviz.nikolayvalev.com`,
    which resolves to the same Cloudflare IPs and differs only by having the alias.
+
+   Moving the domain between projects cannot be done from the CLI. Both
+   `vercel alias set` and `vercel domains add ... --force` fail with
+   `alias_conflict` while another project holds it. Detach it in that project's
+   Settings -> Domains first, then attach it to `mcp-server`. Vercel may report
+   "Invalid Configuration" because Cloudflare proxies the DNS record; that is
+   cosmetic and needs no DNS change.
 5. Disable Vercel Authentication (Deployment Protection) on **both** projects.
    `mcp-server` must be public for visitors, the uptime probe, and `pnpm smoke:prod`.
    The Storybook project must also be reachable, because `/storybook/` is a
    server-side fetch from `mcp-server` to `STORYBOOK_ORIGIN` -- if that project is
    protected, the proxy receives a `vercel.com/sso-api` redirect instead of HTML.
 
-The `/storybook` path is reverse proxied by the MCP project so demo content and API endpoints live under one domain.
+The `/storybook` path is reverse proxied by the MCP project so demo content and
+API endpoints live under one domain. `api/storybook.ts` is a single plain
+function rather than a filesystem catch-all: Vercel's zero-config builder did not
+match `api/storybook/[...path].ts` past one path segment, so nested assets such as
+`/storybook/sb-addons/<addon>/manager-bundle.js` returned `NOT_FOUND` before any
+handler ran. Every `/storybook/*` path is rewritten to that one function, which
+still sees the original path because a rewrite does not change `req.url`. The
+Storybook build references assets relatively, so they resolve under `/storybook/`.
 
 ## CLI Scaffolding Contract
 

@@ -44,7 +44,7 @@
     },
     {
       "source": "/storybook/:path*",
-      "destination": "/api/storybook/:path*"
+      "destination": "/api/storybook"
     },
     {
       "source": "/mcp",
