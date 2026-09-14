@@ -99,7 +99,7 @@ By default it links your MCP client config to `https://designsystem.nikolayvalev
 
 AI agents (Claude, Cursor, Windsurf) can browse components, fetch source, and install them directly.
 
-**Hosted endpoint:** `https://mcp-server-umber-six.vercel.app/mcp`
+**Hosted endpoint:** `https://designsystem.nikolayvalev.com/mcp`
 
 Add to your MCP client config:
 
@@ -107,7 +107,7 @@ Add to your MCP client config:
 {
   "mcpServers": {
     "design-system": {
-      "url": "https://mcp-server-umber-six.vercel.app/mcp"
+      "url": "https://designsystem.nikolayvalev.com/mcp"
     }
   }
 }
