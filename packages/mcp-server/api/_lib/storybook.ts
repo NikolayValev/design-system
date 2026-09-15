@@ -32,6 +32,20 @@ function normalizeOrigin(value: string): string {
   return value.trim().replace(/\/+$/, '');
 }
 
+// The public entry point for the proxied Storybook.
+const STORYBOOK_ENTRY = '/storybook/?path=/';
+
+// Storybook's manager, loaded with no `path` query, resolves a default story and
+// rewrites the URL to a root-anchored `/?path=/story/...` -- which on this domain
+// is the portal home page, so /storybook/ appeared to bounce the visitor out of
+// Storybook entirely. Any `path` query suppresses that rewrite, and `path=/` lets
+// Storybook pick its own default rather than hard-coding a story id here.
+function needsDefaultPath(reqUrl: string): boolean {
+  const url = new URL(reqUrl, 'http://localhost');
+  const isIndex = url.pathname.replace(STORYBOOK_PREFIX, '').length === 0;
+  return isIndex && !url.searchParams.has('path');
+}
+
 export function getUpstreamPath(reqUrl: string): string {
   const url = new URL(reqUrl, 'http://localhost');
   const suffix = url.pathname.replace(STORYBOOK_PREFIX, '');
@@ -72,6 +86,13 @@ export async function proxyToStorybook(req: IncomingMessage, res: ServerResponse
         message: 'Set STORYBOOK_ORIGIN in Vercel project environment variables.',
       }),
     );
+    return;
+  }
+
+  if (needsDefaultPath(req.url ?? '/')) {
+    res.statusCode = 302;
+    res.setHeader('location', STORYBOOK_ENTRY);
+    res.end();
     return;
   }
 
