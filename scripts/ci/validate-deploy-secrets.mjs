@@ -38,6 +38,15 @@ const required = [
 
 const missing = required.filter(([, value]) => !isNonEmptyString(value)).map(([name]) => name);
 
+// A value pasted into the GitHub secrets UI with a stray leading or trailing
+// space is accepted verbatim. Actions masks only the registered secret text, so
+// the padding survives into the environment and the Vercel CLI fails much later
+// with a misleading `Project not found ({"VERCEL_ORG_ID":" ***"})` -- note the
+// space inside the quotes. Catch it here, where the message can be specific.
+const padded = required
+  .filter(([, value]) => typeof value === 'string' && value.trim().length > 0 && value !== value.trim())
+  .map(([name]) => name);
+
 const target = isNonEmptyString(vercelProject)
   ? `${appId} (Vercel project "${vercelProject}")`
   : appId;
@@ -48,6 +57,16 @@ if (missing.length > 0) {
   );
   console.error(
     '::error::Add them under Settings -> Secrets and variables -> Actions. See docs/PUBLIC_PORTAL.md for the expected values.',
+  );
+  process.exit(1);
+}
+
+if (padded.length > 0) {
+  console.error(
+    `::error::Cannot deploy ${target}: these secrets have leading or trailing whitespace: ${padded.join(', ')}.`,
+  );
+  console.error(
+    '::error::Re-enter each one with no surrounding spaces or newline. The value is used verbatim, so the padding reaches the Vercel CLI.',
   );
   process.exit(1);
 }
