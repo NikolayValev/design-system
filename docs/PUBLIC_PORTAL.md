@@ -33,18 +33,37 @@ the project named `mcp-server`.
 
 ## Deployment Notes
 
-`.github/workflows/monorepo-deploy.yml` deploys both projects on every push to
-`main`. It requires these repository secrets, and now fails the run when any of
-them is missing:
+`.github/workflows/monorepo-deploy.yml` deploys the portal on every push to
+`main`. It requires these repository secrets, and fails the run when any is
+missing, empty, or padded with whitespace:
 
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`
 - `VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP`
-- `VERCEL_PROJECT_ID_STORYBOOK`
+
+The workflow uploads `packages/mcp-server` and lets Vercel install and build it.
+It deliberately does not use `vercel build` + `vercel deploy --prebuilt`: that
+sequence builds successfully and then fails the deploy with
+
+```
+File does not exist: "packages/mcp-server/node_modules/fast-glob"
+```
+
+because a prebuilt output cannot trace dependencies through pnpm's symlinked
+workspace store. `packages/mcp-server` has no workspace dependencies, so a
+plain upload is both simpler and the path that works.
+
+The Storybook project is **not** deployed by this workflow. Its Vercel project
+(`design-system`) is connected to this repo and redeploys itself on every push
+that touches `apps/storybook` -- which is why Storybook stayed current through a
+period when the portal did not. It is also the harder half to build standalone,
+since unlike the portal it depends on the workspace. `VERCEL_PROJECT_ID_STORYBOOK`
+is therefore unused; leaving it set is harmless.
 
 Beyond the secrets, production needs:
 
-1. Keep the Storybook project (`design-system`) deployed from `apps/storybook`.
+1. Keep the Storybook project (`design-system`) connected to this repo so pushes
+   touching `apps/storybook` redeploy it.
 2. `STORYBOOK_ORIGIN` must be set on the `mcp-server` project and point at the
    Storybook project's production URL, or `/storybook/` returns an error from
    `api/storybook/[[...path]].ts`.

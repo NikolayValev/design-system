@@ -21,18 +21,17 @@ jobs:
       matrix:
         app:
           # vercel_project is the project name as it appears in the Vercel
-          # dashboard. It matches id in neither case, so both are recorded here.
+          # dashboard; it does not match id. apps/storybook is deliberately not
+          # listed: its Vercel project ("design-system") is connected to this
+          # repo and redeploys itself on every push that touches that directory,
+          # which is why Storybook stayed current while the portal went stale.
+          # Deploying it from here as well is redundant, and it is the harder
+          # half to build standalone since it depends on the workspace.
           - id: design-system-mcp
             path: packages/mcp-server
             project_id_secret: VERCEL_PROJECT_ID_DESIGN_SYSTEM_MCP
             # Serves the public portal on designsystem.nikolayvalev.com.
             vercel_project: mcp-server
-          - id: storybook
-            path: apps/storybook
-            project_id_secret: VERCEL_PROJECT_ID_STORYBOOK
-            # Named "design-system" in Vercel, but it holds the Storybook build
-            # from apps/storybook -- not the @nikolayvalev/design-system package.
-            vercel_project: design-system
 
     steps:
       - name: Checkout
@@ -93,7 +92,13 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets[matrix.app.project_id_secret] }}
+        # Built on Vercel, not locally. `vercel build` + `deploy --prebuilt`
+        # completed the build and then failed the deploy with
+        #   File does not exist: "packages/mcp-server/node_modules/fast-glob"
+        # because the prebuilt output cannot trace dependencies through pnpm's
+        # symlinked workspace store. packages/mcp-server has no workspace
+        # dependencies, so uploading it and letting Vercel install and build is
+        # both simpler and the path that actually works.
         run: |
           pnpm dlx vercel pull --yes --environment=production --token="$VERCEL_TOKEN" --cwd "${{ matrix.app.path }}"
-          pnpm dlx vercel build --prod --token="$VERCEL_TOKEN" --cwd "${{ matrix.app.path }}"
-          pnpm dlx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN" --cwd "${{ matrix.app.path }}"
+          pnpm dlx vercel deploy --prod --yes --token="$VERCEL_TOKEN" --cwd "${{ matrix.app.path }}"
