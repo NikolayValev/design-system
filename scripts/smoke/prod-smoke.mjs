@@ -11,10 +11,26 @@
 
 import { setTimeout as delay } from 'node:timers/promises';
 
-const BASE_URL = (process.env.PROD_BASE_URL ?? 'https://designsystem.nikolayvalev.com').replace(/\/$/, '');
-const STRICT = (process.env.PROD_SMOKE_STRICT ?? 'true').toLowerCase() !== 'false';
-const TIMEOUT_MS = Number(process.env.PROD_SMOKE_TIMEOUT_MS ?? 15_000);
-const RETRIES = Number(process.env.PROD_SMOKE_RETRIES ?? 2);
+// A GitHub Actions `vars.X` that is not defined arrives as an empty string,
+// not as undefined, so `??` never falls back. Unset PROD_BASE_URL therefore
+// produced base="" and every check failed with "Failed to parse URL from /"
+// regardless of how healthy production was -- and release.yml gates publishing
+// on this script. Empty and whitespace-only values are treated as unset.
+const envText = (name, fallback) => {
+  const value = process.env[name];
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : fallback;
+};
+
+// `Number('')` is 0, which would mean a 0ms timeout and no retries.
+const envNumber = (name, fallback) => {
+  const value = Number(envText(name, ''));
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+};
+
+const BASE_URL = envText('PROD_BASE_URL', 'https://designsystem.nikolayvalev.com').replace(/\/$/, '');
+const STRICT = envText('PROD_SMOKE_STRICT', 'true').toLowerCase() !== 'false';
+const TIMEOUT_MS = envNumber('PROD_SMOKE_TIMEOUT_MS', 15_000);
+const RETRIES = envNumber('PROD_SMOKE_RETRIES', 2);
 
 // The portal handlers content-negotiate via `wantsHtml()` (api/_lib/site.ts):
 // without an HTML Accept header they return JSON. A check asserting text/html

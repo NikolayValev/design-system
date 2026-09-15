@@ -12,8 +12,15 @@ import { appendFile } from 'node:fs/promises';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const raw = process.env.UPTIME_TARGETS ?? '';
-const TIMEOUT_MS = Number(process.env.UPTIME_TIMEOUT_MS ?? 12_000);
-const RETRIES = Number(process.env.UPTIME_RETRIES ?? 1);
+// An env var that is set but empty yields Number('') === 0, which would mean a
+// 0ms timeout and no retries. Treat non-positive or non-finite values as unset.
+const envNumber = (name, fallback) => {
+  const value = Number((process.env[name] ?? '').trim());
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+};
+
+const TIMEOUT_MS = envNumber('UPTIME_TIMEOUT_MS', 12_000);
+const RETRIES = envNumber('UPTIME_RETRIES', 1);
 
 const targets = raw
   .split(/\r?\n/)
