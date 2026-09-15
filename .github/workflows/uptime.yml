@@ -51,7 +51,7 @@ jobs:
             # idle dungeon life
             https://dungeonlife.nikolayvalev.com/
             # mandate zero
-            https://mandatezero.com/
+            https://mandate-zero.nikolayvalev.com/
         run: node scripts/uptime/probe.mjs
 
       - name: Open or update failure issue
