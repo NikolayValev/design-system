@@ -104,7 +104,7 @@ import { Card } from "@/design-system/components/Card";
 npx @nikolayvalev/design-system@latest init
 ```
 
-The CLI offers an arrow-key selector (`themes`, `components`, `pages`) in TTY terminals; selecting `themes` opens a vision picker with color swatches and vibe descriptions for all 12 visions. You can also run it non-interactively:
+The CLI offers an arrow-key selector (`themes`, `components`, `pages`) in TTY terminals; selecting `themes` opens a vision picker with color swatches and vibe descriptions for all 13 visions. You can also run it non-interactively:
 
 ```bash
 npx @nikolayvalev/design-system@latest init --modules themes,components --vision editorial
@@ -162,7 +162,7 @@ Colors, spacing, typography, radii defined as semantic tokens using **OKLCH colo
 
 ### Vision Themes
 
-12 curated visions across five families. Import one per-vision CSS file and wrap the tree in `VisionProvider`:
+13 curated visions across five families. Import the vision's tokens and its faces, then wrap the tree in `VisionProvider`:
 
 ```tsx
 import "@nikolayvalev/design-system/styles/synthwave.css";
@@ -276,9 +276,9 @@ All components read from CSS variables and update through `VisionProvider`/`useV
 
 ## Vision Registry
 
-The registry ships **12 curated visions** across five families:
+The registry ships **13 curated visions** across five families — each with a full record in [docs/visions/](docs/visions/):
 
-- **Editorial & Print** — `editorial`, `museum`
+- **Editorial & Print** — `editorial`, `quiet_workshop`, `museum`
 - **Minimal & Structured** — `swiss_international`, `zen`, `clay_soft`
 - **Technical & Utility** — `terminal`, `brutalist`
 - **Atmospheric & Luminous** — `immersive`, `synthwave`, `noir`

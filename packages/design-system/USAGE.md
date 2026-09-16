@@ -15,7 +15,7 @@ npx @nikolayvalev/design-system@latest init
 ```
 
 In interactive terminals, the CLI shows an arrow-key module selector (`themes`, `components`, `pages`).
-If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 12 visions.
+If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 13 visions.
 For non-interactive runs, pass a vision directly:
 
 ```bash

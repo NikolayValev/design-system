@@ -146,8 +146,12 @@ jobs:
       # would either fail every build or force a repo-wide reformat that buries
       # the diff it is attached to. Reformatting is its own piece of work.
 
+      # Every workspace suite, not just the design system's. The command-panel
+      # packages hold 94 tests between them that had never run in CI — which is
+      # how two of them sat asserting a hardcoded catalog size of 12 and went red
+      # the moment a thirteenth vision landed, with nothing to report it.
       - name: Unit tests
-        run: pnpm --filter @nikolayvalev/design-system test
+        run: pnpm -r --if-present test
 
       # Exports plus the design floors: WCAG AA contrast across all 13 visions in
       # both modes, the body line-height and interactive type floors, the radius

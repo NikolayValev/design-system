@@ -126,7 +126,7 @@ Components reference variables, never raw values:
 
 ## Vision Themes
 
-The design system ships **12 curated visions** across five families. Each vision provides a complete set of `--vde-*` CSS custom properties (colors, spacing, radius, typography motion) plus shadcn-compatible aliases (`--primary`, `--background`, `--foreground`, etc.).
+The design system ships **13 curated visions** across five families. Each vision provides a complete set of `--vde-*` CSS custom properties (colors, spacing, radius, typography motion) plus shadcn-compatible aliases (`--primary`, `--background`, `--foreground`, etc.).
 
 Families and vision IDs:
 
