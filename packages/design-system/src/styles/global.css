@@ -129,6 +129,13 @@
 @theme inline {
   --font-sans: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
+  /*
+   * So `font-serif` resolves to the active vision's display face rather than to
+   * the browser's default serif. Visions whose display face is a sans (swiss,
+   * brutalist, synthwave) simply get that sans, which is the correct answer for
+   * them — the utility means "the display face", not "a serif".
+   */
+  --font-serif: var(--vde-font-display);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
