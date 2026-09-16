@@ -23,7 +23,16 @@ const config = {
         ring: 'var(--ring)',
       },
       spacing: {
-        md: 'var(--spacing-md, 1rem)',
+        // Was `var(--spacing-md, 1rem)` against a token that did not exist, so the
+        // fallback always won. The 8-point scale is real now.
+        '2xs': 'var(--vde-space-2xs)',
+        xs: 'var(--vde-space-xs)',
+        sm: 'var(--vde-space-sm)',
+        md: 'var(--vde-space-md)',
+        lg: 'var(--vde-space-lg)',
+        xl: 'var(--vde-space-xl)',
+        '2xl': 'var(--vde-space-2xl)',
+        '3xl': 'var(--vde-space-3xl)',
       },
       fontFamily: {
         sans: 'var(--font-family-sans, ui-sans-serif, system-ui)',

@@ -1,4 +1,28 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { getVisionThemeById, visionToCSSVariables } from '@nikolayvalev/design-system';
+
+/*
+ * The portal is the surface people judge this system by, and it used to be
+ * styled by a second palette hand-rolled in this file — a near-black navy, a
+ * mint brand, an amber secondary and a radial halo behind the whole page. None
+ * of it came from the token layer, so the site advertising the design system was
+ * the one place not using it.
+ *
+ * It now renders a real vision. `quiet_workshop` is the same identity the
+ * author's own site runs, so the portal and nikolayvalev.com agree, and it
+ * exercises both modes rather than hardcoding one.
+ */
+const PORTAL_VISION = 'quiet_workshop';
+
+function portalTokens(mode: 'light' | 'dark'): string {
+  const vision = getVisionThemeById(PORTAL_VISION);
+  if (!vision) {
+    throw new Error(`Portal vision "${PORTAL_VISION}" is not in the catalog`);
+  }
+  return Object.entries(visionToCSSVariables(vision, mode))
+    .map(([name, value]) => `        ${name}: ${value};`)
+    .join('\n');
+}
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
@@ -88,23 +112,34 @@ export function renderSitePage({
     <meta name="description" content="${pageDescription}" />
     <style>
       :root {
-        --bg: #070b14;
-        --panel: #0f1729;
-        --panel-alt: #121f38;
-        --text: #e9f0ff;
-        --muted: #9fb3d6;
-        --brand: #5de4c7;
-        --brand-2: #ffb76f;
-        --line: #1f3558;
+${portalTokens('light')}
+        /* The portal's own names, mapped onto the vision's tokens. */
+        --bg: var(--vde-color-background);
+        --panel: var(--vde-color-surface);
+        --panel-alt: var(--vde-color-muted);
+        --text: var(--vde-color-foreground);
+        --muted: var(--vde-color-muted-foreground);
+        --brand: var(--vde-color-accent);
+        --brand-2: var(--vde-color-secondary-foreground);
+        --line: var(--vde-color-border);
         --sidebar-w: 200px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+${portalTokens('dark')}
+        }
       }
 
       * { box-sizing: border-box; }
 
       body {
         margin: 0;
-        font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
-        background: radial-gradient(circle at 8% 6%, #1a2f4f, var(--bg) 44%) fixed;
+        /* Was a "Segoe UI" stack and a fixed radial halo behind every page. */
+        font-family: var(--vde-font-body);
+        font-size: var(--vde-font-size-body);
+        line-height: var(--vde-line-height-normal);
+        background: var(--bg);
         color: var(--text);
         min-height: 100vh;
       }
@@ -121,7 +156,7 @@ export function renderSitePage({
       .sidebar {
         width: var(--sidebar-w);
         flex-shrink: 0;
-        background: rgba(9,15,28,0.72);
+        background: var(--vde-color-surface);
         border-right: 1px solid var(--line);
         display: flex;
         flex-direction: column;
@@ -159,7 +194,7 @@ export function renderSitePage({
         font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        color: #3a5a7a;
+        color: var(--vde-color-muted-foreground);
       }
 
       .sidebar-link {
@@ -176,18 +211,18 @@ export function renderSitePage({
 
       .sidebar-link:hover {
         color: var(--text);
-        background: rgba(255,255,255,0.05);
+        background: var(--vde-color-muted);
       }
 
       .sidebar-link.active {
         color: var(--text);
-        background: rgba(93,228,199,0.08);
+        background: color-mix(in oklab, var(--vde-color-accent) 8%, transparent);
         border-left-color: var(--brand);
         font-weight: 600;
       }
 
       .sidebar-link.tool {
-        color: #5a8aaa;
+        color: var(--vde-color-muted-foreground);
         font-size: 12px;
       }
 
@@ -201,7 +236,7 @@ export function renderSitePage({
 
       /* ── Content primitives ── */
       .panel {
-        background: linear-gradient(180deg, var(--panel), var(--panel-alt));
+        background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 14px;
         padding: 16px 20px;
@@ -231,7 +266,7 @@ export function renderSitePage({
         border: 1px solid var(--line);
         border-radius: 10px;
         padding: 12px 14px;
-        background: rgba(9,15,29,0.45);
+        background: var(--vde-color-muted);
       }
 
       .card h3 { margin: 0 0 5px; font-size: 14px; }
@@ -240,8 +275,8 @@ export function renderSitePage({
       .pill {
         display: inline-block;
         border-radius: 999px;
-        border: 1px solid #34527f;
-        color: #9fc2ff;
+        border: 1px solid var(--vde-color-border);
+        color: var(--vde-color-foreground);
         padding: 3px 8px;
         font-size: 11px;
         margin: 0 6px 6px 0;
@@ -252,19 +287,19 @@ export function renderSitePage({
       }
 
       pre {
-        background: #0a1628;
+        background: var(--vde-color-muted);
         border: 1px solid var(--line);
         border-radius: 8px;
         padding: 14px 16px;
         overflow-x: auto;
         font-size: 13px;
-        color: #a5c8ff;
+        color: var(--vde-color-foreground);
         margin: 10px 0;
       }
 
       code {
         font-size: 0.88em;
-        background: rgba(93,228,199,0.08);
+        background: color-mix(in oklab, var(--vde-color-accent) 8%, transparent);
         color: var(--brand);
         padding: 1px 5px;
         border-radius: 3px;
@@ -290,7 +325,7 @@ export function renderSitePage({
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        background: rgba(93,228,199,0.12);
+        background: color-mix(in oklab, var(--vde-color-accent) 12%, transparent);
         border: 1px solid var(--brand);
         color: var(--brand);
         font-size: 10px;
@@ -315,8 +350,8 @@ export function renderSitePage({
       .endpoint {
         font-family: ui-monospace, "Cascadia Code", monospace;
         font-size: 11px;
-        color: #7aafcc;
-        background: #0a1628;
+        color: var(--vde-color-muted-foreground);
+        background: var(--vde-color-muted);
         border: 1px solid var(--line);
         border-radius: 5px;
         padding: 5px 10px;
@@ -370,7 +405,7 @@ export function renderSitePage({
 
         .sidebar-link.active {
           border-left: none;
-          background: rgba(93,228,199,0.12);
+          background: color-mix(in oklab, var(--vde-color-accent) 12%, transparent);
         }
 
         .main { padding: 16px 16px 32px; }

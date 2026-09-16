@@ -93,8 +93,13 @@ function ThemeTile({
 
       <div className="space-y-3 p-4">
         <div className="space-y-1">
-          <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{theme.mood.join(' · ')}</p>
-          <h4
+          <p
+            className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
+            style={{ color: colors.mutedForeground }}
+          >
+            {theme.mood.join(' · ')}
+          </p>
+          <h3
             className="text-lg leading-tight"
             style={{
               fontFamily: theme.artisticPillars.typographyArchitecture.fontStack.display,
@@ -102,8 +107,13 @@ function ThemeTile({
             }}
           >
             {theme.name}
-          </h4>
-          <p className="[font-size:var(--vde-font-size-caption)] leading-relaxed [color:var(--vde-color-muted-foreground)]">{theme.tagline}</p>
+          </h3>
+          <p
+            className="[font-size:var(--vde-font-size-caption)] leading-relaxed"
+            style={{ color: colors.mutedForeground }}
+          >
+            {theme.tagline}
+          </p>
         </div>
 
         <div className="flex items-center justify-between gap-2 pt-2">
@@ -121,7 +131,10 @@ function ThemeTile({
               />
             ))}
           </div>
-          <span className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+          <span
+            className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
+            style={{ color: colors.mutedForeground }}
+          >
             {primary(theme.artisticPillars.typographyArchitecture.fontStack.display)}
           </span>
         </div>

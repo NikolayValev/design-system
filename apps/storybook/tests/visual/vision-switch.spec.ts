@@ -46,7 +46,9 @@ async function probe(page: Parameters<typeof test>[1]['page'], selector: string)
       backdropFilter: rootStyle.backdropFilter || (rootStyle as CSSStyleDeclaration & { webkitBackdropFilter?: string }).webkitBackdropFilter || 'none',
       boxShadow: rootStyle.boxShadow,
       contentFilter: mediaContent?.filter ?? 'none',
-      hasImmersiveLayer: Boolean(root.querySelector(':scope > span[class*="radial-gradient"]')),
+      // The halo used to be an inline radial-gradient in the class string, so the
+      // probe matched on that text. It is a token now, so match the token.
+      hasImmersiveLayer: Boolean(root.querySelector(':scope > span[class*="vde-gallery-halo"]')),
       hasLightLeak: Boolean(root.querySelector(':scope > span[class*="vde-media-light-leak"]')),
       hasPaperOverlay: Boolean(root.querySelector(':scope > span[class*="vde-gallery-paper-overlay-opacity"]')),
       itemTransitionDuration: firstOrbItemStyle?.transitionDuration.split(',')[0]?.trim() ?? '',
@@ -101,7 +103,14 @@ test.describe('vision switch consistency', () => {
       } else if (vision === 'brutalist') {
         expect(result.boxShadow).toContain('4px 4px');
       } else {
-        expect(result.backdropFilter).toContain('blur(');
+        /*
+         * This used to assert that backdropFilter contained `blur(` for every
+         * non-museum, non-brutalist vision — i.e. the test required glassmorphism
+         * of the whole catalog. Blur is immersive's treatment, not a universal,
+         * so assert it where it is the intent and assert its absence elsewhere.
+         */
+        expect(vision).toBe('immersive');
+        expect(result.backdropFilter).toMatch(/blur\((?!0px\))/);
         expect(result.hasImmersiveLayer).toBeTruthy();
       }
     }

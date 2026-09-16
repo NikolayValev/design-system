@@ -1,5 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { renderSitePage, sendHtml, sendJson, wantsHtml } from './_lib/site.js';
+import { getVisionThemeIds } from '@nikolayvalev/design-system';
 
 const DOCS_METADATA = {
   section: 'docs',
@@ -101,7 +102,7 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
         Swapping the theme swaps the entire design language at runtime — no recompile.
       </p>
       <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px">
-        ${['editorial','museum','swiss_international','zen','clay_soft','terminal','brutalist','immersive','synthwave','noir','solarpunk','y2k_chrome'].map(id => `<article class="card" style="padding:8px 10px"><p style="margin:0;font-family:monospace;font-size:11px;color:var(--brand)">${id}</p></article>`).join('')}
+        ${getVisionThemeIds().map(id => `<article class="card" style="padding:8px 10px"><p style="margin:0;font-family:var(--vde-font-mono);font-size:var(--vde-font-size-caption);color:var(--brand)">${id}</p></article>`).join('')}
       </div>
     </section>
 

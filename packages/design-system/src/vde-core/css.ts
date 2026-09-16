@@ -20,6 +20,25 @@ const coreTypeScale = {
   display: { rem: 3, tier: 'display', floor: 2 },
 } as const satisfies Record<string, { rem: number; tier: 'body' | 'display'; floor: number }>;
 
+/**
+ * Structural tokens: the same in every vision, because spacing and measure are
+ * not identity. They are emitted anyway rather than left to `global.css` alone,
+ * so that `applyVisionToElement` produces a complete surface on its own — a
+ * consumer (or Storybook) that mounts VisionProvider without also importing the
+ * stylesheet would otherwise resolve `var(--vde-space-md)` to nothing, silently.
+ */
+const structuralVariables: Record<string, string> = {
+  '--vde-space-2xs': '0.25rem',
+  '--vde-space-xs': '0.5rem',
+  '--vde-space-sm': '0.75rem',
+  '--vde-space-md': '1rem',
+  '--vde-space-lg': '1.5rem',
+  '--vde-space-xl': '2rem',
+  '--vde-space-2xl': '3rem',
+  '--vde-space-3xl': '4rem',
+  '--vde-measure': '68ch',
+};
+
 /** Trim float noise so emitted CSS stays readable (1.0500000000000002rem -> 1.05rem). */
 function rem(value: number): string {
   return `${parseFloat(value.toFixed(4))}rem`;
@@ -203,6 +222,7 @@ export function visionToCSSVariables(vision: VisionTheme, mode: ThemeMode = visi
     '--vde-typography-scale-body': typographyArchitecture.scale.body,
     '--vde-typography-scale-display': typographyArchitecture.scale.display,
     ...typeScaleVariables(typographyArchitecture.scale),
+    ...structuralVariables,
     '--vde-line-height-ui': uiLineHeight(typographyArchitecture.lineHeight.tight),
     '--vde-line-height-tight': typographyArchitecture.lineHeight.tight,
     '--vde-line-height-normal': typographyArchitecture.lineHeight.normal,

@@ -33,35 +33,72 @@ This allows visual changes without touching application code.
 
 ### Token Contract
 
+The contract is `VisionTheme` in `packages/design-system/src/vde-core/types.ts`, validated
+against `ThemeSchema.json` (`additionalProperties: false`). A theme supplies a palette
+per mode plus five "artistic pillars":
+
 ```ts
-interface DesignTokens {
-  colors: ColorTokens;      // 32 semantic colors (includes chart + sidebar)
-  spacing: SpacingTokens;   // 8-point scale
-  radius: RadiusTokens;     // Base value + calculated variants
-  typography: TypographyTokens;
+interface VisionTheme {
+  id: string;
+  family: ThemeFamilyId;              // editorial | minimal | technical | atmospheric | expressive
+  defaultMode: 'light' | 'dark';
+  colors: { light: VisionColors; dark: VisionColors };   // 20 semantic colours per mode
+  artisticPillars: {
+    typographyArchitecture;  // scale multipliers, line heights, letter spacing, font stacks
+    surfacePhysics;          // transparency, blur, texture, grain
+    boundaryLogic;           // border weight, radius scale (surface / control / pill), sharpness
+    shadowLightEngine;       // hard offset, neon glow, ambient occlusion
+    motionSignature;         // durations, easings, physics
+  };
+  ornaments: { grain: boolean; glow: boolean; texture: boolean };
 }
 ```
 
-The contract is versioned. Breaking changes require major version bump.
+A theme does **not** author absolute type sizes or a spacing scale. It supplies multipliers,
+and `vde-core/css.ts` resolves them against a core scale — clamping the result so no theme
+can push interactive text below 14px or body copy below 16px.
+
+The contract is versioned. Breaking changes require a major version bump.
 
 ### CSS Variables
 
-All tokens are exposed as CSS custom properties using OKLCH:
+`visionToCSSVariables()` emits roughly 120 custom properties per vision per mode. The
+`--vde-*` namespace is the source; a shadcn-compatible alias layer is derived from it.
 
 ```css
 :root {
-  --primary: oklch(0.205 0 0);
-  --background: oklch(1 0 0);
-  --spacing-md: 1rem;
-  --radius: 0.625rem;
-  --font-family-sans: Geist, Geist Fallback;
+  /* Colour — 20 semantic slots, mode-aware, OKLCH */
+  --vde-color-background: oklch(0.992 0.004 75);
+  --vde-color-accent: oklch(0.565 0.14 40);
+
+  /* Type — resolved from the core scale by the theme's multipliers, then floored */
+  --vde-font-size-caption: 0.8125rem;
+  --vde-font-size-ui: 0.875rem;      /* the interactive floor */
+  --vde-font-size-body: 1rem;
+  --vde-font-size-title: 1.5rem;
+  --vde-font-size-headline: 2.25rem;
+  --vde-font-size-display: 3rem;
+  --vde-line-height-ui: 1.25;
+  --vde-line-height-normal: 1.5;     /* never below 1.5 */
+  --vde-measure: 68ch;
+
+  /* Space — structural, identical in every vision, 8-point */
+  --vde-space-2xs: 0.25rem;  /* … xs sm md lg xl 2xl 3xl */
+
+  /* Shape — three steps, because one radius for everything turns cards into capsules */
+  --vde-radius-surface: 0.5rem;
+  --vde-radius-control: 0.375rem;
+  --vde-radius-pill: 9999px;
+
+  /* Type faces — self-hosted, emitted per vision alongside the tokens */
+  --vde-font-body: 'Inter', 'Helvetica Neue', system-ui, sans-serif;
+  --vde-font-display: 'Playfair Display', Georgia, serif;
 }
 
-/* Radius calculations */
---radius-sm: calc(var(--radius) - 4px);
---radius-md: calc(var(--radius) - 2px);
---radius-lg: var(--radius);
---radius-xl: calc(var(--radius) + 4px);
+/* Tailwind's radius steps map onto the scale rather than calc()-ing off one value */
+--radius-sm: var(--vde-radius-control);
+--radius-lg: var(--vde-radius-surface);
+--radius-full: var(--vde-radius-pill);
 ```
 
 ### Tailwind v4 Integration
@@ -217,7 +254,7 @@ CSS variables resolve at runtime based on active theme.
         background: 'hsl(var(--color-background))',
       },
       spacing: {
-        md: 'var(--spacing-md)',
+        md: 'var(--vde-space-md)',
       },
       borderRadius: {
         lg: 'var(--radius-lg)',

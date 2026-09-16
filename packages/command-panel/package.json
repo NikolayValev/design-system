@@ -55,8 +55,5 @@
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^2.1.0"
-  },
-  "eslintConfig": {
-    "extends": "@repo/config/eslint-design-system.config.js"
   }
 }

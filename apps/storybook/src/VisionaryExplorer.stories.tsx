@@ -114,7 +114,7 @@ function ThemeExplorer(): JSX.Element {
 
         <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           <aside className="space-y-4 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h3 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Best for</h3>
+            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Best for</h2>
             <ul className="space-y-2 text-sm leading-relaxed">
               {activeVision.bestFor.map(item => (
                 <li key={item} className="flex gap-2">
@@ -123,9 +123,9 @@ function ThemeExplorer(): JSX.Element {
                 </li>
               ))}
             </ul>
-            <h3 className="border-t pt-4 text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)] [border-color:var(--vde-color-border)]">
+            <h2 className="border-t pt-4 text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)] [border-color:var(--vde-color-border)]">
               Ornaments
-            </h3>
+            </h2>
             <div className="flex flex-wrap gap-2">
               <Badge variant={activeVision.ornaments.grain ? 'secondary' : 'outline'}>
                 Grain {activeVision.ornaments.grain ? 'on' : 'off'}
@@ -140,7 +140,7 @@ function ThemeExplorer(): JSX.Element {
           </aside>
 
           <aside className="space-y-4 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h3 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Visual fingerprint</h3>
+            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Visual fingerprint</h2>
             <div className="grid grid-cols-2 gap-3">
               {swatches.map(swatch => (
                 <div key={swatch.label} className="space-y-1">
@@ -162,7 +162,7 @@ function ThemeExplorer(): JSX.Element {
               key={fact.title}
               className="rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]"
             >
-              <h3 className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{fact.title}</h3>
+              <h2 className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{fact.title}</h2>
               <p className="mt-3 text-sm leading-relaxed">{fact.detail}</p>
             </article>
           ))}
@@ -212,7 +212,7 @@ function ThemeExplorer(): JSX.Element {
           </Layout>
 
           <aside className="space-y-3 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h3 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">In one line</h3>
+            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">In one line</h2>
             <p className="text-sm leading-relaxed">{activeVision.tagline}</p>
             <p className="[font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)]">
               Same token contract as every other vision — switch the toolbar paintbrush to compare.

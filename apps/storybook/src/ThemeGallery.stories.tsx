@@ -89,7 +89,7 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
 
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="space-y-1">
-          <h4
+          <h3
             className="text-lg leading-tight"
             style={{
               fontFamily: theme.artisticPillars.typographyArchitecture.fontStack.display,
@@ -97,11 +97,11 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
             }}
           >
             {theme.name}
-          </h4>
-          <p className="[font-size:var(--vde-font-size-caption)] font-medium leading-snug [color:var(--vde-color-muted-foreground)]">{theme.tagline}</p>
+          </h3>
+          <p className="[font-size:var(--vde-font-size-caption)] font-medium leading-snug" style={{ color: light.mutedForeground }}>{theme.tagline}</p>
         </div>
 
-        <p className="[font-size:var(--vde-font-size-caption)] leading-relaxed [color:var(--vde-color-muted-foreground)]">{theme.summary}</p>
+        <p className="[font-size:var(--vde-font-size-caption)] leading-relaxed" style={{ color: light.mutedForeground }}>{theme.summary}</p>
 
         <div className="flex flex-wrap gap-1.5">
           {theme.mood.map(word => (
@@ -115,10 +115,10 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
           ))}
         </div>
 
-        <ul className="mt-auto space-y-1 pt-1 [font-size:var(--vde-font-size-caption)] leading-relaxed [color:var(--vde-color-muted-foreground)]">
+        <ul className="mt-auto space-y-1 pt-1 [font-size:var(--vde-font-size-caption)] leading-relaxed" style={{ color: light.mutedForeground }}>
           {theme.bestFor.map(item => (
             <li key={item} className="flex gap-1.5">
-              <span className="[color:var(--vde-color-muted-foreground)]">·</span>
+              <span aria-hidden="true">·</span>
               <span>{item}</span>
             </li>
           ))}
@@ -130,7 +130,10 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
         </div>
 
         <div className="flex items-center justify-end pt-0.5">
-          <span className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+          <span
+            className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
+            style={{ color: light.mutedForeground }}
+          >
             {primaryFont(theme.artisticPillars.typographyArchitecture.fontStack.display)}
           </span>
         </div>
