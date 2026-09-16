@@ -1,4 +1,4 @@
-import type React from 'react';
+import type React from "react";
 
 export interface ChartDatum {
   label: string;
@@ -20,7 +20,8 @@ export interface ChartAccessibilityProps {
 }
 
 export interface CartesianChartProps
-  extends Omit<React.SVGAttributes<SVGSVGElement>, 'children'>,
+  extends
+    Omit<React.SVGAttributes<SVGSVGElement>, "children">,
     ChartAccessibilityProps {
   data: ChartDatum[];
   width?: number;
@@ -29,7 +30,8 @@ export interface CartesianChartProps
 }
 
 export interface DonutProps
-  extends Omit<React.SVGAttributes<SVGSVGElement>, 'children'>,
+  extends
+    Omit<React.SVGAttributes<SVGSVGElement>, "children">,
     ChartAccessibilityProps {
   data: ChartDatum[];
   size?: number;

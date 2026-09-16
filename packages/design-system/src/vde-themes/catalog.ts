@@ -1,18 +1,18 @@
-import { VisionRegistry } from '../vde-core';
-import type { VisionTheme } from '../vde-core';
-import { brutalistTheme } from './brutalist.theme';
-import { claySoftTheme } from './clay-soft.theme';
-import { editorialTheme } from './editorial.theme';
-import { immersiveTheme } from './immersive.theme';
-import { museumTheme } from './museum.theme';
-import { noirTheme } from './noir.theme';
-import { quietWorkshopTheme } from './quiet-workshop.theme';
-import { solarpunkTheme } from './solarpunk.theme';
-import { swissInternationalTheme } from './swiss-international.theme';
-import { synthwaveTheme } from './synthwave.theme';
-import { terminalTheme } from './terminal.theme';
-import { y2kChromeTheme } from './y2k-chrome.theme';
-import { zenTheme } from './zen.theme';
+import { VisionRegistry } from "../vde-core";
+import type { VisionTheme } from "../vde-core";
+import { brutalistTheme } from "./brutalist.theme";
+import { claySoftTheme } from "./clay-soft.theme";
+import { editorialTheme } from "./editorial.theme";
+import { immersiveTheme } from "./immersive.theme";
+import { museumTheme } from "./museum.theme";
+import { noirTheme } from "./noir.theme";
+import { quietWorkshopTheme } from "./quiet-workshop.theme";
+import { solarpunkTheme } from "./solarpunk.theme";
+import { swissInternationalTheme } from "./swiss-international.theme";
+import { synthwaveTheme } from "./synthwave.theme";
+import { terminalTheme } from "./terminal.theme";
+import { y2kChromeTheme } from "./y2k-chrome.theme";
+import { zenTheme } from "./zen.theme";
 
 export {
   brutalistTheme,
@@ -57,19 +57,19 @@ export const visionThemes: VisionTheme[] = [
 ];
 
 export function getVisionThemeById(themeId: string): VisionTheme | undefined {
-  return visionThemes.find(theme => theme.id === themeId);
+  return visionThemes.find((theme) => theme.id === themeId);
 }
 
 export function getVisionThemeIds(): string[] {
-  return visionThemes.map(theme => theme.id);
+  return visionThemes.map((theme) => theme.id);
 }
 
 export function getVisionThemeNames(): string[] {
-  return visionThemes.map(theme => theme.name);
+  return visionThemes.map((theme) => theme.name);
 }
 
 export function isVisionThemeId(themeId: string): boolean {
-  return visionThemes.some(theme => theme.id === themeId);
+  return visionThemes.some((theme) => theme.id === themeId);
 }
 
 export const defaultVisionRegistry = new VisionRegistry(visionThemes);

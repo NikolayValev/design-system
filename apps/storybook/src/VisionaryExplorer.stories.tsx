@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Badge,
   Button,
@@ -14,7 +14,7 @@ import {
   useVision,
   visionThemes,
   type VisionTheme,
-} from '@nikolayvalev/design-system';
+} from "@nikolayvalev/design-system";
 
 interface PillarFact {
   detail: string;
@@ -22,43 +22,49 @@ interface PillarFact {
 }
 
 function primaryFont(fontStack: string): string {
-  const first = fontStack.split(',')[0] ?? fontStack;
-  return first.trim().replace(/"/g, '');
+  const first = fontStack.split(",")[0] ?? fontStack;
+  return first.trim().replace(/"/g, "");
 }
 
 /** Facts derived directly from the theme's artistic pillars — no hand-authored copy. */
 function pillarFacts(theme: VisionTheme): PillarFact[] {
-  const { typographyArchitecture, surfacePhysics, boundaryLogic, motionSignature } = theme.artisticPillars;
+  const {
+    typographyArchitecture,
+    surfacePhysics,
+    boundaryLogic,
+    motionSignature,
+  } = theme.artisticPillars;
 
   return [
     {
-      title: 'Typography',
+      title: "Typography",
       detail: `${primaryFont(typographyArchitecture.fontStack.display)} display · ${primaryFont(
-        typographyArchitecture.fontStack.body
+        typographyArchitecture.fontStack.body,
       )} body · spacing ${typographyArchitecture.letterSpacing.normal}.`,
     },
     {
-      title: 'Motion',
+      title: "Motion",
       detail: `${motionSignature.physics} · ${motionSignature.duration.fast}/${motionSignature.duration.normal}/${motionSignature.duration.slow} cadence.`,
     },
     {
-      title: 'Material',
+      title: "Material",
       detail: `${surfacePhysics.blur} blur · grain ${surfacePhysics.grain} · ${boundaryLogic.borderWeight} borders · ${boundaryLogic.radius.surface}/${boundaryLogic.radius.control} surface/control radius.`,
     },
   ];
 }
 
 function ThemeExplorer(): JSX.Element {
-  const { activeVision, activeVisionId, setVision, mode, toggleMode } = useVision();
+  const { activeVision, activeVisionId, setVision, mode, toggleMode } =
+    useVision();
   const family = getThemeFamily(activeVision.family);
   const facts = pillarFacts(activeVision);
   const swatches = [
-    { label: 'Background', value: activeVision.colors[mode].background },
-    { label: 'Surface', value: activeVision.colors[mode].surface },
-    { label: 'Accent', value: activeVision.colors[mode].accent },
-    { label: 'Secondary', value: activeVision.colors[mode].secondary },
-    { label: 'Chart 1', value: activeVision.colors[mode].chart1 },
-    { label: 'Chart 2', value: activeVision.colors[mode].chart2 },
+    { label: "Background", value: activeVision.colors[mode].background },
+    { label: "Surface", value: activeVision.colors[mode].surface },
+    { label: "Accent", value: activeVision.colors[mode].accent },
+    { label: "Secondary", value: activeVision.colors[mode].secondary },
+    { label: "Chart 1", value: activeVision.colors[mode].chart1 },
+    { label: "Chart 2", value: activeVision.colors[mode].chart2 },
   ];
 
   return (
@@ -67,7 +73,9 @@ function ThemeExplorer(): JSX.Element {
         <header className="space-y-4 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Theme Explorer</p>
+              <p className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+                Theme Explorer
+              </p>
               {family ? <Badge variant="outline">{family.name}</Badge> : null}
             </div>
             <button
@@ -75,14 +83,20 @@ function ThemeExplorer(): JSX.Element {
               onClick={toggleMode}
               className="rounded-full border px-3 py-1.5 [font-size:var(--vde-font-size-ui)] transition-all [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] [border-color:var(--vde-color-border)] hover:[color:var(--vde-color-muted-foreground)]"
             >
-              {mode === 'light' ? 'Light' : 'Dark'}
+              {mode === "light" ? "Light" : "Dark"}
             </button>
           </div>
-          <h1 className="text-4xl [font-family:var(--vde-font-display)]">{activeVision.name}</h1>
-          <p className="max-w-[70ch] text-base font-medium">{activeVision.tagline}</p>
-          <p className="max-w-[70ch] text-sm [color:var(--vde-color-muted-foreground)]">{activeVision.summary}</p>
+          <h1 className="text-4xl [font-family:var(--vde-font-display)]">
+            {activeVision.name}
+          </h1>
+          <p className="max-w-[70ch] text-base font-medium">
+            {activeVision.tagline}
+          </p>
+          <p className="max-w-[70ch] text-sm [color:var(--vde-color-muted-foreground)]">
+            {activeVision.summary}
+          </p>
           <div className="flex flex-wrap gap-2 pt-1">
-            {activeVision.mood.map(word => (
+            {activeVision.mood.map((word) => (
               <span
                 key={word}
                 className="rounded-full border px-2 py-1 [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [border-color:var(--vde-color-border)]"
@@ -95,15 +109,15 @@ function ThemeExplorer(): JSX.Element {
             Archetype: {activeVision.archetype} · Vision ID: {activeVisionId}
           </p>
           <nav className="flex flex-wrap gap-2 pt-2">
-            {visionThemes.map(theme => (
+            {visionThemes.map((theme) => (
               <button
                 key={theme.id}
                 type="button"
                 onClick={() => setVision(theme.id)}
                 className={`rounded-full border px-3 py-1.5 [font-size:var(--vde-font-size-ui)] [transition-property:background-color,border-color,color] [transition-duration:var(--vde-motion-duration-fast)] focus-visible:[outline:2px_solid_var(--vde-color-ring)] focus-visible:[outline-offset:2px] ${
                   activeVisionId === theme.id
-                    ? '[background:var(--vde-color-accent)] [color:var(--vde-color-accent-foreground)] [border-color:var(--vde-color-accent)]'
-                    : '[background:var(--vde-color-surface)] [color:var(--vde-color-muted-foreground)] [border-color:var(--vde-color-border)] hover:[color:var(--vde-color-surface-foreground)]'
+                    ? "[background:var(--vde-color-accent)] [color:var(--vde-color-accent-foreground)] [border-color:var(--vde-color-accent)]"
+                    : "[background:var(--vde-color-surface)] [color:var(--vde-color-muted-foreground)] [border-color:var(--vde-color-border)] hover:[color:var(--vde-color-surface-foreground)]"
                 }`}
               >
                 {theme.name}
@@ -114,11 +128,15 @@ function ThemeExplorer(): JSX.Element {
 
         <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           <aside className="space-y-4 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Best for</h2>
+            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              Best for
+            </h2>
             <ul className="space-y-2 text-sm leading-relaxed">
-              {activeVision.bestFor.map(item => (
+              {activeVision.bestFor.map((item) => (
                 <li key={item} className="flex gap-2">
-                  <span className="[color:var(--vde-color-muted-foreground)]">—</span>
+                  <span className="[color:var(--vde-color-muted-foreground)]">
+                    —
+                  </span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -127,29 +145,43 @@ function ThemeExplorer(): JSX.Element {
               Ornaments
             </h2>
             <div className="flex flex-wrap gap-2">
-              <Badge variant={activeVision.ornaments.grain ? 'secondary' : 'outline'}>
-                Grain {activeVision.ornaments.grain ? 'on' : 'off'}
+              <Badge
+                variant={activeVision.ornaments.grain ? "secondary" : "outline"}
+              >
+                Grain {activeVision.ornaments.grain ? "on" : "off"}
               </Badge>
-              <Badge variant={activeVision.ornaments.glow ? 'secondary' : 'outline'}>
-                Glow {activeVision.ornaments.glow ? 'on' : 'off'}
+              <Badge
+                variant={activeVision.ornaments.glow ? "secondary" : "outline"}
+              >
+                Glow {activeVision.ornaments.glow ? "on" : "off"}
               </Badge>
-              <Badge variant={activeVision.ornaments.texture ? 'secondary' : 'outline'}>
-                Texture {activeVision.ornaments.texture ? 'on' : 'off'}
+              <Badge
+                variant={
+                  activeVision.ornaments.texture ? "secondary" : "outline"
+                }
+              >
+                Texture {activeVision.ornaments.texture ? "on" : "off"}
               </Badge>
             </div>
           </aside>
 
           <aside className="space-y-4 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Visual fingerprint</h2>
+            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              Visual fingerprint
+            </h2>
             <div className="grid grid-cols-2 gap-3">
-              {swatches.map(swatch => (
+              {swatches.map((swatch) => (
                 <div key={swatch.label} className="space-y-1">
                   <div
                     className="h-10 w-full rounded-md border [border-color:var(--vde-color-border)]"
                     style={{ background: swatch.value }}
                   />
-                  <p className="[font-size:var(--vde-font-size-caption)] font-medium">{swatch.label}</p>
-                  <p className="[font-size:var(--vde-font-size-caption)] [color:var(--vde-color-muted-foreground)]">{swatch.value}</p>
+                  <p className="[font-size:var(--vde-font-size-caption)] font-medium">
+                    {swatch.label}
+                  </p>
+                  <p className="[font-size:var(--vde-font-size-caption)] [color:var(--vde-color-muted-foreground)]">
+                    {swatch.value}
+                  </p>
                 </div>
               ))}
             </div>
@@ -157,12 +189,14 @@ function ThemeExplorer(): JSX.Element {
         </section>
 
         <section className="grid gap-4 md:grid-cols-3">
-          {facts.map(fact => (
+          {facts.map((fact) => (
             <article
               key={fact.title}
               className="rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]"
             >
-              <h2 className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{fact.title}</h2>
+              <h2 className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+                {fact.title}
+              </h2>
               <p className="mt-3 text-sm leading-relaxed">{fact.detail}</p>
             </article>
           ))}
@@ -183,7 +217,10 @@ function ThemeExplorer(): JSX.Element {
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="explorer-search">Search</Label>
-                    <Input id="explorer-search" placeholder={`Search ${activeVision.name}…`} />
+                    <Input
+                      id="explorer-search"
+                      placeholder={`Search ${activeVision.name}…`}
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -199,9 +236,9 @@ function ThemeExplorer(): JSX.Element {
                       defaultOpen
                       floating={false}
                       items={[
-                        { id: 'overview', label: 'Overview' },
-                        { id: 'tokens', label: 'Tokens' },
-                        { id: 'preview', label: 'Preview' },
+                        { id: "overview", label: "Overview" },
+                        { id: "tokens", label: "Tokens" },
+                        { id: "preview", label: "Preview" },
                       ]}
                       label={`${activeVision.name} navigation`}
                     />
@@ -212,10 +249,13 @@ function ThemeExplorer(): JSX.Element {
           </Layout>
 
           <aside className="space-y-3 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">In one line</h2>
+            <h2 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              In one line
+            </h2>
             <p className="text-sm leading-relaxed">{activeVision.tagline}</p>
             <p className="[font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)]">
-              Same token contract as every other vision — switch the toolbar paintbrush to compare.
+              Same token contract as every other vision — switch the toolbar
+              paintbrush to compare.
             </p>
           </aside>
         </section>
@@ -225,14 +265,14 @@ function ThemeExplorer(): JSX.Element {
 }
 
 const meta = {
-  title: 'Themes/Explorer',
+  title: "Themes/Explorer",
   component: ThemeExplorer,
   parameters: {
-    vdeFrame: 'edge',
+    vdeFrame: "edge",
     docs: {
       description: {
         component:
-          'Interactive guide to the curated visions. Every field — tagline, summary, best-for, mood, family, and the derived typography/motion/material facts — is read straight from the theme model.',
+          "Interactive guide to the curated visions. Every field — tagline, summary, best-for, mood, family, and the derived typography/motion/material facts — is read straight from the theme model.",
       },
     },
   },

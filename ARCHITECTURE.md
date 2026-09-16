@@ -11,6 +11,7 @@ The design system provides infrastructure, not a rigid theme. Projects should fe
 ### OKLCH Color Space
 
 All colors use **OKLCH** (Oklch color space) instead of HSL for:
+
 - **Perceptual uniformity**: Equal numeric changes produce equal perceptual changes
 - **Wider gamut**: Access to more vibrant colors
 - **Better interpolation**: Smoother gradients and transitions
@@ -40,15 +41,15 @@ per mode plus five "artistic pillars":
 ```ts
 interface VisionTheme {
   id: string;
-  family: ThemeFamilyId;              // editorial | minimal | technical | atmospheric | expressive
-  defaultMode: 'light' | 'dark';
-  colors: { light: VisionColors; dark: VisionColors };   // 20 semantic colours per mode
+  family: ThemeFamilyId; // editorial | minimal | technical | atmospheric | expressive
+  defaultMode: "light" | "dark";
+  colors: { light: VisionColors; dark: VisionColors }; // 20 semantic colours per mode
   artisticPillars: {
-    typographyArchitecture;  // scale multipliers, line heights, letter spacing, font stacks
-    surfacePhysics;          // transparency, blur, texture, grain
-    boundaryLogic;           // border weight, radius scale (surface / control / pill), sharpness
-    shadowLightEngine;       // hard offset, neon glow, ambient occlusion
-    motionSignature;         // durations, easings, physics
+    typographyArchitecture; // scale multipliers, line heights, letter spacing, font stacks
+    surfacePhysics; // transparency, blur, texture, grain
+    boundaryLogic; // border weight, radius scale (surface / control / pill), sharpness
+    shadowLightEngine; // hard offset, neon glow, ambient occlusion
+    motionSignature; // durations, easings, physics
   };
   ornaments: { grain: boolean; glow: boolean; texture: boolean };
 }
@@ -73,17 +74,17 @@ The contract is versioned. Breaking changes require a major version bump.
 
   /* Type — resolved from the core scale by the theme's multipliers, then floored */
   --vde-font-size-caption: 0.8125rem;
-  --vde-font-size-ui: 0.875rem;      /* the interactive floor */
+  --vde-font-size-ui: 0.875rem; /* the interactive floor */
   --vde-font-size-body: 1rem;
   --vde-font-size-title: 1.5rem;
   --vde-font-size-headline: 2.25rem;
   --vde-font-size-display: 3rem;
   --vde-line-height-ui: 1.25;
-  --vde-line-height-normal: 1.5;     /* never below 1.5 */
+  --vde-line-height-normal: 1.5; /* never below 1.5 */
   --vde-measure: 68ch;
 
   /* Space — structural, identical in every vision, 8-point */
-  --vde-space-2xs: 0.25rem;  /* … xs sm md lg xl 2xl 3xl */
+  --vde-space-2xs: 0.25rem; /* … xs sm md lg xl 2xl 3xl */
 
   /* Shape — three steps, because one radius for everything turns cards into capsules */
   --vde-radius-surface: 0.5rem;
@@ -91,8 +92,8 @@ The contract is versioned. Breaking changes require a major version bump.
   --vde-radius-pill: 9999px;
 
   /* Type faces — self-hosted, emitted per vision alongside the tokens */
-  --vde-font-body: 'Inter', 'Helvetica Neue', system-ui, sans-serif;
-  --vde-font-display: 'Playfair Display', Georgia, serif;
+  --vde-font-body: "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --vde-font-display: "Playfair Display", Georgia, serif;
 }
 
 /* Tailwind's radius steps map onto the scale rather than calc()-ing off one value */
@@ -141,19 +142,25 @@ Import the per-vision CSS in your root layout (one file per app):
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-system/styles/editorial.css';
+import "@nikolayvalev/design-system/styles/editorial.css";
 ```
 
 Wrap the React tree in `VisionProvider` and supply a default vision:
 
 ```tsx
-import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
+import {
+  VisionProvider,
+  defaultVisionRegistry,
+} from "@nikolayvalev/design-system";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <VisionProvider registry={defaultVisionRegistry} defaultVisionId="editorial">
+        <VisionProvider
+          registry={defaultVisionRegistry}
+          defaultVisionId="editorial"
+        >
           {children}
         </VisionProvider>
       </body>
@@ -165,11 +172,13 @@ export default function RootLayout({ children }) {
 Switch visions at runtime via the `useVision` hook:
 
 ```tsx
-import { useVision } from '@nikolayvalev/design-system';
+import { useVision } from "@nikolayvalev/design-system";
 
 function VisionPicker() {
   const { setVision } = useVision();
-  return <button onClick={() => setVision('synthwave')}>Switch to Synthwave</button>;
+  return (
+    <button onClick={() => setVision("synthwave")}>Switch to Synthwave</button>
+  );
 }
 ```
 
@@ -202,11 +211,11 @@ import {
   getVisionThemeById,
   defaultVisionRegistry,
   groupThemesByFamily,
-} from '@nikolayvalev/design-system';
+} from "@nikolayvalev/design-system";
 
-const editorial = getVisionThemeById('editorial');
+const editorial = getVisionThemeById("editorial");
 const byFamily = groupThemesByFamily(visionThemes);
-defaultVisionRegistry.get('terminal');
+defaultVisionRegistry.get("terminal");
 ```
 
 ## Component Architecture
@@ -221,10 +230,10 @@ defaultVisionRegistry.get('terminal');
 ### Example: Button
 
 ```tsx
-<Button 
-  variant="default"  // semantic variant
-  size="md"          // density-aware sizing
-  className="..."    // project extensions allowed
+<Button
+  variant="default" // semantic variant
+  size="md" // density-aware sizing
+  className="..." // project extensions allowed
 >
   Submit
 </Button>
@@ -270,11 +279,11 @@ Projects extend the Tailwind theme **without** breaking the base:
 
 ```ts
 export default {
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        brand: { coral: 'hsl(16 100% 66%)' },  // Project-specific
+        brand: { coral: "hsl(16 100% 66%)" }, // Project-specific
       },
     },
   },
@@ -291,11 +300,11 @@ Semantic tokens (sourced from the active vision via CSS variables) remain unchan
 Applied via `data-density` attribute:
 
 ```css
-[data-density='comfortable'] {
+[data-density="comfortable"] {
   --spacing-multiplier: 1;
 }
 
-[data-density='compact'] {
+[data-density="compact"] {
   --spacing-multiplier: 0.875;
 }
 ```
@@ -367,11 +376,14 @@ dist/
 ### 1. Vision Selection
 
 ```tsx
-import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
+import {
+  VisionProvider,
+  defaultVisionRegistry,
+} from "@nikolayvalev/design-system";
 // Wrap your tree; switch at runtime with useVision().setVision(id)
 <VisionProvider registry={defaultVisionRegistry} defaultVisionId="zen">
   {children}
-</VisionProvider>
+</VisionProvider>;
 ```
 
 ### 2. CSS Variable Override
@@ -380,7 +392,7 @@ Override individual `--vde-*` or shadcn-alias variables in your own CSS after th
 
 ```css
 :root {
-  --primary: oklch(0.6 0.25 280);  /* project-level override */
+  --primary: oklch(0.6 0.25 280); /* project-level override */
 }
 ```
 

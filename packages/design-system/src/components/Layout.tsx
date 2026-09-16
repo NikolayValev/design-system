@@ -1,5 +1,5 @@
-import React from 'react';
-import { AestheticOrnaments } from './AestheticOrnaments';
+import React from "react";
+import { AestheticOrnaments } from "./AestheticOrnaments";
 
 export interface LayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -7,26 +7,26 @@ export interface LayoutProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
-  ({ className = '', children, heading, ...props }, ref) => {
+  ({ className = "", children, heading, ...props }, ref) => {
     const classes = [
-      'relative',
-      'overflow-hidden',
-      'border',
-      '[border-radius:var(--vde-radius-surface)]',
-      '[border-width:var(--vde-border-width)]',
-      '[border-color:var(--vde-color-border)]',
-      '[background:var(--vde-color-background)]',
-      '[color:var(--vde-color-foreground)]',
-      '[padding:var(--vde-space-lg)]',
-      '[box-shadow:var(--vde-shadow-ambient)]',
-      '[backdrop-filter:blur(var(--vde-surface-blur))]',
+      "relative",
+      "overflow-hidden",
+      "border",
+      "[border-radius:var(--vde-radius-surface)]",
+      "[border-width:var(--vde-border-width)]",
+      "[border-color:var(--vde-color-border)]",
+      "[background:var(--vde-color-background)]",
+      "[color:var(--vde-color-foreground)]",
+      "[padding:var(--vde-space-lg)]",
+      "[box-shadow:var(--vde-shadow-ambient)]",
+      "[backdrop-filter:blur(var(--vde-surface-blur))]",
       // Was `transition-all`, which includes layout properties.
-      '[transition-property:background-color,border-color,box-shadow,backdrop-filter]',
-      '[transition-duration:var(--vde-motion-duration-normal)]',
-      '[transition-timing-function:var(--vde-motion-easing-standard)]',
-      '[font-family:var(--vde-font-body)]',
+      "[transition-property:background-color,border-color,box-shadow,backdrop-filter]",
+      "[transition-duration:var(--vde-motion-duration-normal)]",
+      "[transition-timing-function:var(--vde-motion-easing-standard)]",
+      "[font-family:var(--vde-font-body)]",
       className,
-    ].join(' ');
+    ].join(" ");
 
     return (
       <section ref={ref} className={classes} {...props}>
@@ -41,7 +41,7 @@ export const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
         </div>
       </section>
     );
-  }
+  },
 );
 
-Layout.displayName = 'Layout';
+Layout.displayName = "Layout";

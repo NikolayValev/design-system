@@ -30,19 +30,19 @@ Everything downstream reads `--vde-*` custom properties. Components must not bra
 
 ### The idiom
 
-`[border-radius:var(--vde-radius-surface)]` — a Tailwind arbitrary *property* whose value is a token. This is correct and the lint allows it. A raw hex, a raw `rgba()`, `text-[13px]` or `rounded-[18px]` is not, and `design-system/no-raw-design-values` will fail the build.
+`[border-radius:var(--vde-radius-surface)]` — a Tailwind arbitrary _property_ whose value is a token. This is correct and the lint allows it. A raw hex, a raw `rgba()`, `text-[13px]` or `rounded-[18px]` is not, and `design-system/no-raw-design-values` will fail the build.
 
 ## Workflows
 
-| Task | Command |
-|---|---|
-| Install | `pnpm install` (repo root) |
-| Build / lint / typecheck | `pnpm build` \| `pnpm lint` \| `pnpm typecheck` |
-| Unit tests | `pnpm --filter @nikolayvalev/design-system test` |
+| Task                     | Command                                              |
+| ------------------------ | ---------------------------------------------------- |
+| Install                  | `pnpm install` (repo root)                           |
+| Build / lint / typecheck | `pnpm build` \| `pnpm lint` \| `pnpm typecheck`      |
+| Unit tests               | `pnpm --filter @nikolayvalev/design-system test`     |
 | Token + floor validation | `pnpm --filter @nikolayvalev/design-system validate` |
-| Design tests (all three) | `pnpm test:design` |
-| Storybook | `pnpm storybook` |
-| Format | `pnpm format` \| `pnpm format:check` |
+| Design tests (all three) | `pnpm test:design`                                   |
+| Storybook                | `pnpm storybook`                                     |
+| Format                   | `pnpm format` \| `pnpm format:check`                 |
 
 There is no root `pnpm test`.
 

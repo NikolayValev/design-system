@@ -8,6 +8,20 @@ Visual changes are treated as breaking. If upgrading changes how your app looks,
 
 ---
 
+## v2 to v3
+
+Fonts, a real type and spacing scale, a three-step radius, and an enforced accessibility floor.
+Full guide: [MIGRATION_V3.md](MIGRATION_V3.md).
+
+The short version:
+
+1. Add `import '@nikolayvalev/design-system/styles/fonts/<vision>.css'` next to your vision CSS.
+2. Pass `title` to every chart.
+3. Pass `sectionEyebrow` explicitly if you were relying on a placeholder default.
+4. If you authored a custom theme, `boundaryLogic.radius` is now `{ surface, control, pill }`.
+
+---
+
 ## Unreleased Breaking Changes
 
 ### Token profiles removed (next major)
@@ -38,6 +52,7 @@ When we publish a major version, we'll add migration instructions here following
 ### Version X.0.0 (YYYY-MM-DD)
 
 **What Changed:**
+
 - List of visual changes
 - List of API changes
 - List of removed exports
@@ -45,6 +60,7 @@ When we publish a major version, we'll add migration instructions here following
 **Migration Steps:**
 
 1. **Update package version**
+
    ```bash
    npm install @nikolayvalev/design-system@X.0.0
    # or
@@ -67,6 +83,7 @@ When we publish a major version, we'll add migration instructions here following
    - Accessibility checks
 
 **Backward Compatibility:**
+
 - What still works the same
 - Deprecation warnings (if any)
 
@@ -98,7 +115,7 @@ If a visual change doesn't work for you:
 ```css
 /* Override specific tokens by pinning CSS variables */
 :root {
-  --vde-color-accent: oklch(0.55 0.20 250); /* keep the old value */
+  --vde-color-accent: oklch(0.55 0.2 250); /* keep the old value */
   --primary: var(--vde-color-accent);
 }
 ```
@@ -106,8 +123,9 @@ If a visual change doesn't work for you:
 ### Staging Environment
 
 Always test major upgrades in staging first. Check:
+
 - Landing pages
-- Dashboard views  
+- Dashboard views
 - Mobile responsive behavior
 - Dark mode
 - Print styles
@@ -115,6 +133,7 @@ Always test major upgrades in staging first. Check:
 ### Gradual Rollout
 
 For large apps, consider:
+
 1. Update design system package
 2. Keep old CSS imported alongside new
 3. Migrate pages one by one
@@ -127,12 +146,15 @@ This requires careful CSS scoping but minimizes risk.
 ## Version History
 
 ### 1.0.0
+
 - First major release
 - Visual-first versioning policy now in stable major stream
 
 ### 0.1.1
+
 - Initial stable release
 - No breaking changes to migrate from
 
 ### 0.1.0
+
 - Initial beta release

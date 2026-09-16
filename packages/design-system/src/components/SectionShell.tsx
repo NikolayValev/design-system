@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface SectionShellProps extends React.HTMLAttributes<HTMLElement> {
   actions?: React.ReactNode;
@@ -27,7 +27,7 @@ export const SectionShell = React.forwardRef<HTMLElement, SectionShellProps>(
     {
       actions,
       children,
-      className = '',
+      className = "",
       constrained = true,
       description,
       eyebrow,
@@ -37,18 +37,18 @@ export const SectionShell = React.forwardRef<HTMLElement, SectionShellProps>(
     ref,
   ) => {
     const classes = [
-      'w-full',
-      'border-b',
-      '[border-color:var(--vde-color-border)]',
-      '[padding-block:clamp(2.5rem,_8vw,_6rem)]',
+      "w-full",
+      "border-b",
+      "[border-color:var(--vde-color-border)]",
+      "[padding-block:clamp(2.5rem,_8vw,_6rem)]",
       className,
-    ].join(' ');
+    ].join(" ");
 
     const innerClasses = [
-      constrained ? 'mx-auto w-full max-w-6xl' : 'w-full',
-      '[padding-inline:clamp(1rem,_4vw,_2rem)]',
-      'space-y-6',
-    ].join(' ');
+      constrained ? "mx-auto w-full max-w-6xl" : "w-full",
+      "[padding-inline:clamp(1rem,_4vw,_2rem)]",
+      "space-y-6",
+    ].join(" ");
 
     return (
       <section ref={ref} className={classes} {...props}>
@@ -71,7 +71,9 @@ export const SectionShell = React.forwardRef<HTMLElement, SectionShellProps>(
             </p>
           ) : null}
 
-          {actions ? <div className="flex flex-wrap items-center gap-3">{actions}</div> : null}
+          {actions ? (
+            <div className="flex flex-wrap items-center gap-3">{actions}</div>
+          ) : null}
 
           {children}
         </div>
@@ -80,4 +82,4 @@ export const SectionShell = React.forwardRef<HTMLElement, SectionShellProps>(
   },
 );
 
-SectionShell.displayName = 'SectionShell';
+SectionShell.displayName = "SectionShell";

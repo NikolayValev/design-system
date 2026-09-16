@@ -135,13 +135,32 @@ jobs:
       - name: Lint
         run: pnpm turbo run lint
 
-      - name: Validate design-system exports
+      # NOTE: `pnpm format:check` is deliberately NOT a gate yet. It has never run
+      # in CI and the repo currently fails it in 276 files, so turning it on here
+      # would either fail every build or force a repo-wide reformat that buries
+      # the diff it is attached to. Reformatting is its own piece of work.
+
+      - name: Unit tests
+        run: pnpm --filter @nikolayvalev/design-system test
+
+      # Exports plus the design floors: WCAG AA contrast across all 13 visions in
+      # both modes, the body line-height and interactive type floors, the radius
+      # scale, edge redundancy, and overshoot on the standard easing.
+      - name: Validate design-system exports and design floors
         run: pnpm --filter @nikolayvalev/design-system validate
+
+      # Advisory for now. Flip to a hard failure once the backlog it reports is
+      # empty; the rules it covers that we already enforce are in eslint and the
+      # floor validator, so this is the widening net rather than the only one.
+      - name: Design detector (advisory)
+        continue-on-error: true
+        run: npx --yes impeccable detect --json packages/design-system/src apps/storybook/src
 
       - name: Install Playwright browsers
         run: pnpm --filter @apps/storybook exec playwright install --with-deps chromium
 
-      - name: Storybook interaction tests
+      # Runs axe against every story via .storybook/test-runner.ts.
+      - name: Storybook interaction and accessibility tests
         run: pnpm --filter @apps/storybook test:stories:ci
 
   storybook-visual:

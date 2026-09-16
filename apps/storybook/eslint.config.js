@@ -1,4 +1,4 @@
-import config from '@repo/config/eslint-design-system.config.cjs';
+import config from "@repo/config/eslint-design-system.config.cjs";
 
 /*
  * Storybook opted out of the governance config entirely, which is why the
@@ -13,8 +13,8 @@ export default [
       // The Storybook app owns `src/styles.css`, its Tailwind entry point, and
       // stories import demo helpers from `./`. Neither is an app overriding the
       // system, which is what these two rules exist to catch.
-      'design-system/no-local-css': 'off',
-      'design-system/no-local-component': 'off',
+      "design-system/no-local-css": "off",
+      "design-system/no-local-component": "off",
     },
   },
   {
@@ -23,8 +23,8 @@ export default [
      * `create()` API takes literal colour strings and is rendered outside the
      * iframe where the `--vde-*` tokens live, so it cannot read them.
      */
-    files: ['.storybook/theme.ts'],
-    rules: { 'design-system/no-raw-design-values': 'off' },
+    files: [".storybook/theme.ts"],
+    rules: { "design-system/no-raw-design-values": "off" },
   },
   {
     /*
@@ -37,11 +37,11 @@ export default [
      * The token rules stay ON here; only the inline-style rule is relaxed.
      */
     files: [
-      'src/Overview.stories.tsx',
-      'src/ThemeGallery.stories.tsx',
-      'src/ThemeModes.stories.tsx',
-      'src/VisionaryExplorer.stories.tsx',
+      "src/Overview.stories.tsx",
+      "src/ThemeGallery.stories.tsx",
+      "src/ThemeModes.stories.tsx",
+      "src/VisionaryExplorer.stories.tsx",
     ],
-    rules: { 'design-system/no-inline-styles': 'off' },
+    rules: { "design-system/no-inline-styles": "off" },
   },
 ];

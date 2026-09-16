@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface FeatureTileProps extends React.HTMLAttributes<HTMLDivElement> {
   heading: React.ReactNode;
@@ -15,32 +15,35 @@ export interface FeatureTileProps extends React.HTMLAttributes<HTMLDivElement> {
  * inline, the icon reads as a marker for the heading, which is what it is.
  */
 export const FeatureTile = React.forwardRef<HTMLDivElement, FeatureTileProps>(
-  ({ className = '', heading, icon, summary, ...props }, ref) => {
+  ({ className = "", heading, icon, summary, ...props }, ref) => {
     const classes = [
-      'group',
-      'relative',
-      'overflow-hidden',
-      'border',
-      '[border-color:var(--vde-color-border)]',
-      '[border-width:var(--vde-border-width)]',
-      '[border-radius:var(--vde-radius-surface)]',
-      '[background:var(--vde-color-surface)]',
-      '[color:var(--vde-color-surface-foreground)]',
-      '[box-shadow:var(--vde-shadow-ambient)]',
-      '[padding:var(--vde-space-lg)]',
+      "group",
+      "relative",
+      "overflow-hidden",
+      "border",
+      "[border-color:var(--vde-color-border)]",
+      "[border-width:var(--vde-border-width)]",
+      "[border-radius:var(--vde-radius-surface)]",
+      "[background:var(--vde-color-surface)]",
+      "[color:var(--vde-color-surface-foreground)]",
+      "[box-shadow:var(--vde-shadow-ambient)]",
+      "[padding:var(--vde-space-lg)]",
       // Was `transition-all`, which animates layout properties and can stutter.
-      '[transition-property:transform,border-color,box-shadow]',
-      '[transition-duration:var(--vde-motion-duration-normal)]',
-      '[transition-timing-function:var(--vde-motion-easing-standard)]',
-      'hover:-translate-y-1',
+      "[transition-property:transform,border-color,box-shadow]",
+      "[transition-duration:var(--vde-motion-duration-normal)]",
+      "[transition-timing-function:var(--vde-motion-easing-standard)]",
+      "hover:-translate-y-1",
       className,
-    ].join(' ');
+    ].join(" ");
 
     return (
       <article ref={ref} className={classes} {...props}>
         <h3 className="flex items-center font-semibold [gap:var(--vde-space-xs)] [font-size:var(--vde-font-size-title)] [font-family:var(--vde-font-display)] [line-height:var(--vde-line-height-tight)]">
           {icon ? (
-            <span aria-hidden="true" className="inline-flex shrink-0 items-center justify-center [color:var(--vde-color-accent)]">
+            <span
+              aria-hidden="true"
+              className="inline-flex shrink-0 items-center justify-center [color:var(--vde-color-accent)]"
+            >
               {icon}
             </span>
           ) : null}
@@ -55,4 +58,4 @@ export const FeatureTile = React.forwardRef<HTMLDivElement, FeatureTileProps>(
   },
 );
 
-FeatureTile.displayName = 'FeatureTile';
+FeatureTile.displayName = "FeatureTile";

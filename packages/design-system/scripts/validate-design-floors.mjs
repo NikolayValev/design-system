@@ -6,7 +6,7 @@
  * readability for character: they run over the theme source, so a regression is
  * caught where it is authored rather than after it ships.
  */
-import { visionThemes } from '../dist/index.js';
+import { visionThemes } from "../dist/index.js";
 
 /* ---------- colour ---------- */
 
@@ -32,27 +32,42 @@ function oklchToLinearSRGB(L, C, H) {
 }
 
 function hslToLinearSRGB(h, s, l) {
-  const k = n => (n + h / 30) % 12;
+  const k = (n) => (n + h / 30) % 12;
   const aa = s * Math.min(l, 1 - l);
-  const f = n => l - aa * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-  return [f(0), f(8), f(4)].map(v => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  const f = (n) =>
+    l - aa * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  return [f(0), f(8), f(4)].map((v) =>
+    v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4,
+  );
 }
 
 /** Returns linear-sRGB channels, or null for values that are not a flat colour. */
 function parseColor(value) {
-  const oklch = /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)$/i.exec(value.trim());
+  const oklch = /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)$/i.exec(
+    value.trim(),
+  );
   if (oklch) {
-    return oklchToLinearSRGB(Number(oklch[1]), Number(oklch[2]), Number(oklch[3]));
+    return oklchToLinearSRGB(
+      Number(oklch[1]),
+      Number(oklch[2]),
+      Number(oklch[3]),
+    );
   }
-  const hsl = /^hsl\(\s*([\d.]+)\s+([\d.]+)%\s+([\d.]+)%\s*\)$/i.exec(value.trim());
+  const hsl = /^hsl\(\s*([\d.]+)\s+([\d.]+)%\s+([\d.]+)%\s*\)$/i.exec(
+    value.trim(),
+  );
   if (hsl) {
-    return hslToLinearSRGB(Number(hsl[1]), Number(hsl[2]) / 100, Number(hsl[3]) / 100);
+    return hslToLinearSRGB(
+      Number(hsl[1]),
+      Number(hsl[2]) / 100,
+      Number(hsl[3]) / 100,
+    );
   }
   return null;
 }
 
 function luminance(linear) {
-  const [r, g, b] = linear.map(v => Math.max(0, Math.min(1, v)));
+  const [r, g, b] = linear.map((v) => Math.max(0, Math.min(1, v)));
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
@@ -67,13 +82,13 @@ function contrast(fg, bg) {
 
 /** Pairs that carry body-sized text, so all of them owe WCAG AA at 4.5:1. */
 const TEXT_PAIRS = [
-  ['foreground', 'background'],
-  ['mutedForeground', 'background'],
-  ['surfaceForeground', 'surface'],
-  ['mutedForeground', 'surface'],
-  ['accentForeground', 'accent'],
-  ['secondaryForeground', 'secondary'],
-  ['dangerForeground', 'danger'],
+  ["foreground", "background"],
+  ["mutedForeground", "background"],
+  ["surfaceForeground", "surface"],
+  ["mutedForeground", "surface"],
+  ["accentForeground", "accent"],
+  ["secondaryForeground", "secondary"],
+  ["dangerForeground", "danger"],
 ];
 
 const AA_NORMAL = 4.5;
@@ -85,7 +100,7 @@ const skipped = [];
 for (const vision of visionThemes) {
   const { id, artisticPillars: pillars } = vision;
 
-  for (const mode of ['light', 'dark']) {
+  for (const mode of ["light", "dark"]) {
     const colors = vision.colors[mode];
     for (const [fgKey, bgKey] of TEXT_PAIRS) {
       const fg = parseColor(colors[fgKey]);
@@ -97,30 +112,40 @@ for (const vision of visionThemes) {
       }
       const ratio = contrast(fg, bg);
       if (ratio < AA_NORMAL) {
-        failures.push(`${id} ${mode}: ${fgKey} on ${bgKey} is ${ratio.toFixed(2)}:1 (needs ${AA_NORMAL}:1)`);
+        failures.push(
+          `${id} ${mode}: ${fgKey} on ${bgKey} is ${ratio.toFixed(2)}:1 (needs ${AA_NORMAL}:1)`,
+        );
       }
     }
   }
 
   const { lineHeight, letterSpacing } = pillars.typographyArchitecture;
   if (Number(lineHeight.normal) < MIN_BODY_LINE_HEIGHT) {
-    failures.push(`${id}: body line-height is ${lineHeight.normal} (needs >= ${MIN_BODY_LINE_HEIGHT})`);
+    failures.push(
+      `${id}: body line-height is ${lineHeight.normal} (needs >= ${MIN_BODY_LINE_HEIGHT})`,
+    );
   }
   if (Number(lineHeight.relaxed) < Number(lineHeight.normal)) {
-    failures.push(`${id}: relaxed line-height (${lineHeight.relaxed}) is tighter than normal (${lineHeight.normal})`);
+    failures.push(
+      `${id}: relaxed line-height (${lineHeight.relaxed}) is tighter than normal (${lineHeight.normal})`,
+    );
   }
   if (Number.parseFloat(letterSpacing.normal) < -0.006) {
-    failures.push(`${id}: body letter-spacing is ${letterSpacing.normal} — crushed tracking on body text`);
+    failures.push(
+      `${id}: body letter-spacing is ${letterSpacing.normal} — crushed tracking on body text`,
+    );
   }
 
   const { radius, borderWeight } = pillars.boundaryLogic;
-  for (const step of ['surface', 'control', 'pill']) {
-    if (typeof radius?.[step] !== 'string') {
+  for (const step of ["surface", "control", "pill"]) {
+    if (typeof radius?.[step] !== "string") {
       failures.push(`${id}: boundaryLogic.radius.${step} is missing`);
     }
   }
-  if (/^\d{4,}px$/.test(radius?.surface ?? '')) {
-    failures.push(`${id}: surface radius is a pill (${radius.surface}) — cards need corners content can sit inside`);
+  if (/^\d{4,}px$/.test(radius?.surface ?? "")) {
+    failures.push(
+      `${id}: surface radius is a pill (${radius.surface}) — cards need corners content can sit inside`,
+    );
   }
 
   // A hairline and a wide drop shadow both drawing the same edge is redundant.
@@ -129,11 +154,15 @@ for (const vision of visionThemes) {
   const ambient = pillars.shadowLightEngine.ambientOcclusion;
   const outerLayers = ambient
     .split(/,(?![^()]*\))/)
-    .map(layer => layer.trim())
-    .filter(layer => !layer.startsWith('inset'));
+    .map((layer) => layer.trim())
+    .filter((layer) => !layer.startsWith("inset"));
   const blur = Math.max(
     0,
-    ...outerLayers.flatMap(layer => [...layer.matchAll(/(-?\d+(?:\.\d+)?)px/g)].map(m => Math.abs(Number(m[1])))),
+    ...outerLayers.flatMap((layer) =>
+      [...layer.matchAll(/(-?\d+(?:\.\d+)?)px/g)].map((m) =>
+        Math.abs(Number(m[1])),
+      ),
+    ),
   );
   const hasBorder = Number.parseFloat(borderWeight) > 0;
   if (hasBorder && blur > 12) {
@@ -143,9 +172,14 @@ for (const vision of visionThemes) {
   }
 
   for (const [name, curve] of Object.entries(pillars.motionSignature.easing)) {
-    const m = /cubic-bezier\(\s*[\d.-]+\s*,\s*([\d.-]+)\s*,\s*[\d.-]+\s*,\s*([\d.-]+)\s*\)/.exec(curve);
-    if (name === 'standard' && m && (Number(m[1]) > 1 || Number(m[2]) > 1)) {
-      failures.push(`${id}: standard easing overshoots (${curve}) — it drives every control transition`);
+    const m =
+      /cubic-bezier\(\s*[\d.-]+\s*,\s*([\d.-]+)\s*,\s*[\d.-]+\s*,\s*([\d.-]+)\s*\)/.exec(
+        curve,
+      );
+    if (name === "standard" && m && (Number(m[1]) > 1 || Number(m[2]) > 1)) {
+      failures.push(
+        `${id}: standard easing overshoots (${curve}) — it drives every control transition`,
+      );
     }
   }
 }
@@ -161,4 +195,6 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Design floors OK across ${visionThemes.length} visions (contrast, line-height, tracking, radius, edge, motion).`);
+console.log(
+  `Design floors OK across ${visionThemes.length} visions (contrast, line-height, tracking, radius, edge, motion).`,
+);

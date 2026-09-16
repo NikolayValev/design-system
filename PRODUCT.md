@@ -10,7 +10,7 @@ web — an npm package (`@nikolayvalev/design-system`), a hosted MCP endpoint, a
 
 Three audiences, and the unusual one is first because it drives the most design decisions:
 
-- **AI coding agents.** Claude Code, Cursor, Windsurf and Copilot reach this system through the hosted MCP server (`docs/MCP_INTEGRATION.md`) and install component *source* into a consumer repo, shadcn-style, rather than importing a runtime dependency. An agent cannot see a screenshot or infer taste from a Storybook. It reads `DESIGN.md`, `CONTRIBUTION_GUIDE.md` and the token names, and it will faithfully reproduce whatever those files imply — including the mistakes. This is why the documented record is a product surface here and not an afterthought.
+- **AI coding agents.** Claude Code, Cursor, Windsurf and Copilot reach this system through the hosted MCP server (`docs/MCP_INTEGRATION.md`) and install component _source_ into a consumer repo, shadcn-style, rather than importing a runtime dependency. An agent cannot see a screenshot or infer taste from a Storybook. It reads `DESIGN.md`, `CONTRIBUTION_GUIDE.md` and the token names, and it will faithfully reproduce whatever those files imply — including the mistakes. This is why the documented record is a product surface here and not an afterthought.
 
 - **Nikolay's own applications.** `PersonalRouter` is the live external consumer. `second-brain-ui`, `mandate-zero` and `quitting-smoking-tracker` are named as linked repos in `.github/dependent-apps.json`. They do not want to look identical to each other; they want to stop re-deriving a token layer each time. The failure this system exists to prevent is documented in `Shared/03_Projects/PersonalWebsite/postmortem_design_system_token_drift.md`: tokens overridden locally, no enforcement in CI, products drifting apart while nominally sharing a system.
 
@@ -22,7 +22,7 @@ Three audiences, and the unusual one is first because it drives the most design 
 
 The system provides infrastructure, not a house style. Projects built on it should feel related without being forced into one look, and should be able to diverge visually without fighting the system.
 
-Concretely, that means the core is deliberately identity-free and the identity lives in named, swappable visions — 13 of them, each with a hand-tuned light *and* dark palette. `vde-core/` owns the contract and a single CSS emitter; `vde-themes/` owns the values. A consumer imports exactly one vision's CSS and gets a complete, coherent surface with no local override block.
+Concretely, that means the core is deliberately identity-free and the identity lives in named, swappable visions — 13 of them, each with a hand-tuned light _and_ dark palette. `vde-core/` owns the contract and a single CSS emitter; `vde-themes/` owns the values. A consumer imports exactly one vision's CSS and gets a complete, coherent surface with no local override block.
 
 The corollary matters as much as the rule: **because the core carries no identity, it has to carry a floor.** A system that permits any aesthetic still owes every consumer legible type, sufficient contrast, reachable focus, and motion that can be turned off. Range is the feature; the floor is what makes range safe.
 

@@ -1,26 +1,39 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@nikolayvalev/design-system';
-import { Search, Mail, Lock, AtSign, AlertCircle } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+} from "@nikolayvalev/design-system";
+import { Search, Mail, Lock, AtSign, AlertCircle } from "lucide-react";
 
 const meta = {
-  title: 'Components/Input',
+  title: "Components/Input",
   component: Input,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     storyCaption:
-      'Form primitive — surface, border, focus ring, and motion all derive from the active vision.',
-    docs: { description: { component: 'Form input primitive. Surface, border, focus ring, and motion curves all derive from the active VDE theme.' } },
+      "Form primitive — surface, border, focus ring, and motion all derive from the active vision.",
+    docs: {
+      description: {
+        component:
+          "Form input primitive. Surface, border, focus ring, and motion curves all derive from the active VDE theme.",
+      },
+    },
   },
   args: {
-    placeholder: 'Type here...',
+    placeholder: "Type here...",
   },
 } satisfies Meta<typeof Input>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const muted = 'text-[var(--vde-color-muted-foreground)]';
-const captionStyle = '[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]';
+const muted = "text-[var(--vde-color-muted-foreground)]";
+const captionStyle =
+  "[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]";
 
 function Field({
   label,
@@ -38,8 +51,16 @@ function Field({
   return (
     <label htmlFor={htmlFor} className="block space-y-1.5">
       <span className="flex items-baseline justify-between gap-3">
-        <span className={`[font-size:var(--vde-font-size-ui)] font-medium ${muted}`}>{label}</span>
-        {hint ? <span className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{hint}</span> : null}
+        <span
+          className={`[font-size:var(--vde-font-size-ui)] font-medium ${muted}`}
+        >
+          {label}
+        </span>
+        {hint ? (
+          <span className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+            {hint}
+          </span>
+        ) : null}
       </span>
       {children}
       {error ? (
@@ -52,7 +73,7 @@ function Field({
 }
 
 export const Default: Story = {
-  render: args => (
+  render: (args) => (
     <div className="max-w-sm">
       <Field label="Workspace name" htmlFor="workspace" hint="required">
         <Input id="workspace" {...args} placeholder="e.g. Quiet Atlas" />
@@ -64,9 +85,9 @@ export const Default: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    value: 'Read-only preview',
+    value: "Read-only preview",
   },
-  render: args => (
+  render: (args) => (
     <div className="max-w-sm">
       <Field label="Locked field" htmlFor="locked" hint="disabled">
         <Input id="locked" {...args} />
@@ -87,13 +108,23 @@ export const FormContexts: Story = {
           <Field label="Query" htmlFor="search-q" hint="⌘ K">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 [color:var(--vde-color-muted-foreground)]" />
-              <Input id="search-q" placeholder="Search collection annotation…" className="pl-9" />
+              <Input
+                id="search-q"
+                placeholder="Search collection annotation…"
+                className="pl-9"
+              />
             </div>
           </Field>
           <div className="flex flex-wrap gap-2 [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
-            <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">essays</span>
-            <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">material</span>
-            <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">index</span>
+            <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">
+              essays
+            </span>
+            <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">
+              material
+            </span>
+            <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">
+              index
+            </span>
           </div>
         </CardContent>
       </Card>
@@ -107,13 +138,23 @@ export const FormContexts: Story = {
           <Field label="Email" htmlFor="login-email" hint="required">
             <div className="relative">
               <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 [color:var(--vde-color-muted-foreground)]" />
-              <Input id="login-email" type="email" placeholder="you@studio.co" className="pl-9" />
+              <Input
+                id="login-email"
+                type="email"
+                placeholder="you@studio.co"
+                className="pl-9"
+              />
             </div>
           </Field>
           <Field label="Passphrase" htmlFor="login-pass">
             <div className="relative">
               <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 [color:var(--vde-color-muted-foreground)]" />
-              <Input id="login-pass" type="password" placeholder="••••••••" className="pl-9" />
+              <Input
+                id="login-pass"
+                type="password"
+                placeholder="••••••••"
+                className="pl-9"
+              />
             </div>
           </Field>
           <Button className="w-full">Enter studio</Button>

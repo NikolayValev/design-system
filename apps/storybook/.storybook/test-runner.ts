@@ -1,6 +1,6 @@
-import type { TestRunnerConfig } from '@storybook/test-runner';
-import { getStoryContext } from '@storybook/test-runner';
-import { injectAxe, checkA11y, configureAxe } from 'axe-playwright';
+import type { TestRunnerConfig } from "@storybook/test-runner";
+import { getStoryContext } from "@storybook/test-runner";
+import { injectAxe, checkA11y, configureAxe } from "axe-playwright";
 
 const disableMotionStyles = `
   *, *::before, *::after {
@@ -48,14 +48,17 @@ const config: TestRunnerConfig = {
     const maxAttempts = 20;
     for (let attempt = 1; ; attempt += 1) {
       try {
-        await checkA11y(page, '#storybook-root', {
+        await checkA11y(page, "#storybook-root", {
           detailedReport: true,
           detailedReportOptions: { html: true },
         });
         return;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        if (!message.includes('Axe is already running') || attempt >= maxAttempts) {
+        if (
+          !message.includes("Axe is already running") ||
+          attempt >= maxAttempts
+        ) {
           throw error;
         }
         await page.waitForTimeout(250);

@@ -19,7 +19,7 @@ module.exports = {
             ) {
               context.report({
                 node,
-                message: 'Inline styles are forbidden. Use the design system tokens or classes.'
+                message: 'Inline styles are forbidden. Use the design system tokens or classes.',
               });
             }
           },
@@ -94,7 +94,8 @@ module.exports = {
       meta: {
         type: 'problem',
         docs: {
-          description: 'Disallow local component definitions that duplicate design system components',
+          description:
+            'Disallow local component definitions that duplicate design system components',
         },
         schema: [],
       },
@@ -107,7 +108,8 @@ module.exports = {
             ) {
               context.report({
                 node,
-                message: 'Local component definitions are forbidden. Use @nikolayvalev/design-system.'
+                message:
+                  'Local component definitions are forbidden. Use @nikolayvalev/design-system.',
               });
             }
           },
@@ -131,7 +133,7 @@ module.exports = {
             ) {
               context.report({
                 node,
-                message: 'Local CSS/Sass files are forbidden. Use the design system styles.'
+                message: 'Local CSS/Sass files are forbidden. Use the design system styles.',
               });
             }
           },

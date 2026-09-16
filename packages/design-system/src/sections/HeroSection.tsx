@@ -1,12 +1,12 @@
-import React from 'react';
-import { Button } from '../components/Button';
-import { EditorialHeader } from '../components/EditorialHeader';
-import { SectionShell } from '../components/SectionShell';
+import React from "react";
+import { Button } from "../components/Button";
+import { EditorialHeader } from "../components/EditorialHeader";
+import { SectionShell } from "../components/SectionShell";
 
 export interface HeroSectionAction {
   label: string;
   onClick?: () => void;
-  variant?: 'default' | 'secondary' | 'outline' | 'ghost';
+  variant?: "default" | "secondary" | "outline" | "ghost";
 }
 
 export interface HeroSectionProps extends React.HTMLAttributes<HTMLElement> {
@@ -20,21 +20,32 @@ export interface HeroSectionProps extends React.HTMLAttributes<HTMLElement> {
  * HeroSection - high-impact intro section with token-driven actions.
  */
 export const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
-  ({ actions = [], className = '', eyebrow, subtitle, heading, ...props }, ref) => {
+  (
+    { actions = [], className = "", eyebrow, subtitle, heading, ...props },
+    ref,
+  ) => {
     return (
       <SectionShell
         ref={ref}
         className={className}
         data-vde-component="section-hero"
         eyebrow={eyebrow}
-        heading={<EditorialHeader as="h1" size="massive">{heading}</EditorialHeader>}
+        heading={
+          <EditorialHeader as="h1" size="massive">
+            {heading}
+          </EditorialHeader>
+        }
         description={subtitle}
         actions={
           actions.length > 0 ? (
             <>
-              {actions.map(action => {
+              {actions.map((action) => {
                 return (
-                  <Button key={action.label} onClick={action.onClick} variant={action.variant ?? 'default'}>
+                  <Button
+                    key={action.label}
+                    onClick={action.onClick}
+                    variant={action.variant ?? "default"}
+                  >
                     {action.label}
                   </Button>
                 );
@@ -48,4 +59,4 @@ export const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
   },
 );
 
-HeroSection.displayName = 'HeroSection';
+HeroSection.displayName = "HeroSection";

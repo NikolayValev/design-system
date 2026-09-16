@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Button,
   Card,
@@ -9,7 +9,7 @@ import {
   Input,
   Label,
   Textarea,
-} from '@nikolayvalev/design-system';
+} from "@nikolayvalev/design-system";
 
 /**
  * Form Controls — Label, Input, Textarea, and Checkbox share one token-driven
@@ -29,8 +29,15 @@ function FormControlsShowcase(): JSX.Element {
 
         <div className="space-y-1.5">
           <Label htmlFor="fc-email">Email</Label>
-          <Input id="fc-email" type="email" defaultValue="not-an-email" aria-invalid />
-          <p className="[font-size:var(--vde-font-size-ui)] [color:var(--vde-color-danger)]">Enter a valid email address.</p>
+          <Input
+            id="fc-email"
+            type="email"
+            defaultValue="not-an-email"
+            aria-invalid
+          />
+          <p className="[font-size:var(--vde-font-size-ui)] [color:var(--vde-color-danger)]">
+            Enter a valid email address.
+          </p>
         </div>
 
         <div className="space-y-1.5">
@@ -53,14 +60,15 @@ function FormControlsShowcase(): JSX.Element {
 }
 
 const meta = {
-  title: 'Components/Form Controls',
+  title: "Components/Form Controls",
   component: FormControlsShowcase,
   parameters: {
-    storyCaption: 'Label, Input, Textarea, and Checkbox composed into a realistic form with an invalid field.',
+    storyCaption:
+      "Label, Input, Textarea, and Checkbox composed into a realistic form with an invalid field.",
     docs: {
       description: {
         component:
-          'The form primitives share a consistent state model — hover, focus-visible ring from --vde-color-ring, disabled, and aria-invalid (danger border/ring).',
+          "The form primitives share a consistent state model — hover, focus-visible ring from --vde-color-ring, disabled, and aria-invalid (danger border/ring).",
       },
     },
   },

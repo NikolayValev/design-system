@@ -1,5 +1,8 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import { getVisionThemeById, visionToCSSVariables } from '@nikolayvalev/design-system';
+import type { IncomingMessage, ServerResponse } from "node:http";
+import {
+  getVisionThemeById,
+  visionToCSSVariables,
+} from "@nikolayvalev/design-system";
 
 /*
  * The portal is the surface people judge this system by, and it used to be
@@ -12,70 +15,80 @@ import { getVisionThemeById, visionToCSSVariables } from '@nikolayvalev/design-s
  * author's own site runs, so the portal and nikolayvalev.com agree, and it
  * exercises both modes rather than hardcoding one.
  */
-const PORTAL_VISION = 'quiet_workshop';
+const PORTAL_VISION = "quiet_workshop";
 
-function portalTokens(mode: 'light' | 'dark'): string {
+function portalTokens(mode: "light" | "dark"): string {
   const vision = getVisionThemeById(PORTAL_VISION);
   if (!vision) {
     throw new Error(`Portal vision "${PORTAL_VISION}" is not in the catalog`);
   }
   return Object.entries(visionToCSSVariables(vision, mode))
     .map(([name, value]) => `        ${name}: ${value};`)
-    .join('\n');
+    .join("\n");
 }
 
 const NAV_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/engineers', label: 'Engineers' },
-  { href: '/recruiters', label: 'Recruiters' },
-  { href: '/catalog', label: 'Catalog' },
-  { href: '/docs', label: 'Docs' },
+  { href: "/", label: "Home" },
+  { href: "/engineers", label: "Engineers" },
+  { href: "/recruiters", label: "Recruiters" },
+  { href: "/catalog", label: "Catalog" },
+  { href: "/docs", label: "Docs" },
 ];
 
 const TOOL_LINKS = [
-  { href: '/storybook', label: 'Storybook ↗', external: true },
-  { href: '/mcp', label: '/mcp', external: false },
+  { href: "/storybook", label: "Storybook ↗", external: true },
+  { href: "/mcp", label: "/mcp", external: false },
 ];
 
 export function wantsHtml(req: IncomingMessage): boolean {
-  const accept = String(req.headers.accept ?? '').toLowerCase();
-  const url = new URL(req.url ?? '/', 'http://localhost');
-  const format = url.searchParams.get('format');
-  if (format === 'json') return false;
-  return accept.includes('text/html') || accept.includes('application/xhtml+xml');
+  const accept = String(req.headers.accept ?? "").toLowerCase();
+  const url = new URL(req.url ?? "/", "http://localhost");
+  const format = url.searchParams.get("format");
+  if (format === "json") return false;
+  return (
+    accept.includes("text/html") || accept.includes("application/xhtml+xml")
+  );
 }
 
-export function sendJson(res: ServerResponse, payload: unknown, statusCode = 200): void {
+export function sendJson(
+  res: ServerResponse,
+  payload: unknown,
+  statusCode = 200,
+): void {
   res.statusCode = statusCode;
-  res.setHeader('content-type', 'application/json; charset=utf-8');
+  res.setHeader("content-type", "application/json; charset=utf-8");
   res.end(JSON.stringify(payload));
 }
 
-export function sendHtml(res: ServerResponse, html: string, statusCode = 200): void {
+export function sendHtml(
+  res: ServerResponse,
+  html: string,
+  statusCode = 200,
+): void {
   res.statusCode = statusCode;
-  res.setHeader('content-type', 'text/html; charset=utf-8');
+  res.setHeader("content-type", "text/html; charset=utf-8");
   res.end(html);
 }
 
 export function escapeHtml(value: string): string {
   return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function renderSidebar(pathname: string): string {
-  const navItems = NAV_LINKS.map(link => {
+  const navItems = NAV_LINKS.map((link) => {
     const isActive = pathname === link.href;
-    return `<a class="sidebar-link${isActive ? ' active' : ''}" href="${link.href}">${link.label}</a>`;
-  }).join('');
+    return `<a class="sidebar-link${isActive ? " active" : ""}" href="${link.href}">${link.label}</a>`;
+  }).join("");
 
-  const toolItems = TOOL_LINKS.map(link => {
-    const attrs = link.external ? ' target="_blank" rel="noreferrer"' : '';
+  const toolItems = TOOL_LINKS.map((link) => {
+    const attrs = link.external ? ' target="_blank" rel="noreferrer"' : "";
     return `<a class="sidebar-link tool"${attrs} href="${link.href}">${link.label}</a>`;
-  }).join('');
+  }).join("");
 
   return `
     <aside class="sidebar">
@@ -112,7 +125,7 @@ export function renderSitePage({
     <meta name="description" content="${pageDescription}" />
     <style>
       :root {
-${portalTokens('light')}
+${portalTokens("light")}
         /* The portal's own names, mapped onto the vision's tokens. */
         --bg: var(--vde-color-background);
         --panel: var(--vde-color-surface);
@@ -127,7 +140,7 @@ ${portalTokens('light')}
 
       @media (prefers-color-scheme: dark) {
         :root {
-${portalTokens('dark')}
+${portalTokens("dark")}
         }
       }
 

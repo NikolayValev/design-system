@@ -1,9 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useVision, visionThemes, themeFamilies, type VisionTheme } from '@nikolayvalev/design-system';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  useVision,
+  visionThemes,
+  themeFamilies,
+  type VisionTheme,
+} from "@nikolayvalev/design-system";
 
 function primary(stack: string): string {
-  const first = stack.split(',')[0] ?? stack;
-  return first.trim().replace(/"/g, '');
+  const first = stack.split(",")[0] ?? stack;
+  return first.trim().replace(/"/g, "");
 }
 
 function ThemeTile({
@@ -30,12 +35,12 @@ function ThemeTile({
       type="button"
       onClick={onSelect}
       className={[
-        'group relative flex flex-col overflow-hidden [border-radius:var(--vde-radius-surface)] border text-left transition-all',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--vde-color-ring)] focus-visible:ring-offset-2',
+        "group relative flex flex-col overflow-hidden [border-radius:var(--vde-radius-surface)] border text-left transition-all",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--vde-color-ring)] focus-visible:ring-offset-2",
         isActive
-          ? '[box-shadow:var(--vde-shadow-ambient)] -translate-y-0.5'
-          : 'hover:-translate-y-0.5 hover:[box-shadow:var(--vde-shadow-ambient)]',
-      ].join(' ')}
+          ? "[box-shadow:var(--vde-shadow-ambient)] -translate-y-0.5"
+          : "hover:-translate-y-0.5 hover:[box-shadow:var(--vde-shadow-ambient)]",
+      ].join(" ")}
       style={{
         background: colors.surface,
         color: colors.surfaceForeground,
@@ -82,9 +87,11 @@ function ThemeTile({
         <div
           className="absolute bottom-3 left-4 text-2xl"
           style={{
-            fontFamily: theme.artisticPillars.typographyArchitecture.fontStack.display,
+            fontFamily:
+              theme.artisticPillars.typographyArchitecture.fontStack.display,
             color: colors.foreground,
-            letterSpacing: theme.artisticPillars.typographyArchitecture.letterSpacing.tight,
+            letterSpacing:
+              theme.artisticPillars.typographyArchitecture.letterSpacing.tight,
           }}
         >
           Aa
@@ -97,13 +104,16 @@ function ThemeTile({
             className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
             style={{ color: colors.mutedForeground }}
           >
-            {theme.mood.join(' · ')}
+            {theme.mood.join(" · ")}
           </p>
           <h3
             className="text-lg leading-tight"
             style={{
-              fontFamily: theme.artisticPillars.typographyArchitecture.fontStack.display,
-              letterSpacing: theme.artisticPillars.typographyArchitecture.letterSpacing.tight,
+              fontFamily:
+                theme.artisticPillars.typographyArchitecture.fontStack.display,
+              letterSpacing:
+                theme.artisticPillars.typographyArchitecture.letterSpacing
+                  .tight,
             }}
           >
             {theme.name}
@@ -125,7 +135,7 @@ function ThemeTile({
                 style={{
                   background: swatch,
                   borderWidth: 1,
-                  borderStyle: 'solid',
+                  borderStyle: "solid",
                   borderColor: colors.border,
                 }}
               />
@@ -135,7 +145,9 @@ function ThemeTile({
             className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
             style={{ color: colors.mutedForeground }}
           >
-            {primary(theme.artisticPillars.typographyArchitecture.fontStack.display)}
+            {primary(
+              theme.artisticPillars.typographyArchitecture.fontStack.display,
+            )}
           </span>
         </div>
       </div>
@@ -159,7 +171,7 @@ function OverviewContent(): JSX.Element {
           className="pointer-events-none absolute inset-0 [color:var(--vde-color-muted-foreground)]"
           style={{
             background: `radial-gradient(60% 80% at 0% 0%, ${activeVision.colors[mode].accent}, transparent 60%), radial-gradient(70% 90% at 100% 100%, ${activeVision.colors[mode].secondary}, transparent 65%)`,
-            mixBlendMode: 'multiply',
+            mixBlendMode: "multiply",
           }}
         />
         <div className="relative grid gap-10 p-8 md:grid-cols-[1.4fr_1fr] md:p-12">
@@ -170,16 +182,18 @@ function OverviewContent(): JSX.Element {
                 Visionary Design Engine · v0.1
               </p>
             </div>
-            <h1
-              className="text-5xl [line-height:var(--vde-line-height-tight)] md:text-6xl lg:text-7xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]"
-            >
+            <h1 className="text-5xl [line-height:var(--vde-line-height-tight)] md:text-6xl lg:text-7xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]">
               {counts.themes} visions, {counts.families} families.
               <br />
-              <span className="[color:var(--vde-color-accent)]">One contract.</span>
+              <span className="[color:var(--vde-color-accent)]">
+                One contract.
+              </span>
             </h1>
             <p className="max-w-[58ch] text-base leading-relaxed [color:var(--vde-color-muted-foreground)] md:text-lg">
-              A token-driven design system that swaps its entire identity — typography, surface physics, motion, ornament —
-              from a single provider. Every component reads from the active vision; nothing is hardcoded.
+              A token-driven design system that swaps its entire identity —
+              typography, surface physics, motion, ornament — from a single
+              provider. Every component reads from the active vision; nothing is
+              hardcoded.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <span className="rounded-full border px-3 py-1.5 [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [border-color:var(--vde-color-border)]">
@@ -191,22 +205,30 @@ function OverviewContent(): JSX.Element {
             </div>
           </div>
           <aside className="relative space-y-4 self-end [border-radius:var(--vde-radius-surface)] border [border-color:var(--vde-color-border)] [background:var(--vde-color-background)] [color:var(--vde-color-foreground)] p-6">
-            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Counts</p>
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              Counts
+            </p>
             <dl className="grid grid-cols-3 gap-4">
               <div>
-                <dt className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Visions</dt>
+                <dt className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+                  Visions
+                </dt>
                 <dd className="text-3xl [font-family:var(--vde-font-display)]">
                   {counts.themes}
                 </dd>
               </div>
               <div>
-                <dt className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Families</dt>
+                <dt className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+                  Families
+                </dt>
                 <dd className="text-3xl [font-family:var(--vde-font-display)]">
                   {counts.families}
                 </dd>
               </div>
               <div>
-                <dt className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Primitives</dt>
+                <dt className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+                  Primitives
+                </dt>
                 <dd className="text-3xl [font-family:var(--vde-font-display)]">
                   {counts.primitives}
                 </dd>
@@ -216,19 +238,28 @@ function OverviewContent(): JSX.Element {
               <p className="flex items-center justify-between">
                 <span>Display</span>
                 <span className="font-mono [color:var(--vde-color-muted-foreground)]">
-                  {primary(activeVision.artisticPillars.typographyArchitecture.fontStack.display)}
+                  {primary(
+                    activeVision.artisticPillars.typographyArchitecture
+                      .fontStack.display,
+                  )}
                 </span>
               </p>
               <p className="flex items-center justify-between">
                 <span>Body</span>
                 <span className="font-mono [color:var(--vde-color-muted-foreground)]">
-                  {primary(activeVision.artisticPillars.typographyArchitecture.fontStack.body)}
+                  {primary(
+                    activeVision.artisticPillars.typographyArchitecture
+                      .fontStack.body,
+                  )}
                 </span>
               </p>
               <p className="flex items-center justify-between">
                 <span>Mono</span>
                 <span className="font-mono [color:var(--vde-color-muted-foreground)]">
-                  {primary(activeVision.artisticPillars.typographyArchitecture.fontStack.mono)}
+                  {primary(
+                    activeVision.artisticPillars.typographyArchitecture
+                      .fontStack.mono,
+                  )}
                 </span>
               </p>
             </div>
@@ -239,20 +270,21 @@ function OverviewContent(): JSX.Element {
       <section className="space-y-5">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">02 · The Atlas</p>
-            <h2
-              className="mt-2 text-3xl md:text-4xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]"
-            >
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              02 · The Atlas
+            </p>
+            <h2 className="mt-2 text-3xl md:text-4xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]">
               Pick a vision to make it the active context
             </h2>
           </div>
           <p className="max-w-[36ch] [font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)]">
-            Each tile previews its own typography and palette. Selecting one updates the entire Storybook below.
+            Each tile previews its own typography and palette. Selecting one
+            updates the entire Storybook below.
           </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {visionThemes.map(theme => (
+          {visionThemes.map((theme) => (
             <ThemeTile
               key={theme.id}
               theme={theme}
@@ -266,66 +298,79 @@ function OverviewContent(): JSX.Element {
       <section className="grid gap-6 lg:grid-cols-3">
         {[
           {
-            n: '01',
-            title: 'Token Contract',
-            body: 'Colours, typography, motion, surface physics — every primitive consumes CSS variables emitted by the VisionProvider.',
+            n: "01",
+            title: "Token Contract",
+            body: "Colours, typography, motion, surface physics — every primitive consumes CSS variables emitted by the VisionProvider.",
           },
           {
-            n: '02',
-            title: 'Vision Switch',
-            body: 'Swap the entire design language at runtime. No re-render of structure, no recompile — just a single context change.',
+            n: "02",
+            title: "Vision Switch",
+            body: "Swap the entire design language at runtime. No re-render of structure, no recompile — just a single context change.",
           },
           {
-            n: '03',
-            title: 'Grouped Families',
-            body: 'Twelve visions organised into five families, each with its own description — a deliberate taxonomy, not a flat dump.',
+            n: "03",
+            title: "Grouped Families",
+            body: "Twelve visions organised into five families, each with its own description — a deliberate taxonomy, not a flat dump.",
           },
-        ].map(point => (
+        ].map((point) => (
           <article
             key={point.n}
             className="[border-radius:var(--vde-radius-surface)] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6"
           >
-            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Principle {point.n}</p>
-            <h3
-              className="mt-2 text-xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]"
-            >
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              Principle {point.n}
+            </p>
+            <h3 className="mt-2 text-xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]">
               {point.title}
             </h3>
-            <p className="mt-3 text-sm leading-relaxed [color:var(--vde-color-muted-foreground)]">{point.body}</p>
+            <p className="mt-3 text-sm leading-relaxed [color:var(--vde-color-muted-foreground)]">
+              {point.body}
+            </p>
           </article>
         ))}
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
         <article className="[border-radius:var(--vde-radius-surface)] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4">
-          <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">04 · Navigation Guide</p>
-          <h3
-            className="text-xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]"
-          >
+          <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+            04 · Navigation Guide
+          </p>
+          <h3 className="text-xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]">
             What's in the sidebar
           </h3>
           <ul className="space-y-2 text-sm leading-relaxed [color:var(--vde-color-muted-foreground)] list-none p-0 m-0">
-            <li><strong>Foundations</strong> — you are here. System overview and the theme atlas.</li>
-            <li><strong>Themes</strong> — the {counts.themes} visions grouped into {counts.families} families, plus an interactive explorer.</li>
-            <li><strong>Components</strong> — core primitives: Button, Card, Input, Textarea, Checkbox, Label, Badge, Layout.</li>
-            <li><strong>Showcase</strong> — expressive components, sections, and full page templates.</li>
+            <li>
+              <strong>Foundations</strong> — you are here. System overview and
+              the theme atlas.
+            </li>
+            <li>
+              <strong>Themes</strong> — the {counts.themes} visions grouped into{" "}
+              {counts.families} families, plus an interactive explorer.
+            </li>
+            <li>
+              <strong>Components</strong> — core primitives: Button, Card,
+              Input, Textarea, Checkbox, Label, Badge, Layout.
+            </li>
+            <li>
+              <strong>Showcase</strong> — expressive components, sections, and
+              full page templates.
+            </li>
           </ul>
         </article>
 
         <article className="[border-radius:var(--vde-radius-surface)] border [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 space-y-4">
-          <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">05 · Install via MCP</p>
-          <h3
-            className="text-xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]"
-          >
+          <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+            05 · Install via MCP
+          </p>
+          <h3 className="text-xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]">
             Components install as source
           </h3>
           <p className="text-sm leading-relaxed [color:var(--vde-color-muted-foreground)]">
-            Components are not imported from npm — they're installed as source files into your repo via MCP, then committed.
-            Wire your AI client to the MCP server and ask it to install any component you see here.
+            Components are not imported from npm — they're installed as source
+            files into your repo via MCP, then committed. Wire your AI client to
+            the MCP server and ask it to install any component you see here.
           </p>
-          <code
-            className="block [border-radius:var(--vde-radius-control)] border [border-color:var(--vde-color-border)] [background:var(--vde-color-background)] p-3 [font-size:var(--vde-font-size-caption)] leading-relaxed [color:var(--vde-color-muted-foreground)] [font-family:var(--vde-font-mono,_monospace)]"
-          >
+          <code className="block [border-radius:var(--vde-radius-control)] border [border-color:var(--vde-color-border)] [background:var(--vde-color-background)] p-3 [font-size:var(--vde-font-size-caption)] leading-relaxed [color:var(--vde-color-muted-foreground)] [font-family:var(--vde-font-mono,_monospace)]">
             {`{ "mcpServers": { "design-system": { "url": "https://designsystem.nikolayvalev.com/mcp" } } }`}
           </code>
         </article>
@@ -333,17 +378,17 @@ function OverviewContent(): JSX.Element {
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t pt-6 [border-color:var(--vde-color-border)] [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
         <span>Visionary Design Engine</span>
-        <span>Sidebar ←  Foundations · Themes · Components · Showcase</span>
+        <span>Sidebar ← Foundations · Themes · Components · Showcase</span>
       </footer>
     </div>
   );
 }
 
 const meta = {
-  title: 'Foundations/Overview',
+  title: "Foundations/Overview",
   component: OverviewContent,
   parameters: {
-    vdeFrame: 'edge',
+    vdeFrame: "edge",
   },
 } satisfies Meta<typeof OverviewContent>;
 

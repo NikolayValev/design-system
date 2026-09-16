@@ -1,14 +1,14 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import { renderSitePage, sendHtml, sendJson, wantsHtml } from './_lib/site.js';
+import type { IncomingMessage, ServerResponse } from "node:http";
+import { renderSitePage, sendHtml, sendJson, wantsHtml } from "./_lib/site.js";
 
 const ENGINEER_METADATA = {
-  audience: 'engineers',
+  audience: "engineers",
   quickstart: {
-    cli: 'npx @nikolayvalev/design-system@latest init',
-    mcpUrl: 'https://designsystem.nikolayvalev.com/mcp',
-    storybook: 'https://designsystem.nikolayvalev.com/storybook',
+    cli: "npx @nikolayvalev/design-system@latest init",
+    mcpUrl: "https://designsystem.nikolayvalev.com/mcp",
+    storybook: "https://designsystem.nikolayvalev.com/storybook",
   },
-  docs: ['/docs', '/catalog'],
+  docs: ["/docs", "/catalog"],
 };
 
 export default function handler(req: IncomingMessage, res: ServerResponse) {
@@ -139,9 +139,10 @@ import '@nikolayvalev/design-system/styles/fonts/quiet_workshop.css';</code></pr
   sendHtml(
     res,
     renderSitePage({
-      title: 'Engineers - Design System Platform',
-      description: 'Engineer-facing setup and integration guide for the design-system platform.',
-      pathname: '/engineers',
+      title: "Engineers - Design System Platform",
+      description:
+        "Engineer-facing setup and integration guide for the design-system platform.",
+      pathname: "/engineers",
       body,
     }),
   );

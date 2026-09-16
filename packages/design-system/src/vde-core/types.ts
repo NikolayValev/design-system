@@ -118,11 +118,11 @@ export interface VisionOrnaments {
  * `vde-themes/families.ts`.
  */
 export const THEME_FAMILY_IDS = [
-  'editorial',
-  'minimal',
-  'technical',
-  'atmospheric',
-  'expressive',
+  "editorial",
+  "minimal",
+  "technical",
+  "atmospheric",
+  "expressive",
 ] as const;
 
 export type ThemeFamilyId = (typeof THEME_FAMILY_IDS)[number];
@@ -133,7 +133,7 @@ export interface ThemeFamily {
   description: string;
 }
 
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = "light" | "dark";
 
 export interface VisionTheme {
   id: string;

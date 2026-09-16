@@ -1,5 +1,5 @@
-import React from 'react';
-import { AestheticOrnaments } from './AestheticOrnaments';
+import React from "react";
+import { AestheticOrnaments } from "./AestheticOrnaments";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -11,92 +11,93 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * component carries no per-theme branches.
  */
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className = '', children, ...props }, ref) => {
+  ({ className = "", children, ...props }, ref) => {
     const classes = [
-      'relative',
-      'overflow-hidden',
-      'border',
-      'bg-[var(--vde-color-surface)]',
-      'text-[var(--vde-color-surface-foreground)]',
-      '[border-color:var(--vde-color-border)]',
-      '[border-width:var(--vde-border-width)]',
-      '[border-radius:var(--vde-radius-surface)]',
-      '[box-shadow:var(--vde-shadow-ambient)]',
-      '[font-family:var(--vde-font-body)]',
-      '[animation:var(--vde-card-bob-animation)]',
-      'transition-[background-color,border-color,box-shadow]',
-      '[transition-duration:var(--vde-motion-duration-normal)]',
-      '[transition-timing-function:var(--vde-motion-easing-standard)]',
+      "relative",
+      "overflow-hidden",
+      "border",
+      "bg-[var(--vde-color-surface)]",
+      "text-[var(--vde-color-surface-foreground)]",
+      "[border-color:var(--vde-color-border)]",
+      "[border-width:var(--vde-border-width)]",
+      "[border-radius:var(--vde-radius-surface)]",
+      "[box-shadow:var(--vde-shadow-ambient)]",
+      "[font-family:var(--vde-font-body)]",
+      "[animation:var(--vde-card-bob-animation)]",
+      "transition-[background-color,border-color,box-shadow]",
+      "[transition-duration:var(--vde-motion-duration-normal)]",
+      "[transition-timing-function:var(--vde-motion-easing-standard)]",
       className,
-    ].join(' ');
+    ].join(" ");
 
     return (
-      <div
-        ref={ref}
-        className={classes}
-        data-vde-component="card"
-        {...props}
-      >
+      <div ref={ref} className={classes} data-vde-component="card" {...props}>
         <AestheticOrnaments />
         <div className="relative z-10">{children}</div>
       </div>
     );
-  }
+  },
 );
 
-Card.displayName = 'Card';
+Card.displayName = "Card";
 
 export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
 export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
-  ({ className = '', ...props }, ref) => {
-    const classes = ['flex', 'flex-col', 'space-y-1.5', '[padding:var(--vde-space-md)]', className].join(' ');
+  ({ className = "", ...props }, ref) => {
+    const classes = [
+      "flex",
+      "flex-col",
+      "space-y-1.5",
+      "[padding:var(--vde-space-md)]",
+      className,
+    ].join(" ");
     return <div ref={ref} className={classes} {...props} />;
-  }
+  },
 );
 
-CardHeader.displayName = 'CardHeader';
+CardHeader.displayName = "CardHeader";
 
 export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   children: React.ReactNode;
 }
 
 export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
-  ({ className = '', ...props }, ref) => {
+  ({ className = "", ...props }, ref) => {
     const classes = [
-      'font-semibold',
-      '[font-size:var(--vde-font-size-title)]',
-      '[font-family:var(--vde-font-display)]',
-      '[line-height:var(--vde-line-height-tight)]',
-      '[letter-spacing:var(--vde-letter-spacing-tight)]',
+      "font-semibold",
+      "[font-size:var(--vde-font-size-title)]",
+      "[font-family:var(--vde-font-display)]",
+      "[line-height:var(--vde-line-height-tight)]",
+      "[letter-spacing:var(--vde-letter-spacing-tight)]",
       className,
-    ].join(' ');
+    ].join(" ");
     return <h3 ref={ref} className={classes} {...props} />;
-  }
+  },
 );
 
-CardTitle.displayName = 'CardTitle';
+CardTitle.displayName = "CardTitle";
 
 export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
 export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
-  ({ className = '', ...props }, ref) => {
+  ({ className = "", ...props }, ref) => {
     const classes = [
-      '[padding:var(--vde-space-md)]',
-      '[padding-top:0]',
-      '[font-size:var(--vde-font-size-body)]',
-      '[line-height:var(--vde-line-height-normal)]',
+      "[padding:var(--vde-space-md)]",
+      "[padding-top:0]",
+      "[font-size:var(--vde-font-size-body)]",
+      "[line-height:var(--vde-line-height-normal)]",
       // Card bodies were unbounded, so a full-width card produced 140-character
       // lines. The measure token caps them inside the readable band.
-      '[max-width:var(--vde-measure)]',
+      "[max-width:var(--vde-measure)]",
       className,
-    ].join(' ');
+    ].join(" ");
     return <div ref={ref} className={classes} {...props} />;
-  }
+  },
 );
 
-CardContent.displayName = 'CardContent';
+CardContent.displayName = "CardContent";

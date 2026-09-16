@@ -23,12 +23,7 @@ module.exports = [
      * that could not write `oklch(...)` or `rgba(...)` would have nothing to say,
      * and the CSS emitter is the thing that turns those into tokens.
      */
-    files: [
-      '**/src/vde-themes/**',
-      '**/src/vde-core/css.ts',
-      '**/src/styles/**',
-      '**/scripts/**',
-    ],
+    files: ['**/src/vde-themes/**', '**/src/vde-core/css.ts', '**/src/styles/**', '**/scripts/**'],
     rules: {
       'design-system/no-raw-design-values': 'off',
     },
