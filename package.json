@@ -26,6 +26,7 @@
     "contracts:linked-error-envelope:check": "node scripts/contracts/validate-linked-error-envelopes.mjs",
     "contracts:linked-error-envelope:check:strict": "node scripts/contracts/validate-linked-error-envelopes.mjs --strict",
     "contracts:error:validate": "node scripts/contracts/validate-error-envelope.mjs",
+    "validate:mcp-bundles": "pnpm --filter @nikolayvalev/design-system-mcp run validate:bundles",
     "validate:dependent-apps-config": "node scripts/ci/validate-dependent-apps-config.mjs",
     "report:linked-contract-readiness": "node scripts/ci/report-linked-contract-readiness.mjs",
     "report:linked-contract-readiness:write": "node scripts/ci/report-linked-contract-readiness.mjs --out docs/linked-contract-readiness.md",

@@ -149,6 +149,13 @@ jobs:
       - name: Validate design-system exports and design floors
         run: pnpm --filter @nikolayvalev/design-system validate
 
+      # Agents install component source through the hosted MCP server, so a bundle
+      # that references a file the deploy does not mirror is code that will not
+      # build in a consumer's repo. This assembles every bundle against the same
+      # directory shape the deploy produces and fails on any unresolved import.
+      - name: Validate MCP install bundles are self-contained
+        run: pnpm validate:mcp-bundles
+
       # Advisory. The source currently reports exactly one anti-pattern —
       # clay_soft's emphatic spring — and that is a documented divergence, not a
       # backlog item (see the Motion section of DESIGN.md). The remaining notes

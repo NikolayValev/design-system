@@ -13,6 +13,7 @@
     "dist"
   ],
   "scripts": {
+    "validate:bundles": "tsx ../../scripts/ci/validate-mcp-bundles.mjs",
     "dev": "tsx src/index.ts --transport stdio",
     "dev:http": "tsx src/index.ts --transport http",
     "build": "tsup",
