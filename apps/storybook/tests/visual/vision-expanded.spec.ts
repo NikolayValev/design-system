@@ -1,7 +1,14 @@
 import { expect, test } from "@playwright/test";
 
+/*
+ * A representative sample rather than the whole catalog — one per family, plus
+ * the two that exercise the edges of the contract. `quiet_workshop` is here
+ * because it is the newest vision and the one nikolayvalev.com runs, so a
+ * regression in it is a regression on a live site.
+ */
 const expandedVisions = [
   "editorial",
+  "quiet_workshop",
   "swiss_international",
   "terminal",
   "immersive",
