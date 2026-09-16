@@ -67,31 +67,31 @@ function ThemeExplorer(): JSX.Element {
         <header className="space-y-4 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-xs uppercase tracking-[0.2em] opacity-70">Theme Explorer</p>
+              <p className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Theme Explorer</p>
               {family ? <Badge variant="outline">{family.name}</Badge> : null}
             </div>
             <button
               type="button"
               onClick={toggleMode}
-              className="rounded-full border px-3 py-1.5 text-xs transition-all [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] [border-color:var(--vde-color-border)] hover:opacity-80"
+              className="rounded-full border px-3 py-1.5 [font-size:var(--vde-font-size-ui)] transition-all [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] [border-color:var(--vde-color-border)] hover:[color:var(--vde-color-muted-foreground)]"
             >
               {mode === 'light' ? 'Light' : 'Dark'}
             </button>
           </div>
           <h1 className="text-4xl [font-family:var(--vde-font-display)]">{activeVision.name}</h1>
           <p className="max-w-[70ch] text-base font-medium">{activeVision.tagline}</p>
-          <p className="max-w-[70ch] text-sm opacity-85">{activeVision.summary}</p>
+          <p className="max-w-[70ch] text-sm [color:var(--vde-color-muted-foreground)]">{activeVision.summary}</p>
           <div className="flex flex-wrap gap-2 pt-1">
             {activeVision.mood.map(word => (
               <span
                 key={word}
-                className="rounded-full border px-2 py-1 text-[11px] uppercase tracking-[0.08em] [border-color:var(--vde-color-border)]"
+                className="rounded-full border px-2 py-1 [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [border-color:var(--vde-color-border)]"
               >
                 {word}
               </span>
             ))}
           </div>
-          <p className="text-xs uppercase tracking-[0.12em] opacity-70">
+          <p className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
             Archetype: {activeVision.archetype} · Vision ID: {activeVisionId}
           </p>
           <nav className="flex flex-wrap gap-2 pt-2">
@@ -100,10 +100,10 @@ function ThemeExplorer(): JSX.Element {
                 key={theme.id}
                 type="button"
                 onClick={() => setVision(theme.id)}
-                className={`rounded-full border px-3 py-1.5 text-xs transition-all ${
+                className={`rounded-full border px-3 py-1.5 [font-size:var(--vde-font-size-ui)] [transition-property:background-color,border-color,color] [transition-duration:var(--vde-motion-duration-fast)] focus-visible:[outline:2px_solid_var(--vde-color-ring)] focus-visible:[outline-offset:2px] ${
                   activeVisionId === theme.id
                     ? '[background:var(--vde-color-accent)] [color:var(--vde-color-accent-foreground)] [border-color:var(--vde-color-accent)]'
-                    : '[background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] [border-color:var(--vde-color-border)] opacity-80 hover:opacity-100'
+                    : '[background:var(--vde-color-surface)] [color:var(--vde-color-muted-foreground)] [border-color:var(--vde-color-border)] hover:[color:var(--vde-color-surface-foreground)]'
                 }`}
               >
                 {theme.name}
@@ -114,16 +114,16 @@ function ThemeExplorer(): JSX.Element {
 
         <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           <aside className="space-y-4 rounded-2xl border p-6 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h3 className="text-sm uppercase tracking-[0.12em] opacity-80">Best for</h3>
+            <h3 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Best for</h3>
             <ul className="space-y-2 text-sm leading-relaxed">
               {activeVision.bestFor.map(item => (
                 <li key={item} className="flex gap-2">
-                  <span className="opacity-60">—</span>
+                  <span className="[color:var(--vde-color-muted-foreground)]">—</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
-            <h3 className="border-t pt-4 text-sm uppercase tracking-[0.12em] opacity-80 [border-color:var(--vde-color-border)]">
+            <h3 className="border-t pt-4 text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)] [border-color:var(--vde-color-border)]">
               Ornaments
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -140,7 +140,7 @@ function ThemeExplorer(): JSX.Element {
           </aside>
 
           <aside className="space-y-4 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h3 className="text-sm uppercase tracking-[0.12em] opacity-80">Visual fingerprint</h3>
+            <h3 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Visual fingerprint</h3>
             <div className="grid grid-cols-2 gap-3">
               {swatches.map(swatch => (
                 <div key={swatch.label} className="space-y-1">
@@ -148,8 +148,8 @@ function ThemeExplorer(): JSX.Element {
                     className="h-10 w-full rounded-md border [border-color:var(--vde-color-border)]"
                     style={{ background: swatch.value }}
                   />
-                  <p className="text-[11px] font-medium">{swatch.label}</p>
-                  <p className="text-[10px] opacity-70">{swatch.value}</p>
+                  <p className="[font-size:var(--vde-font-size-caption)] font-medium">{swatch.label}</p>
+                  <p className="[font-size:var(--vde-font-size-caption)] [color:var(--vde-color-muted-foreground)]">{swatch.value}</p>
                 </div>
               ))}
             </div>
@@ -162,7 +162,7 @@ function ThemeExplorer(): JSX.Element {
               key={fact.title}
               className="rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]"
             >
-              <h3 className="text-xs uppercase tracking-[0.12em] opacity-75">{fact.title}</h3>
+              <h3 className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{fact.title}</h3>
               <p className="mt-3 text-sm leading-relaxed">{fact.detail}</p>
             </article>
           ))}
@@ -212,9 +212,9 @@ function ThemeExplorer(): JSX.Element {
           </Layout>
 
           <aside className="space-y-3 rounded-2xl border p-5 [border-color:var(--vde-color-border)] [background:var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)]">
-            <h3 className="text-sm uppercase tracking-[0.12em] opacity-80">In one line</h3>
+            <h3 className="text-sm uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">In one line</h3>
             <p className="text-sm leading-relaxed">{activeVision.tagline}</p>
-            <p className="text-xs leading-relaxed opacity-70">
+            <p className="[font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)]">
               Same token contract as every other vision — switch the toolbar paintbrush to compare.
             </p>
           </aside>

@@ -35,11 +35,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const sectionLabel =
-  'text-[10px] uppercase tracking-[0.28em] opacity-60 [font-family:var(--vde-font-mono)]';
+  '[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)] [font-family:var(--vde-font-mono)]';
 const sectionTitle =
   'text-xl md:text-2xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]';
 const card =
-  'relative rounded-[var(--vde-boundary-radius)] border [border-color:var(--vde-color-border)] bg-[var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 md:p-8';
+  'relative [border-radius:var(--vde-radius-surface)] border [border-color:var(--vde-color-border)] bg-[var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 md:p-8';
 
 export const Playground: Story = {};
 
@@ -52,7 +52,7 @@ export const Gallery: Story = {
             <p className={sectionLabel}>01 — Variants</p>
             <h3 className={`${sectionTitle} mt-1`}>Five tones, one contract</h3>
           </div>
-          <p className="hidden max-w-[28ch] text-xs leading-relaxed opacity-70 md:block">
+          <p className="hidden max-w-[28ch] [font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)] md:block">
             Each variant maps to a different semantic token pair — never a hardcoded color.
           </p>
         </div>
@@ -62,7 +62,7 @@ export const Gallery: Story = {
               <Button {...args} variant={variant} className="w-full">
                 {variant.charAt(0).toUpperCase() + variant.slice(1)}
               </Button>
-              <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">{variant}</p>
+              <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{variant}</p>
             </div>
           ))}
         </div>
@@ -74,7 +74,7 @@ export const Gallery: Story = {
             <p className={sectionLabel}>02 — Scale</p>
             <h3 className={`${sectionTitle} mt-1`}>Three weights of presence</h3>
           </div>
-          <p className="hidden max-w-[28ch] text-xs leading-relaxed opacity-70 md:block">
+          <p className="hidden max-w-[28ch] [font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)] md:block">
             Sizes track the typography scale so density stays harmonious across surfaces.
           </p>
         </div>
@@ -126,19 +126,19 @@ export const Gallery: Story = {
             <Button {...args} className="w-full">
               Idle
             </Button>
-            <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">rest</p>
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">rest</p>
           </div>
           <div className="space-y-2">
             <Button {...args} disabled className="w-full">
               Disabled
             </Button>
-            <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">disabled</p>
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">disabled</p>
           </div>
           <div className="space-y-2">
             <Button {...args} className="w-full" loading>
               Loading
             </Button>
-            <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">pending</p>
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">pending</p>
           </div>
         </div>
       </section>

@@ -16,7 +16,7 @@ const visionToolbarItems = visionThemes.map(vision => ({
 }));
 
 const baseFrame =
-  'min-h-screen bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)] transition-all [transition-duration:var(--vde-motion-duration-normal)] [transition-timing-function:var(--vde-motion-easing-standard)] [font-family:var(--vde-font-body)]';
+  'min-h-screen bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)] [transition-property:background-color,color] [transition-duration:var(--vde-motion-duration-normal)] [transition-timing-function:var(--vde-motion-easing-standard)] [font-family:var(--vde-font-body)]';
 
 const withVisionProvider: Decorator = (Story, context) => {
   const parameters = context.parameters as typeof context.parameters & StorybookVisionParameters;
@@ -42,22 +42,18 @@ const withVisionProvider: Decorator = (Story, context) => {
 
   return (
     <VisionProvider registry={defaultVisionRegistry} visionId={visionId} mode={modeGlobal}>
+      {/*
+        A decorative grid overlay used to sit behind every non-edge story. It was
+        not a canvas, a map or an alignment aid — it was texture, and it sat
+        underneath every component being reviewed, which is precisely when a
+        background should be doing nothing.
+      */}
       <div className={`${baseFrame} relative`}>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              'linear-gradient(var(--vde-color-foreground) 1px, transparent 1px), linear-gradient(90deg, var(--vde-color-foreground) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-            backgroundPosition: '-1px -1px',
-          }}
-        />
         <div className="relative mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-8 py-10 md:px-12 md:py-14">
           {(storyTitle || caption) && (
             <header className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b pb-5 [border-color:var(--vde-color-border)]">
               <div className="space-y-1">
-                <p className="text-[10px] uppercase tracking-[0.32em] opacity-60">
+                <p className="[font-size:var(--vde-font-size-caption)] [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
                   {context.title?.split('/').slice(0, -1).join(' / ') || 'Showroom'}
                 </p>
                 <h2
@@ -65,14 +61,14 @@ const withVisionProvider: Decorator = (Story, context) => {
                 >
                   {storyTitle}
                   {storyName && storyName !== 'Default' && storyName !== 'Playground' ? (
-                    <span className="opacity-50"> · {storyName}</span>
+                    <span className="[color:var(--vde-color-muted-foreground)]"> · {storyName}</span>
                   ) : null}
                 </h2>
               </div>
               {caption ? (
-                <p className="max-w-[42ch] text-right text-xs leading-relaxed opacity-70">{caption}</p>
+                <p className="max-w-[42ch] text-right [font-size:var(--vde-font-size-ui)] [line-height:var(--vde-line-height-relaxed)] [color:var(--vde-color-muted-foreground)]">{caption}</p>
               ) : (
-                <p className="text-[10px] uppercase tracking-[0.28em] opacity-40">
+                <p className="[font-size:var(--vde-font-size-caption)] [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
                   Vision · {visionId}
                 </p>
               )}

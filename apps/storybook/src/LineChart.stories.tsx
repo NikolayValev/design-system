@@ -17,7 +17,7 @@ const meta = {
   parameters: {
     storyCaption: 'Dependency-free SVG line chart. Series color reads --chart-1..5 and tracks the active vision.',
   },
-  args: { data, colorIndex: 1 },
+  args: { data, title: 'Monthly signups, January to June', colorIndex: 1 },
   argTypes: { colorIndex: { control: 'inline-radio', options: [1, 2, 3, 4, 5] } },
 } satisfies Meta<typeof LineChart>;
 

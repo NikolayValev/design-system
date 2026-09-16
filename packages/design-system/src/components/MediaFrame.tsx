@@ -1,5 +1,4 @@
 import React from 'react';
-import { useVision } from '../vde-core';
 
 export interface MediaFrameProps extends React.HTMLAttributes<HTMLDivElement> {
   alt?: string;
@@ -11,12 +10,14 @@ export interface MediaFrameProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
   ({ alt = '', children, className = '', kind = 'image', poster, src, ...props }, ref) => {
-    const { activeVision } = useVision();
-    const isMuseum = activeVision.id === 'museum';
-    const isBrutalist = activeVision.id === 'brutalist';
-    const isImmersive = activeVision.id === 'immersive';
-    const isY2KChrome = activeVision.id === 'y2k_chrome';
-
+    /*
+     * Four per-theme branches used to live here, each with a hardcoded fallback —
+     * a museum passe-partout, a brutalist grayscale filter, an immersive
+     * purple/cyan light leak and a y2k scanline opacity. Every one of those
+     * tokens already defaults to the neutral value, so the branches were
+     * re-implementing the cascade and the fallbacks fired in themes that had
+     * never asked for them.
+     */
     const classes = [
       'relative',
       'isolate',
@@ -26,9 +27,7 @@ export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
       '[border-color:var(--vde-color-border)]',
       '[border-width:var(--vde-border-width)]',
       '[border-radius:var(--vde-radius-surface)]',
-      isMuseum
-        ? '[box-shadow:var(--vde-media-passpartout-shadow,_inset_0_0_0_0.6rem_rgba(255,_253,_246,_0.9),_inset_0_0_2.3rem_rgba(38,_28,_16,_0.2))]'
-        : '[box-shadow:var(--vde-shadow-ambient)]',
+      '[box-shadow:var(--vde-media-passpartout-shadow)]',
       className,
     ].join(' ');
 
@@ -37,7 +36,7 @@ export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
         <div
           className={[
             '[&>img]:block [&>img]:h-full [&>img]:w-full [&>img]:object-cover [&>video]:block [&>video]:h-full [&>video]:w-full [&>video]:object-cover',
-            isBrutalist ? '[filter:var(--vde-media-contrast-filter,_grayscale(1)_contrast(2.2)_saturate(0)_brightness(1.05))]' : '[filter:none]',
+            '[filter:var(--vde-media-contrast-filter)]',
           ].join(' ')}
         >
           {children
@@ -46,18 +45,14 @@ export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
               ? <video controls poster={poster} src={src} />
               : <img src={src} alt={alt} loading="lazy" />}
         </div>
-        {isImmersive ? (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 [box-shadow:var(--vde-media-light-leak)]"
-          />
-        ) : null}
-        {isY2KChrome ? (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 [background-image:var(--vde-media-scanline-pattern)] [opacity:var(--vde-media-scanline-opacity,_0.24)] [mix-blend-mode:multiply]"
-          />
-        ) : null}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 [box-shadow:var(--vde-media-light-leak)]"
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 [background-image:var(--vde-media-scanline-pattern)] [opacity:var(--vde-media-scanline-opacity)] [mix-blend-mode:multiply]"
+        />
       </figure>
     );
   }

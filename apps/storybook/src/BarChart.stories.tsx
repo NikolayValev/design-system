@@ -16,7 +16,7 @@ const meta = {
   parameters: {
     storyCaption: 'Dependency-free SVG bar chart. Bars read --chart-1..5 and track the active vision.',
   },
-  args: { data, colorIndex: 2 },
+  args: { data, title: 'Monthly signups, January to June', colorIndex: 2 },
   argTypes: { colorIndex: { control: 'inline-radio', options: [1, 2, 3, 4, 5] } },
 } satisfies Meta<typeof BarChart>;
 

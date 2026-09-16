@@ -30,7 +30,7 @@ function FormControlsShowcase(): JSX.Element {
         <div className="space-y-1.5">
           <Label htmlFor="fc-email">Email</Label>
           <Input id="fc-email" type="email" defaultValue="not-an-email" aria-invalid />
-          <p className="text-xs [color:var(--vde-color-danger)]">Enter a valid email address.</p>
+          <p className="[font-size:var(--vde-font-size-ui)] [color:var(--vde-color-danger)]">Enter a valid email address.</p>
         </div>
 
         <div className="space-y-1.5">

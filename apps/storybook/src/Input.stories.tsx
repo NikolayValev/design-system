@@ -20,7 +20,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const muted = 'text-[var(--vde-color-muted-foreground)]';
-const captionStyle = 'text-[10px] uppercase tracking-[0.24em] opacity-55';
+const captionStyle = '[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]';
 
 function Field({
   label,
@@ -38,12 +38,12 @@ function Field({
   return (
     <label htmlFor={htmlFor} className="block space-y-1.5">
       <span className="flex items-baseline justify-between gap-3">
-        <span className={`text-xs font-medium ${muted}`}>{label}</span>
-        {hint ? <span className="text-[10px] uppercase tracking-[0.18em] opacity-50">{hint}</span> : null}
+        <span className={`[font-size:var(--vde-font-size-ui)] font-medium ${muted}`}>{label}</span>
+        {hint ? <span className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">{hint}</span> : null}
       </span>
       {children}
       {error ? (
-        <span className="flex items-center gap-1 text-[11px]" style={{ color: 'var(--vde-color-danger)' }}>
+        <span className="flex items-center gap-1 [font-size:var(--vde-font-size-caption)] [color:var(--vde-color-danger)]">
           <AlertCircle className="h-3 w-3" /> {error}
         </span>
       ) : null}
@@ -86,11 +86,11 @@ export const FormContexts: Story = {
         <CardContent className="space-y-4">
           <Field label="Query" htmlFor="search-q" hint="⌘ K">
             <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-50" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 [color:var(--vde-color-muted-foreground)]" />
               <Input id="search-q" placeholder="Search collection annotation…" className="pl-9" />
             </div>
           </Field>
-          <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.18em] opacity-60">
+          <div className="flex flex-wrap gap-2 [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
             <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">essays</span>
             <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">material</span>
             <span className="rounded-full border px-2 py-1 [border-color:var(--vde-color-border)]">index</span>
@@ -106,13 +106,13 @@ export const FormContexts: Story = {
         <CardContent className="space-y-4">
           <Field label="Email" htmlFor="login-email" hint="required">
             <div className="relative">
-              <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-50" />
+              <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 [color:var(--vde-color-muted-foreground)]" />
               <Input id="login-email" type="email" placeholder="you@studio.co" className="pl-9" />
             </div>
           </Field>
           <Field label="Passphrase" htmlFor="login-pass">
             <div className="relative">
-              <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-50" />
+              <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 [color:var(--vde-color-muted-foreground)]" />
               <Input id="login-pass" type="password" placeholder="••••••••" className="pl-9" />
             </div>
           </Field>
@@ -131,7 +131,7 @@ export const FormContexts: Story = {
           </Field>
           <Field label="Handle" htmlFor="set-handle" hint="public">
             <div className="relative">
-              <AtSign className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-50" />
+              <AtSign className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 [color:var(--vde-color-muted-foreground)]" />
               <Input id="set-handle" defaultValue="aria" className="pl-9" />
             </div>
           </Field>

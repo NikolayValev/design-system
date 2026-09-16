@@ -20,7 +20,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const muted = 'text-[var(--vde-color-muted-foreground)]';
-const captionStyle = 'text-[10px] uppercase tracking-[0.24em] opacity-55';
+const captionStyle = '[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]';
 
 export const Default: Story = {
   render: args => (
@@ -54,26 +54,26 @@ export const Patterns: Story = {
             <TrendingUp className="h-4 w-4" />
             <span>+12.4% vs prior quarter</span>
           </div>
-          <p className={`mt-3 text-xs leading-relaxed ${muted}`}>
+          <p className={`mt-3 [font-size:var(--vde-font-size-ui)] leading-relaxed ${muted}`}>
             Forecast from intent-segment cohorts. Source: analytics warehouse, refreshed nightly.
           </p>
         </CardContent>
       </Card>
 
       <Card {...args} className="flex flex-col">
+        {/*
+          Was a gradient panel carrying a white-on-rgba(0,0,0,0.18) pill — text
+          whose contrast was undefined because it depended on whatever gradient
+          stop happened to sit behind it in the active vision. A flat muted well
+          with a token-coloured label says the same thing and can be measured.
+        */}
         <div
           aria-hidden
-          className="relative h-40 w-full overflow-hidden border-b [border-color:var(--vde-color-border)]"
-          style={{
-            background:
-              'radial-gradient(120% 100% at 0% 0%, var(--vde-color-accent) 0%, var(--vde-color-secondary) 55%, var(--vde-color-surface) 100%)',
-          }}
+          className="relative flex h-40 w-full items-end overflow-hidden border-b [border-color:var(--vde-color-border)] [background:var(--vde-color-muted)] [padding:var(--vde-space-md)]"
         >
-          <div className="absolute inset-0 flex items-end p-4">
-            <span className="rounded-full border px-2 py-1 text-[10px] uppercase tracking-[0.18em] [border-color:rgba(255,255,255,0.4)] [background:rgba(0,0,0,0.18)] text-white">
-              <ImageIcon className="mr-1 inline h-3 w-3" /> Media
-            </span>
-          </div>
+          <span className="inline-flex items-center [gap:var(--vde-space-2xs)] [font-size:var(--vde-font-size-caption)] [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+            <ImageIcon className="inline h-3.5 w-3.5" /> Media
+          </span>
         </div>
         <CardHeader>
           <p className={captionStyle}>Story · Cover</p>
@@ -122,9 +122,9 @@ export const Patterns: Story = {
               >
                 <div>
                   <p className="text-sm font-medium">{person.name}</p>
-                  <p className={`text-xs ${muted}`}>{person.role}</p>
+                  <p className={`[font-size:var(--vde-font-size-ui)] ${muted}`}>{person.role}</p>
                 </div>
-                <p className={`text-xs ${muted} flex items-center gap-1`}>
+                <p className={`[font-size:var(--vde-font-size-ui)] ${muted} flex items-center gap-1`}>
                   <MapPin className="h-3 w-3" /> {person.city}
                 </p>
               </li>
@@ -140,12 +140,11 @@ export const Patterns: Story = {
         </CardHeader>
         <CardContent>
           <blockquote
-            className={`border-l-2 pl-4 text-sm italic leading-relaxed ${muted}`}
-            style={{ borderColor: 'var(--vde-color-accent)' }}
+            className={`border-l-2 pl-4 [font-size:var(--vde-font-size-body)] italic [line-height:var(--vde-line-height-relaxed)] [border-color:var(--vde-color-accent)] ${muted}`}
           >
             “The system is not the surface — it’s the agreement between surfaces about how to behave.”
           </blockquote>
-          <p className={`mt-3 text-xs ${muted}`}>— Field notes, vol. 02</p>
+          <p className={`mt-3 [font-size:var(--vde-font-size-ui)] ${muted}`}>— Field notes, vol. 02</p>
         </CardContent>
       </Card>
     </div>

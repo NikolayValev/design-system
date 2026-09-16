@@ -16,7 +16,7 @@ const meta = {
   parameters: {
     storyCaption: 'Dependency-free SVG donut. Slices cycle --chart-1..5 and track the active vision.',
   },
-  args: { data, size: 180, thickness: 28 },
+  args: { data, title: 'Signups by acquisition channel', size: 180, thickness: 28 },
 } satisfies Meta<typeof Donut>;
 
 export default meta;

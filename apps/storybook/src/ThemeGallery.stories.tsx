@@ -21,7 +21,7 @@ function SwatchRow({ colors, label }: { colors: VisionTheme['colors']['light']; 
       style={{ background: colors.background, border: `1px solid ${colors.border}` }}
     >
       <span
-        className="text-[9px] uppercase tracking-[0.14em]"
+        className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
         style={{ color: colors.mutedForeground, minWidth: '2.8rem' }}
       >
         {label}
@@ -45,7 +45,7 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
 
   return (
     <article
-      className="flex flex-col overflow-hidden rounded-[14px] border"
+      className="flex flex-col overflow-hidden [border-radius:var(--vde-radius-surface)] border"
       style={{
         background: light.surface,
         color: light.surfaceForeground,
@@ -66,7 +66,7 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
           }}
         />
         <span
-          className="absolute left-4 top-3 rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.22em]"
+          className="absolute left-4 top-3 rounded-full px-2 py-0.5 [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
           style={{
             background: light.surface,
             color: light.surfaceForeground,
@@ -98,16 +98,16 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
           >
             {theme.name}
           </h4>
-          <p className="text-[12px] font-medium leading-snug opacity-90">{theme.tagline}</p>
+          <p className="[font-size:var(--vde-font-size-caption)] font-medium leading-snug [color:var(--vde-color-muted-foreground)]">{theme.tagline}</p>
         </div>
 
-        <p className="text-[12px] leading-relaxed opacity-75">{theme.summary}</p>
+        <p className="[font-size:var(--vde-font-size-caption)] leading-relaxed [color:var(--vde-color-muted-foreground)]">{theme.summary}</p>
 
         <div className="flex flex-wrap gap-1.5">
           {theme.mood.map(word => (
             <span
               key={word}
-              className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.1em]"
+              className="rounded-full px-2 py-0.5 [font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)]"
               style={{ border: `1px solid ${light.border}` }}
             >
               {word}
@@ -115,10 +115,10 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
           ))}
         </div>
 
-        <ul className="mt-auto space-y-1 pt-1 text-[11px] leading-relaxed opacity-80">
+        <ul className="mt-auto space-y-1 pt-1 [font-size:var(--vde-font-size-caption)] leading-relaxed [color:var(--vde-color-muted-foreground)]">
           {theme.bestFor.map(item => (
             <li key={item} className="flex gap-1.5">
-              <span className="opacity-50">·</span>
+              <span className="[color:var(--vde-color-muted-foreground)]">·</span>
               <span>{item}</span>
             </li>
           ))}
@@ -130,7 +130,7 @@ function GalleryCard({ theme }: { theme: VisionTheme }): JSX.Element {
         </div>
 
         <div className="flex items-center justify-end pt-0.5">
-          <span className="text-[9px] uppercase tracking-[0.16em] opacity-55">
+          <span className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
             {primaryFont(theme.artisticPillars.typographyArchitecture.fontStack.display)}
           </span>
         </div>
@@ -146,11 +146,11 @@ function ThemeGallery(): JSX.Element {
     <div className="min-h-screen bg-[var(--vde-color-background)] text-[var(--vde-color-foreground)]">
       <div className="mx-auto max-w-7xl space-y-12 p-6 md:p-10">
         <header className="space-y-3">
-          <p className="text-xs uppercase tracking-[0.24em] opacity-60">Theme Gallery</p>
+          <p className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">Theme Gallery</p>
           <h1 className="text-4xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]">
             {visionThemes.length} visions, {groups.length} families
           </h1>
-          <p className="max-w-[70ch] text-sm leading-relaxed opacity-80">
+          <p className="max-w-[70ch] text-sm leading-relaxed [color:var(--vde-color-muted-foreground)]">
             Every vision belongs to one family. Each card renders in its own colours and type so you can
             compare them side by side, then switch a project to any one with a single provider.
           </p>
@@ -163,11 +163,11 @@ function ThemeGallery(): JSX.Element {
                 <h2 className="text-2xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]">
                   {family.name}
                 </h2>
-                <span className="text-xs uppercase tracking-[0.18em] opacity-55">
+                <span className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
                   {themes.length} {themes.length === 1 ? 'vision' : 'visions'}
                 </span>
               </div>
-              <p className="max-w-[70ch] text-sm leading-relaxed opacity-75">{family.description}</p>
+              <p className="max-w-[70ch] text-sm leading-relaxed [color:var(--vde-color-muted-foreground)]">{family.description}</p>
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
