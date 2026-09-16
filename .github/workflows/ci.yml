@@ -149,9 +149,13 @@ jobs:
       - name: Validate design-system exports and design floors
         run: pnpm --filter @nikolayvalev/design-system validate
 
-      # Advisory for now. Flip to a hard failure once the backlog it reports is
-      # empty; the rules it covers that we already enforce are in eslint and the
-      # floor validator, so this is the widening net rather than the only one.
+      # Advisory. The source currently reports exactly one anti-pattern —
+      # clay_soft's emphatic spring — and that is a documented divergence, not a
+      # backlog item (see the Motion section of DESIGN.md). The remaining notes
+      # are "colour outside DESIGN.md", which is inherent to a 13-vision catalog
+      # whose records cannot all fit one single-valued frontmatter. Keeping this
+      # advisory is deliberate: the rules we hold to are in eslint and the floor
+      # validator, and this is the wider net that catches what they do not.
       - name: Design detector (advisory)
         continue-on-error: true
         run: npx --yes impeccable detect --json packages/design-system/src apps/storybook/src

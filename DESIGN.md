@@ -234,6 +234,29 @@ Every component reads `--vde-*` and branches on nothing. Four of them did branch
 - **NavigationOrb** — `focus-visible` on the trigger and every item, `inert` when closed, Escape to close, focus restored to the trigger.
 - **Charts** — `title` is a required prop. `role="img"` with no accessible name is a defect, not a variation.
 
+## Motion
+
+Three durations and two easings per vision, plus `--vde-motion-physics` as a descriptive label.
+
+### Named Rules
+
+**The Standard Must Not Overshoot Rule.** `easing.standard` drives every Button, Card and
+Input transition, so a cubic-bezier with a control point above 1 makes routine state changes
+wobble. `clay_soft` had `cubic-bezier(0.2, 1.2, 0.32, 1)` there; it now has a settling curve,
+and the spring lives on `emphatic`. The floor validator fails any vision that overshoots on
+`standard`.
+
+**The Documented Divergence.** `clay_soft.easing.emphatic` is `cubic-bezier(0.16, 1.35, 0.3, 1)`,
+and the impeccable detector flags it as `bounce-easing` — its position is that bounce reads as
+dated. That is the one anti-pattern this repo knowingly keeps. `clay_soft` is a soft, playful,
+neumorphic vision and the spring is its signature; the catalog's job is range, and a theme whose
+whole character is bounce cannot express itself through an exponential curve. It is confined to
+`emphatic`, so it is something a surface opts into rather than something every control does.
+
+**The Stoppable Rule.** Every ambient or looping animation disappears under
+`prefers-reduced-motion: reduce`, enforced globally in `global.css` rather than per component. No
+vision may express itself through motion a user cannot stop.
+
 ## Do's and Don'ts
 
 ### Do
