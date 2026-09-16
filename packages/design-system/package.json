@@ -30,9 +30,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "tsup && pnpm run build:css && pnpm run build:fonts",
+    "build": "tsup && pnpm run build:css && pnpm run build:fonts && pnpm run build:vision-docs",
     "build:css": "node scripts/build-css.js",
     "build:fonts": "node scripts/build-fonts.js",
+    "build:vision-docs": "node scripts/build-vision-docs.mjs",
     "test:vision-registry": "pnpm run build && node scripts/verify-expanded-visions.mjs",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",

@@ -129,6 +129,12 @@ jobs:
       - name: Build (with Turbo remote cache)
         run: pnpm turbo run build
 
+      # The per-vision records are generated from the theme objects by `pnpm build`
+      # and committed, so a token change shows up as a documentation change in the
+      # same PR. If the build produced a diff, they were not regenerated.
+      - name: Vision docs are up to date
+        run: git diff --exit-code -- docs/visions
+
       - name: Type check
         run: pnpm turbo run typecheck
 

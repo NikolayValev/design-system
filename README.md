@@ -20,7 +20,11 @@ Every vision, without exception, and enforced rather than recommended:
 - `prefers-reduced-motion` honoured — no vision expresses itself through motion a user cannot stop.
 - Accessible names on graphics; charts require a `title`.
 
-Range is the point of the system; the floor is what makes range safe. See [DESIGN.md](DESIGN.md).
+Range is the point of the system; the floor is what makes range safe. See
+[DESIGN.md](DESIGN.md) for the contract and the rules, and
+[docs/visions/](docs/visions/) for each vision's full record — palettes in both
+modes, type, shape, depth and motion, generated from the theme source so they
+cannot drift from it.
 
 ## Live Demo
 

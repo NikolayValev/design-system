@@ -123,7 +123,8 @@ That is the whole thesis, and `ARCHITECTURE.md` has stated it from the beginning
 
 The corollary is the part that took longest to get right, and it is the reason this file exists. **Because the core carries no identity, it has to carry a floor.** A system that permits any aesthetic still owes every consumer legible type, sufficient contrast, reachable focus, and motion they can turn off. Range is the feature; the floor is what makes range safe rather than reckless.
 
-The frontmatter above is the **core contract** — the default resolution of the scale, shown with the `quiet_workshop` palette because a single-valued schema has to pick one. The prose below documents what holds across _all_ visions. Per-vision values live in the theme files, which are the only source of truth for them.
+The frontmatter above is the **core contract** — the default resolution of the scale, shown with the `quiet_workshop` palette because a single-valued schema has to pick one. The prose below documents what holds across _all_ visions. Per-vision values live in the theme files, which are the only source of truth for them — and are
+published as a readable record per vision in [docs/visions/](docs/visions/), generated from those files by `pnpm build`.
 
 **Key characteristics:**
 
