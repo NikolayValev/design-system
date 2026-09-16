@@ -49,7 +49,7 @@ export const editorialTheme: VisionTheme = {
       border: 'oklch(0.34 0.02 250)',
       input: 'oklch(0.27 0.02 250)',
       ring: 'oklch(0.68 0.18 22)',
-      danger: 'oklch(0.62 0.21 24)',
+      danger: 'oklch(0.565 0.21 24)',
       dangerForeground: 'oklch(0.97 0 0)',
       chart1: 'oklch(0.68 0.18 22)',
       chart2: 'oklch(0.72 0.14 250)',
@@ -61,7 +61,7 @@ export const editorialTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.28' },
-      lineHeight: { tight: '1.08', normal: '1.42', relaxed: '1.65' },
+      lineHeight: { tight: '1.08', normal: '1.5', relaxed: '1.65' },
       fontStack: {
         body: '"Inter", "Helvetica Neue", sans-serif',
         display: '"DM Serif Display", "Times New Roman", serif',
@@ -77,13 +77,17 @@ export const editorialTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '1px',
-      radius: '0.3rem',
+      radius: {
+        surface: '0.3rem',
+        control: '0.25rem',
+        pill: '9999px',
+      },
       sharpness: '0.8',
     },
     shadowLightEngine: {
       hardOffset: '2px 2px 0 rgba(12, 23, 41, 0.18)',
       neonGlow: '0 0 0 rgba(0, 0, 0, 0)',
-      ambientOcclusion: '0 10px 24px -18px rgba(0, 0, 0, 0.2)',
+      ambientOcclusion: '0 1px 3px -1px rgba(0, 0, 0, 0.16)',
     },
     motionSignature: {
       duration: { fast: '110ms', normal: '170ms', slow: '280ms' },

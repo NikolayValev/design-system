@@ -65,7 +65,7 @@ export const MarketingLandingPage = React.forwardRef<HTMLDivElement, MarketingLa
         <AtmosphereProvider intensity="soft">
           <HeroSection heading={heading} subtitle={subtitle} actions={ctaActions} />
           <FeatureGridSection items={featureItems} />
-          <MetricStripSection items={metricItems} sectionEyebrow="Outcomes" sectionTitle="Why teams adopt this model" />
+          <MetricStripSection items={metricItems} sectionTitle="Why teams adopt this model" />
         </AtmosphereProvider>
       </div>
     );

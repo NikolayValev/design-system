@@ -5,7 +5,7 @@ import { Donut } from './Donut';
 describe('Donut', () => {
   it('renders one path per slice with cycling chart tokens', () => {
     const html = renderToStaticMarkup(
-      <Donut
+      <Donut title="Revenue by channel"
         data={[
           { label: 'a', value: 1 },
           { label: 'b', value: 1 },
@@ -18,7 +18,7 @@ describe('Donut', () => {
   });
   it('renders no slices when all values are zero', () => {
     const html = renderToStaticMarkup(
-      <Donut data={[{ label: 'a', value: 0 }, { label: 'b', value: 0 }]} />,
+      <Donut title="Revenue by channel" data={[{ label: 'a', value: 0 }, { label: 'b', value: 0 }]} />,
     );
     expect(html).not.toContain('<path');
   });

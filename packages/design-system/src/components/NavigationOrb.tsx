@@ -86,15 +86,41 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
   ({ className = '', defaultOpen = false, floating = true, items, label = 'Navigation', onNavigate, ...props }, ref) => {
     const { activeVision } = useVision();
     const [isOpen, setIsOpen] = React.useState(defaultOpen);
+    const triggerRef = React.useRef<HTMLButtonElement>(null);
     const physics = resolvePhysics(activeVision.id);
     const hasCustomPosition = hasPositionClass(className);
     const positionClasses = hasCustomPosition ? '' : floating ? 'fixed bottom-6 right-6 z-50' : 'relative';
 
+    const close = (restoreFocus: boolean): void => {
+      setIsOpen(false);
+      if (restoreFocus) {
+        triggerRef.current?.focus();
+      }
+    };
+
     const handleSelect = (item: NavigationOrbItem): void => {
       item.onSelect?.();
       onNavigate?.(item);
-      setIsOpen(false);
+      // Following a link moves focus anyway; only restore for in-page actions.
+      close(!item.href);
     };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
+      if (event.key === 'Escape' && isOpen) {
+        event.stopPropagation();
+        close(true);
+      }
+    };
+
+    /*
+     * When closed the items stay mounted so the open transition has something to
+     * animate, but they must not be reachable. `inert` removes the subtree from
+     * the accessibility tree and from the focus order in one attribute — the
+     * previous `aria-hidden` + `tabIndex={-1}` pair left visible-but-transparent
+     * controls in the DOM and disagreed with itself about whether they existed.
+     * React 19 types `inert`; this package still builds against React 18 types.
+     */
+    const inertWhenClosed = (isOpen ? {} : { inert: '' }) as React.HTMLAttributes<HTMLUListElement>;
 
     const classes = [
       positionClasses,
@@ -108,14 +134,14 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
         ? '[transition-duration:var(--vde-motion-duration-slow)] [transition-timing-function:linear]'
         : physics.variant === 'brutalist'
           ? '[transition-duration:0ms] [transition-timing-function:linear]'
-          : '[transition-duration:var(--vde-nav-orb-bounce-duration,_420ms)] [transition-timing-function:var(--vde-nav-orb-bounce-easing,_cubic-bezier(0.2,_1.1,_0.28,_1.28))]';
+          : '[transition-duration:var(--vde-nav-orb-bounce-duration)] [transition-timing-function:var(--vde-nav-orb-bounce-easing)]';
 
     const buttonMotionClasses =
       physics.variant === 'museum'
         ? '[transition-duration:var(--vde-motion-duration-slow)] [transition-timing-function:linear]'
         : physics.variant === 'brutalist'
           ? '[transition-duration:0ms] [transition-timing-function:linear]'
-          : '[transition-duration:var(--vde-nav-orb-bounce-duration,_420ms)] [transition-timing-function:var(--vde-nav-orb-bounce-easing,_cubic-bezier(0.2,_1.1,_0.28,_1.28))]';
+          : '[transition-duration:var(--vde-nav-orb-bounce-duration)] [transition-timing-function:var(--vde-nav-orb-bounce-easing)]';
 
     return (
       <nav
@@ -124,9 +150,10 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
         className={`group/orb ${classes}`}
         data-open={isOpen}
         data-vde-component="navigation-orb"
+        onKeyDown={handleKeyDown}
         {...props}
       >
-        <ul aria-hidden={!isOpen} className="pointer-events-none absolute bottom-0 right-0 m-0 list-none p-0">
+        <ul className="pointer-events-none absolute bottom-0 right-0 m-0 list-none p-0" {...inertWhenClosed}>
           {items.map((item, index) => {
             const itemClasses = [
               isOpen ? 'pointer-events-auto' : 'pointer-events-none',
@@ -140,9 +167,15 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
               'justify-center',
               'rounded-full',
               'border',
-              'px-3',
-              'text-xs',
+              '[padding-inline:var(--vde-space-sm)]',
+              // Was `text-xs` — 12px on a control the user has to hit and read.
+              '[font-size:var(--vde-font-size-ui)]',
+              '[line-height:var(--vde-line-height-ui)]',
               'font-medium',
+              // This component previously had no focus styles at all, on the
+              // trigger or on any item.
+              'focus-visible:[outline:2px_solid_var(--vde-color-ring)]',
+              'focus-visible:[outline-offset:2px]',
               '[font-family:var(--vde-font-body)]',
               '[border-color:var(--vde-color-border)]',
               '[background:var(--vde-color-surface)]',
@@ -162,13 +195,7 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
             if (item.href) {
               return (
                 <li key={item.id}>
-                  <a
-                    aria-hidden={!isOpen}
-                    className={itemClasses}
-                    href={item.href}
-                    onClick={() => handleSelect(item)}
-                    tabIndex={isOpen ? 0 : -1}
-                  >
+                  <a className={itemClasses} href={item.href} onClick={() => handleSelect(item)}>
                     {item.label}
                   </a>
                 </li>
@@ -177,13 +204,7 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
 
             return (
               <li key={item.id}>
-                <button
-                  aria-hidden={!isOpen}
-                  className={itemClasses}
-                  onClick={() => handleSelect(item)}
-                  tabIndex={isOpen ? 0 : -1}
-                  type="button"
-                >
+                <button className={itemClasses} onClick={() => handleSelect(item)} type="button">
                   {item.label}
                 </button>
               </li>
@@ -192,10 +213,13 @@ export const NavigationOrb = React.forwardRef<HTMLDivElement, NavigationOrbProps
         </ul>
 
         <button
+          ref={triggerRef}
           aria-expanded={isOpen}
           aria-label={label}
           className={[
             'pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border text-lg',
+            'focus-visible:[outline:2px_solid_var(--vde-color-ring)]',
+            'focus-visible:[outline-offset:2px]',
             '[font-family:var(--vde-font-display)] [border-color:var(--vde-color-border)] [background:var(--vde-color-accent)] [color:var(--vde-color-accent-foreground)] [box-shadow:var(--vde-shadow-hard)]',
             '[transition-property:transform]',
             buttonMotionClasses,

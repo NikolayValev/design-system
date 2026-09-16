@@ -11,7 +11,7 @@ const labelClasses = [
   'select-none',
   '[font-family:var(--vde-font-body)]',
   '[color:var(--vde-color-foreground)]',
-  '[line-height:var(--vde-line-height-tight)]',
+  '[line-height:var(--vde-line-height-ui)]',
 ].join(' ');
 
 /**

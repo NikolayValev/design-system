@@ -1,4 +1,10 @@
 export interface TypographyArchitecture {
+  /**
+   * Multipliers applied to the core type scale (see `coreTypeScale` in `css.ts`).
+   * A theme tunes the overall size of body-tier and display-tier text; it does not
+   * author absolute sizes. The emitted `--vde-font-size-*` values are the core
+   * scale multiplied by these, with the interactive tier clamped to the 14px floor.
+   */
   scale: {
     body: string;
     display: string;
@@ -27,9 +33,26 @@ export interface SurfacePhysics {
   grain: string;
 }
 
+/**
+ * Corner radii, split by the kind of thing being rounded.
+ *
+ * A single radius for every element is what produces impeccable's
+ * "extreme border-radius on cards": a pill radius that reads as playful on a
+ * button squeezes the content of a card. Splitting the scale lets a theme be
+ * round where roundness is character and restrained where it costs legibility.
+ */
+export interface RadiusScale {
+  /** Cards, panels, wells, image frames. Never a pill — content needs corners. */
+  surface: string;
+  /** Buttons, inputs, selects, checkboxes. */
+  control: string;
+  /** Chips, badges, status dots, anything deliberately capsule-shaped. */
+  pill: string;
+}
+
 export interface BoundaryLogic {
   borderWeight: string;
-  radius: string;
+  radius: RadiusScale;
   sharpness: string;
 }
 

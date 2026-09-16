@@ -43,7 +43,7 @@ function pillarFacts(theme: VisionTheme): PillarFact[] {
     },
     {
       title: 'Material',
-      detail: `${surfacePhysics.blur} blur · grain ${surfacePhysics.grain} · ${boundaryLogic.borderWeight} borders · ${boundaryLogic.radius} radius.`,
+      detail: `${surfacePhysics.blur} blur · grain ${surfacePhysics.grain} · ${boundaryLogic.borderWeight} borders · ${boundaryLogic.radius.surface}/${boundaryLogic.radius.control} surface/control radius.`,
     },
   ];
 }

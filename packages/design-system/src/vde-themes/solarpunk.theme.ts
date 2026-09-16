@@ -18,7 +18,7 @@ export const solarpunkTheme: VisionTheme = {
       foreground: 'oklch(0.27 0.05 145)',
       surface: 'oklch(0.98 0.03 120)',
       surfaceForeground: 'oklch(0.27 0.05 145)',
-      accent: 'oklch(0.56 0.11 145)',
+      accent: 'oklch(0.53 0.11 145)',
       accentForeground: 'oklch(0.97 0.02 118)',
       secondary: 'oklch(0.72 0.12 50)',
       secondaryForeground: 'oklch(0.24 0.05 142)',
@@ -27,7 +27,7 @@ export const solarpunkTheme: VisionTheme = {
       border: 'oklch(0.76 0.08 138)',
       input: 'oklch(0.93 0.03 120)',
       ring: 'oklch(0.56 0.11 145)',
-      danger: 'oklch(0.62 0.2 33)',
+      danger: 'oklch(0.56 0.2 33)',
       dangerForeground: 'oklch(0.97 0.02 110)',
       chart1: 'oklch(0.56 0.11 145)',
       chart2: 'oklch(0.72 0.12 50)',
@@ -49,7 +49,7 @@ export const solarpunkTheme: VisionTheme = {
       border: 'oklch(0.34 0.04 138)',
       input: 'oklch(0.27 0.03 138)',
       ring: 'oklch(0.68 0.11 145)',
-      danger: 'oklch(0.62 0.2 33)',
+      danger: 'oklch(0.56 0.2 33)',
       dangerForeground: 'oklch(0.97 0.01 110)',
       chart1: 'oklch(0.68 0.11 145)',
       chart2: 'oklch(0.72 0.12 50)',
@@ -78,13 +78,18 @@ export const solarpunkTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '1px',
-      radius: '40px',
+      // Was a flat 40px on every element, which squeezed card content; the organic softness now lives on surfaces and the pill carries the rest.
+      radius: {
+        surface: '1.25rem',
+        control: '1rem',
+        pill: '9999px',
+      },
       sharpness: '0.12',
     },
     shadowLightEngine: {
       hardOffset: '2px 3px 0 rgba(74, 110, 52, 0.22)',
       neonGlow: '0 0 28px rgba(130, 199, 114, 0.3)',
-      ambientOcclusion: '0 16px 34px -20px rgba(58, 89, 39, 0.38)',
+      ambientOcclusion: '0 2px 6px -2px rgba(58, 89, 39, 0.26)',
     },
     motionSignature: {
       duration: { fast: '180ms', normal: '320ms', slow: '520ms' },

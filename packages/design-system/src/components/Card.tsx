@@ -20,7 +20,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       'text-[var(--vde-color-surface-foreground)]',
       '[border-color:var(--vde-color-border)]',
       '[border-width:var(--vde-border-width)]',
-      '[border-radius:var(--vde-boundary-radius)]',
+      '[border-radius:var(--vde-radius-surface)]',
       '[box-shadow:var(--vde-shadow-ambient)]',
       '[font-family:var(--vde-font-body)]',
       '[animation:var(--vde-card-bob-animation)]',
@@ -52,7 +52,7 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className = '', ...props }, ref) => {
-    const classes = ['flex', 'flex-col', 'space-y-1.5', '[padding:calc(var(--vde-typography-scale-body)*1rem)]', className].join(' ');
+    const classes = ['flex', 'flex-col', 'space-y-1.5', '[padding:var(--vde-space-md)]', className].join(' ');
     return <div ref={ref} className={classes} {...props} />;
   }
 );
@@ -66,8 +66,8 @@ export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement>
 export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
   ({ className = '', ...props }, ref) => {
     const classes = [
-      'text-2xl',
       'font-semibold',
+      '[font-size:var(--vde-font-size-title)]',
       '[font-family:var(--vde-font-display)]',
       '[line-height:var(--vde-line-height-tight)]',
       '[letter-spacing:var(--vde-letter-spacing-tight)]',
@@ -86,9 +86,13 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
 export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className = '', ...props }, ref) => {
     const classes = [
-      '[padding:calc(var(--vde-typography-scale-body)*1rem)]',
+      '[padding:var(--vde-space-md)]',
       '[padding-top:0]',
+      '[font-size:var(--vde-font-size-body)]',
       '[line-height:var(--vde-line-height-normal)]',
+      // Card bodies were unbounded, so a full-width card produced 140-character
+      // lines. The measure token caps them inside the readable band.
+      '[max-width:var(--vde-measure)]',
       className,
     ].join(' ');
     return <div ref={ref} className={classes} {...props} />;

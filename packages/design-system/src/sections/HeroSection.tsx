@@ -26,7 +26,7 @@ export const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
         ref={ref}
         className={className}
         data-vde-component="section-hero"
-        eyebrow={eyebrow ?? 'Launch faster'}
+        eyebrow={eyebrow}
         heading={<EditorialHeader as="h1" size="massive">{heading}</EditorialHeader>}
         description={subtitle}
         actions={

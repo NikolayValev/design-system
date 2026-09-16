@@ -6,7 +6,7 @@ const PAD = 8;
 
 /** LineChart - single-series SVG line, colored by a --chart-N token. */
 export const LineChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
-  ({ data, width = 320, height = 180, colorIndex = 1, className = '', ...props }, ref) => {
+  ({ data, width = 320, height = 180, colorIndex = 1, title, description, className = '', ...props }, ref) => {
     const innerW = width - PAD * 2;
     const innerH = height - PAD * 2;
     const [, yMax] = extent(data.map((d) => d.value));
@@ -17,6 +17,8 @@ export const LineChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
     const d = buildLinePath(points);
     return (
       <svg ref={ref} viewBox={`0 0 ${width} ${height}`} role="img" className={className} {...props}>
+        <title>{title}</title>
+        {description ? <desc>{description}</desc> : null}
         <path
           d={d}
           fill="none"

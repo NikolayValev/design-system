@@ -61,7 +61,7 @@ export const immersiveTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.12' },
-      lineHeight: { tight: '1.18', normal: '1.48', relaxed: '1.72' },
+      lineHeight: { tight: '1.18', normal: '1.5', relaxed: '1.72' },
       fontStack: {
         body: '"Manrope", "Inter", sans-serif',
         display: '"Sora", "Manrope", sans-serif',
@@ -77,8 +77,13 @@ export const immersiveTheme: VisionTheme = {
       grain: '0.04',
     },
     boundaryLogic: {
-      borderWeight: '1px',
-      radius: '0.9rem',
+      // Depth is the thesis — the shadow defines the edge, so the hairline goes.
+      borderWeight: '0px',
+      radius: {
+        surface: '0.9rem',
+        control: '0.7rem',
+        pill: '9999px',
+      },
       sharpness: '0.2',
     },
     shadowLightEngine: {

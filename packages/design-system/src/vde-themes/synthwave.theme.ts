@@ -77,8 +77,13 @@ export const synthwaveTheme: VisionTheme = {
       grain: '0.02',
     },
     boundaryLogic: {
-      borderWeight: '1px',
-      radius: '0.75rem',
+      // Neon floats above the grid; the shadow carries the edge on its own.
+      borderWeight: '0px',
+      radius: {
+        surface: '0.75rem',
+        control: '0.6rem',
+        pill: '9999px',
+      },
       sharpness: '0.4',
     },
     shadowLightEngine: {

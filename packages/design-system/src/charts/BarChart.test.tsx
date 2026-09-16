@@ -5,7 +5,7 @@ import { BarChart } from './BarChart';
 describe('BarChart', () => {
   it('renders one rect per datum, colored by a chart token', () => {
     const html = renderToStaticMarkup(
-      <BarChart
+      <BarChart title="Monthly revenue"
         data={[
           { label: 'a', value: 1 },
           { label: 'b', value: 2 },
@@ -17,7 +17,7 @@ describe('BarChart', () => {
     expect(html).toContain('fill="var(--chart-1)"');
   });
   it('renders no rects for empty data', () => {
-    const html = renderToStaticMarkup(<BarChart data={[]} />);
+    const html = renderToStaticMarkup(<BarChart title="Monthly revenue" data={[]} />);
     expect(html).not.toContain('<rect');
   });
 });

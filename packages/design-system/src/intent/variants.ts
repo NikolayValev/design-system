@@ -1,3 +1,28 @@
+/* eslint-disable design-system/no-raw-design-values -- see the deprecation note below */
+/**
+ * @deprecated Since v3.0.0. Frozen; will be removed in v4.
+ *
+ * This module is a second, parallel design system. Its ~84 purpose styles are
+ * built from ~55 raw hex literals and arbitrary Tailwind values that have no
+ * connection to the `--vde-*` token layer, which means:
+ *
+ *   - it does not respond to the active vision, in either light or dark mode;
+ *   - not one of its styles defines a `focus-visible` treatment, so keyboard
+ *     users get a 1px border-colour shift as their only focus affordance;
+ *   - several styles carry patterns the rest of the library no longer ships —
+ *     glassmorphism, a pulsing status indicator, neon box-shadows;
+ *   - `ARCHITECTURE.md` lists "creating parallel token systems" as an explicit
+ *     anti-pattern, which this is.
+ *
+ * It survives v3 because it is a published export and removing it is a separate
+ * decision from the rest of the v3 work. It is excluded from the token lint and
+ * from the design detector for the same reason. Do not extend it, do not copy
+ * from it, and do not reach for it in new work — use the vision themes and the
+ * `--vde-*` tokens, which are mode-aware, token-driven and accessible by default.
+ *
+ * Origin: the `docs/DesignResearch1.tsx` and `docs/EmotionalSystems.tsx`
+ * explorations, preserved verbatim rather than reconciled.
+ */
 import type { DesignMode, DesignPurpose, DesignVariant } from './types';
 
 export const designPurposeOrder: DesignPurpose[] = [

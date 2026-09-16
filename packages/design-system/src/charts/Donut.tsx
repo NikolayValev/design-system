@@ -4,7 +4,7 @@ import type { DonutProps } from './types';
 
 /** Donut - multi-slice ring chart; slice colors cycle --chart-1..5. */
 export const Donut = React.forwardRef<SVGSVGElement, DonutProps>(
-  ({ data, size = 180, thickness = 28, className = '', ...props }, ref) => {
+  ({ data, size = 180, thickness = 28, title, description, className = '', ...props }, ref) => {
     const cx = size / 2;
     const cy = size / 2;
     const rOuter = size / 2;
@@ -15,6 +15,8 @@ export const Donut = React.forwardRef<SVGSVGElement, DonutProps>(
     );
     return (
       <svg ref={ref} viewBox={`0 0 ${size} ${size}`} role="img" className={className} {...props}>
+        <title>{title}</title>
+        {description ? <desc>{description}</desc> : null}
         {arcs.map((a, i) => (
           <path key={i} d={a.d} fill={`var(--chart-${a.colorIndex})`} />
         ))}

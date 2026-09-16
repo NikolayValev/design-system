@@ -28,7 +28,7 @@ export const y2kChromeTheme: VisionTheme = {
       border: 'oklch(0.55 0.04 250)',
       input: 'oklch(0.92 0.02 245)',
       ring: 'oklch(0.75 0.24 336)',
-      danger: 'oklch(0.66 0.24 25)',
+      danger: 'oklch(0.54 0.24 25)',
       dangerForeground: 'oklch(0.95 0.02 250)',
       chart1: 'oklch(0.75 0.24 336)',
       chart2: 'oklch(0.79 0.18 210)',
@@ -51,7 +51,7 @@ export const y2kChromeTheme: VisionTheme = {
       border: 'oklch(0.42 0.06 255)',
       input: 'oklch(0.27 0.03 252)',
       ring: 'oklch(0.76 0.24 336)',
-      danger: 'oklch(0.62 0.24 25)',
+      danger: 'oklch(0.56 0.24 25)',
       dangerForeground: 'oklch(0.97 0.01 250)',
       chart1: 'oklch(0.74 0.24 336)',
       chart2: 'oklch(0.76 0.18 210)',
@@ -63,7 +63,7 @@ export const y2kChromeTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1.02', display: '1.24' },
-      lineHeight: { tight: '1.08', normal: '1.42', relaxed: '1.66' },
+      lineHeight: { tight: '1.08', normal: '1.5', relaxed: '1.66' },
       fontStack: {
         body: '"Space Grotesk", "Trebuchet MS", sans-serif',
         display: '"Orbitron", "Eurostile", "Press Start 2P", sans-serif',
@@ -80,13 +80,17 @@ export const y2kChromeTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '1px',
-      radius: '0.7rem',
+      radius: {
+        surface: '0.7rem',
+        control: '0.55rem',
+        pill: '9999px',
+      },
       sharpness: '0.65',
     },
     shadowLightEngine: {
       hardOffset: '2px 2px 0 rgba(31, 39, 56, 0.3)',
       neonGlow: '0 0 32px rgba(255, 79, 206, 0.4), 0 0 26px rgba(94, 241, 255, 0.36)',
-      ambientOcclusion: '0 18px 42px -22px rgba(31, 39, 56, 0.34)',
+      ambientOcclusion: '0 2px 6px -2px rgba(31, 39, 56, 0.26)',
     },
     motionSignature: {
       duration: { fast: '120ms', normal: '190ms', slow: '320ms' },

@@ -40,7 +40,7 @@ export const brutalistTheme: VisionTheme = {
       foreground: 'oklch(0.18 0 0)',
       surface: 'oklch(0.96 0 0)',
       surfaceForeground: 'oklch(0.18 0 0)',
-      accent: 'oklch(0.64 0.27 29)',
+      accent: 'oklch(0.54 0.27 29)',
       accentForeground: 'oklch(0.98 0 0)',
       secondary: 'oklch(0.22 0 0)',
       secondaryForeground: 'oklch(0.98 0 0)',
@@ -61,13 +61,13 @@ export const brutalistTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1.03', display: '1.22' },
-      lineHeight: { tight: '1.08', normal: '1.32', relaxed: '1.58' },
+      lineHeight: { tight: '1.08', normal: '1.5', relaxed: '1.58' },
       fontStack: {
         body: '"Space Grotesk", "Arial Black", sans-serif',
         display: '"Archivo Black", "Helvetica Neue", sans-serif',
         mono: '"JetBrains Mono", "Consolas", monospace',
       },
-      letterSpacing: { tight: '-0.03em', normal: '-0.01em', wide: '0.04em' },
+      letterSpacing: { tight: '-0.03em', normal: '0em', wide: '0.04em' },
     },
     surfacePhysics: {
       transparency: '1',
@@ -77,7 +77,12 @@ export const brutalistTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '2px',
-      radius: '0.1rem',
+      // Hard edges throughout; a pill would soften the one thing brutalism will not soften.
+      radius: {
+        surface: '0.1rem',
+        control: '0.1rem',
+        pill: '0.1rem',
+      },
       sharpness: '0.95',
     },
     shadowLightEngine: {

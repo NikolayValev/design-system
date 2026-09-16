@@ -18,7 +18,7 @@ export const swissInternationalTheme: VisionTheme = {
       foreground: 'oklch(0.18 0 0)',
       surface: 'oklch(1 0 0)',
       surfaceForeground: 'oklch(0.18 0 0)',
-      accent: 'oklch(0.58 0.18 29)',
+      accent: 'oklch(0.565 0.18 29)',
       accentForeground: 'oklch(0.98 0 0)',
       secondary: 'oklch(0.93 0 0)',
       secondaryForeground: 'oklch(0.2 0 0)',
@@ -49,7 +49,7 @@ export const swissInternationalTheme: VisionTheme = {
       border: 'oklch(0.82 0 0)',
       input: 'oklch(0.27 0 0)',
       ring: 'oklch(0.92 0 0)',
-      danger: 'oklch(0.62 0.22 26)',
+      danger: 'oklch(0.565 0.22 26)',
       dangerForeground: 'oklch(0.97 0 0)',
       chart1: 'oklch(0.68 0.18 29)',
       chart2: 'oklch(0.72 0.14 245)',
@@ -61,13 +61,13 @@ export const swissInternationalTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.22' },
-      lineHeight: { tight: '1.08', normal: '1.4', relaxed: '1.62' },
+      lineHeight: { tight: '1.08', normal: '1.5', relaxed: '1.62' },
       fontStack: {
         body: '"Inter", "Helvetica Neue", "Arial", sans-serif',
         display: '"Inter", "Helvetica Neue", "Arial Black", sans-serif',
         mono: '"IBM Plex Mono", "Consolas", monospace',
       },
-      letterSpacing: { tight: '-0.03em', normal: '-0.01em', wide: '0.02em' },
+      letterSpacing: { tight: '-0.03em', normal: '0em', wide: '0.02em' },
     },
     surfacePhysics: {
       transparency: '1',
@@ -77,7 +77,12 @@ export const swissInternationalTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '1px',
-      radius: '0px',
+      // Uncompromisingly square, including chips and status dots — a capsule would break the grid.
+      radius: {
+        surface: '0px',
+        control: '0px',
+        pill: '0px',
+      },
       sharpness: '1',
     },
     shadowLightEngine: {

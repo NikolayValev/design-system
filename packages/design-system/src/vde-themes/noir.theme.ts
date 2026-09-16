@@ -49,7 +49,7 @@ export const noirTheme: VisionTheme = {
       border: 'oklch(0.35 0.02 255)',
       input: 'oklch(0.26 0.02 255)',
       ring: 'oklch(0.74 0.12 252)',
-      danger: 'oklch(0.62 0.2 26)',
+      danger: 'oklch(0.54 0.2 26)',
       dangerForeground: 'oklch(0.94 0.01 255)',
       chart1: 'oklch(0.7 0.12 252)',
       chart2: 'oklch(0.72 0.15 180)',
@@ -61,7 +61,7 @@ export const noirTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '1', display: '1.14' },
-      lineHeight: { tight: '1.16', normal: '1.45', relaxed: '1.7' },
+      lineHeight: { tight: '1.16', normal: '1.5', relaxed: '1.7' },
       fontStack: {
         body: '"Manrope", "Arial", sans-serif',
         display: '"Playfair Display", "Georgia", serif',
@@ -77,13 +77,17 @@ export const noirTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '1px',
-      radius: '0.45rem',
+      radius: {
+        surface: '0.45rem',
+        control: '0.375rem',
+        pill: '9999px',
+      },
       sharpness: '0.5',
     },
     shadowLightEngine: {
       hardOffset: '0 1px 0 rgba(255, 255, 255, 0.12)',
       neonGlow: '0 0 24px rgba(151, 179, 255, 0.22)',
-      ambientOcclusion: '0 18px 42px -24px rgba(0, 0, 0, 0.8)',
+      ambientOcclusion: '0 2px 6px -2px rgba(0, 0, 0, 0.55)',
     },
     motionSignature: {
       duration: { fast: '120ms', normal: '180ms', slow: '280ms' },

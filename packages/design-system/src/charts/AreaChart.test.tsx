@@ -10,13 +10,13 @@ const data = [
 
 describe('AreaChart', () => {
   it('renders a filled area path and a stroked line path', () => {
-    const html = renderToStaticMarkup(<AreaChart data={data} />);
+    const html = renderToStaticMarkup(<AreaChart title="Monthly revenue" data={data} />);
     expect((html.match(/<path/g) ?? []).length).toBe(2);
     expect(html).toContain('fill-opacity="0.2"');
     expect(html).toContain('stroke="var(--chart-1)"');
   });
   it('honors colorIndex for both fill and stroke', () => {
-    const html = renderToStaticMarkup(<AreaChart data={data} colorIndex={4} />);
+    const html = renderToStaticMarkup(<AreaChart title="Monthly revenue" data={data} colorIndex={4} />);
     expect(html).toContain('fill="var(--chart-4)"');
     expect(html).toContain('stroke="var(--chart-4)"');
   });

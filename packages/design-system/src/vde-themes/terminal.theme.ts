@@ -61,7 +61,7 @@ export const terminalTheme: VisionTheme = {
   artisticPillars: {
     typographyArchitecture: {
       scale: { body: '0.98', display: '1.08' },
-      lineHeight: { tight: '1.16', normal: '1.45', relaxed: '1.68' },
+      lineHeight: { tight: '1.16', normal: '1.5', relaxed: '1.68' },
       fontStack: {
         body: '"JetBrains Mono", "Cascadia Code", monospace',
         display: '"VT323", "JetBrains Mono", monospace',
@@ -77,13 +77,18 @@ export const terminalTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '2px',
-      radius: '0.2rem',
+      // Character-cell geometry — the same near-square corner on every element.
+      radius: {
+        surface: '0.2rem',
+        control: '0.2rem',
+        pill: '0.2rem',
+      },
       sharpness: '0.98',
     },
     shadowLightEngine: {
       hardOffset: '3px 3px 0 rgba(0, 0, 0, 0.6)',
       neonGlow: '0 0 24px rgba(96, 255, 179, 0.32)',
-      ambientOcclusion: '0 8px 20px -12px rgba(0, 0, 0, 0.65)',
+      ambientOcclusion: '0 2px 5px -2px rgba(0, 0, 0, 0.5)',
     },
     motionSignature: {
       duration: { fast: '80ms', normal: '120ms', slow: '200ms' },

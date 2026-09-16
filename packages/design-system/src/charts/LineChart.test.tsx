@@ -10,17 +10,17 @@ const data = [
 
 describe('LineChart', () => {
   it('renders one svg with a single token-colored line path', () => {
-    const html = renderToStaticMarkup(<LineChart data={data} />);
+    const html = renderToStaticMarkup(<LineChart title="Monthly revenue" data={data} />);
     expect(html).toContain('<svg');
     expect(html).toContain('stroke="var(--chart-1)"');
     expect((html.match(/<path/g) ?? []).length).toBe(1);
   });
   it('honors colorIndex', () => {
-    const html = renderToStaticMarkup(<LineChart data={data} colorIndex={3} />);
+    const html = renderToStaticMarkup(<LineChart title="Monthly revenue" data={data} colorIndex={3} />);
     expect(html).toContain('stroke="var(--chart-3)"');
   });
   it('merges an incoming className', () => {
-    const html = renderToStaticMarkup(<LineChart data={data} className="my-chart" />);
+    const html = renderToStaticMarkup(<LineChart title="Monthly revenue" data={data} className="my-chart" />);
     expect(html).toContain('class="my-chart"');
   });
 });

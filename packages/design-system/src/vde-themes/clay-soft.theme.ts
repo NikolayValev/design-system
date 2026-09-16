@@ -27,7 +27,7 @@ export const claySoftTheme: VisionTheme = {
       border: 'oklch(0.84 0.05 312)',
       input: 'oklch(0.95 0.03 315)',
       ring: 'oklch(0.81 0.12 14)',
-      danger: 'oklch(0.67 0.2 23)',
+      danger: 'oklch(0.57 0.2 23)',
       dangerForeground: 'oklch(0.98 0.02 320)',
       chart1: 'oklch(0.81 0.12 14)',
       chart2: 'oklch(0.83 0.1 220)',
@@ -49,7 +49,7 @@ export const claySoftTheme: VisionTheme = {
       border: 'oklch(0.35 0.04 315)',
       input: 'oklch(0.27 0.03 318)',
       ring: 'oklch(0.72 0.12 14)',
-      danger: 'oklch(0.62 0.2 23)',
+      danger: 'oklch(0.56 0.2 23)',
       dangerForeground: 'oklch(0.97 0.01 315)',
       chart1: 'oklch(0.72 0.12 14)',
       chart2: 'oklch(0.72 0.10 220)',
@@ -77,18 +77,26 @@ export const claySoftTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '1px',
-      radius: '9999px',
+      // Was 9999px on everything, so cards were capsules. Controls keep the full pill — that is the theme's whole character — while surfaces get a radius content can live inside.
+      radius: {
+        surface: '1.25rem',
+        control: '9999px',
+        pill: '9999px',
+      },
       sharpness: '0.02',
     },
     shadowLightEngine: {
       hardOffset: '4px 4px 0 rgba(122, 93, 142, 0.24)',
       neonGlow: '0 0 0 rgba(0, 0, 0, 0)',
       ambientOcclusion:
-        'inset 6px 6px 14px rgba(255, 255, 255, 0.65), inset -8px -8px 16px rgba(187, 153, 215, 0.32), 0 16px 34px -22px rgba(122, 93, 142, 0.26)',
+        'inset 6px 6px 14px rgba(255, 255, 255, 0.65), inset -8px -8px 16px rgba(187, 153, 215, 0.32), 0 2px 6px -3px rgba(122, 93, 142, 0.24)',
     },
     motionSignature: {
       duration: { fast: '200ms', normal: '320ms', slow: '520ms' },
-      easing: { standard: 'cubic-bezier(0.2, 1.2, 0.32, 1)', emphatic: 'cubic-bezier(0.16, 1.35, 0.3, 1)' },
+      // `standard` drives every Button, Input and Card transition, so an overshooting
+      // curve here made routine state changes wobble. The spring is the theme's
+      // signature and it stays — but it lives on `emphatic`, where it is a choice.
+      easing: { standard: 'cubic-bezier(0.32, 0.72, 0.2, 1)', emphatic: 'cubic-bezier(0.16, 1.35, 0.3, 1)' },
       physics: 'spring-high-bounce',
     },
   },

@@ -1,6 +1,5 @@
 import React from 'react';
 import { GalleryStage } from '../components/GalleryStage';
-import { Layout } from '../components/Layout';
 import { MediaFrame } from '../components/MediaFrame';
 import { FeatureGridSection, type FeatureGridItem } from '../sections/FeatureGridSection';
 import { HeroSection, type HeroSectionAction } from '../sections/HeroSection';
@@ -64,16 +63,18 @@ export const ProductShowcasePage = React.forwardRef<HTMLDivElement, ProductShowc
           actions={actions}
         />
 
-        <Layout className="mx-auto mt-8 max-w-6xl">
-          <GalleryStage className="p-4 md:p-6">
-            <MediaFrame className="aspect-[16/9]" src={mediaSrc} alt={mediaAlt} />
-          </GalleryStage>
-        </Layout>
+        {/*
+          Was Layout > GalleryStage > MediaFrame — three surfaces, each drawing its
+          own border and ambient shadow, so the media sat inside three concentric
+          frames. The stage is the surface now; the frame inside it is just a crop.
+        */}
+        <GalleryStage className="mx-auto mt-8 max-w-6xl [padding:var(--vde-space-lg)]">
+          <MediaFrame className="aspect-[16/9] border-0 shadow-none" src={mediaSrc} alt={mediaAlt} />
+        </GalleryStage>
 
         <FeatureGridSection
           className="mt-10"
           items={featureItems}
-          sectionEyebrow="Template system"
           sectionTitle="Everything stays composable"
         />
       </div>

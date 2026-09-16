@@ -6,7 +6,7 @@ const PAD = 8;
 
 /** BarChart - single-series SVG bars, colored by a --chart-N token. */
 export const BarChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
-  ({ data, width = 320, height = 180, colorIndex = 1, className = '', ...props }, ref) => {
+  ({ data, width = 320, height = 180, colorIndex = 1, title, description, className = '', ...props }, ref) => {
     const innerW = width - PAD * 2;
     const innerH = height - PAD * 2;
     const bars = computeBars(
@@ -15,6 +15,8 @@ export const BarChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
     );
     return (
       <svg ref={ref} viewBox={`0 0 ${width} ${height}`} role="img" className={className} {...props}>
+        <title>{title}</title>
+        {description ? <desc>{description}</desc> : null}
         <g transform={`translate(${PAD},${PAD})`}>
           {bars.map((b, i) => (
             <rect

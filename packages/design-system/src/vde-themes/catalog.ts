@@ -6,6 +6,7 @@ import { editorialTheme } from './editorial.theme';
 import { immersiveTheme } from './immersive.theme';
 import { museumTheme } from './museum.theme';
 import { noirTheme } from './noir.theme';
+import { quietWorkshopTheme } from './quiet-workshop.theme';
 import { solarpunkTheme } from './solarpunk.theme';
 import { swissInternationalTheme } from './swiss-international.theme';
 import { synthwaveTheme } from './synthwave.theme';
@@ -20,6 +21,7 @@ export {
   immersiveTheme,
   museumTheme,
   noirTheme,
+  quietWorkshopTheme,
   solarpunkTheme,
   swissInternationalTheme,
   synthwaveTheme,
@@ -36,6 +38,7 @@ export {
 export const visionThemes: VisionTheme[] = [
   // Editorial & Print
   editorialTheme,
+  quietWorkshopTheme,
   museumTheme,
   // Minimal & Structured
   swissInternationalTheme,

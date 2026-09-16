@@ -10,6 +10,17 @@ export interface SectionShellProps extends React.HTMLAttributes<HTMLElement> {
 
 /**
  * SectionShell - shared section scaffold for page-level composition.
+ *
+ * The `eyebrow` slot is deliberately opt-in and unstyled-by-default-loud. It used
+ * to render at 12px, uppercase, wide-tracked and muted whenever it was present —
+ * and every section and page template supplied a default string, so the whole
+ * library shipped a small all-caps label above every heading. That single pattern
+ * tripped four separate quality rules at once (tiny interface text, all-caps runs,
+ * a label competing with the heading below it, and placeholder marketing copy).
+ *
+ * It now renders at the caption step in sentence case. Pass an eyebrow when the
+ * section genuinely needs a kicker; omit it when the heading can stand alone,
+ * which is most of the time.
  */
 export const SectionShell = React.forwardRef<HTMLElement, SectionShellProps>(
   (
@@ -43,19 +54,19 @@ export const SectionShell = React.forwardRef<HTMLElement, SectionShellProps>(
       <section ref={ref} className={classes} {...props}>
         <div className={innerClasses}>
           {eyebrow ? (
-            <p className="text-xs uppercase tracking-[0.18em] [color:var(--vde-color-muted-foreground)] [font-family:var(--vde-font-mono)]">
+            <p className="[font-size:var(--vde-font-size-caption)] [letter-spacing:var(--vde-letter-spacing-wide)] [line-height:var(--vde-line-height-ui)] [color:var(--vde-color-muted-foreground)] [font-family:var(--vde-font-mono)]">
               {eyebrow}
             </p>
           ) : null}
 
           {heading ? (
-            <h2 className="text-3xl font-semibold [font-family:var(--vde-font-display)] [line-height:var(--vde-line-height-tight)] [letter-spacing:var(--vde-letter-spacing-tight)] md:text-5xl">
+            <h2 className="font-semibold [font-size:var(--vde-font-size-headline)] [font-family:var(--vde-font-display)] [line-height:var(--vde-line-height-tight)] [letter-spacing:var(--vde-letter-spacing-tight)]">
               {heading}
             </h2>
           ) : null}
 
           {description ? (
-            <p className="max-w-3xl text-base [color:var(--vde-color-muted-foreground)] [line-height:var(--vde-line-height-relaxed)] md:text-lg">
+            <p className="[max-width:var(--vde-measure)] [font-size:var(--vde-font-size-body)] [color:var(--vde-color-muted-foreground)] [line-height:var(--vde-line-height-relaxed)] md:[font-size:var(--vde-font-size-lead)]">
               {description}
             </p>
           ) : null}

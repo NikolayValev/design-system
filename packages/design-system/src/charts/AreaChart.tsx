@@ -6,7 +6,7 @@ const PAD = 8;
 
 /** AreaChart - single-series SVG area + line, colored by a --chart-N token. */
 export const AreaChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
-  ({ data, width = 320, height = 180, colorIndex = 1, className = '', ...props }, ref) => {
+  ({ data, width = 320, height = 180, colorIndex = 1, title, description, className = '', ...props }, ref) => {
     const innerW = width - PAD * 2;
     const innerH = height - PAD * 2;
     const [, yMax] = extent(data.map((d) => d.value));
@@ -19,6 +19,8 @@ export const AreaChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
     const color = `var(--chart-${colorIndex})`;
     return (
       <svg ref={ref} viewBox={`0 0 ${width} ${height}`} role="img" className={className} {...props}>
+        <title>{title}</title>
+        {description ? <desc>{description}</desc> : null}
         <path d={area} fill={color} fillOpacity={0.2} stroke="none" />
         <path
           d={line}

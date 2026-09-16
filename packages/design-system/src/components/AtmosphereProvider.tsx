@@ -78,7 +78,7 @@ export const AtmosphereProvider = React.forwardRef<HTMLDivElement, AtmospherePro
         {atmosphereMode === 'nexus' ? (
           <span
             aria-hidden="true"
-            className={`${layerPositionClass} pointer-events-none [background:var(--vde-atmosphere-mesh-gradient,_radial-gradient(circle_at_12%_8%,_rgba(130,_88,_255,_0.46),_transparent_42%),_radial-gradient(circle_at_86%_18%,_rgba(74,_197,_255,_0.42),_transparent_47%),_radial-gradient(circle_at_60%_100%,_rgba(58,_255,_169,_0.2),_transparent_55%))] [animation:var(--vde-atmosphere-motion,_none)] ${nexusOpacityClass[intensity]}`}
+            className={`${layerPositionClass} pointer-events-none [background:var(--vde-atmosphere-mesh-gradient,_none)] [animation:var(--vde-atmosphere-motion,_none)] ${nexusOpacityClass[intensity]}`}
           />
         ) : null}
 

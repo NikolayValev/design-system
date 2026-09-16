@@ -13,7 +13,7 @@ const textareaClasses = [
   'text-sm',
   'resize-y',
   '[border-width:var(--vde-border-width)]',
-  '[border-radius:var(--vde-boundary-radius)]',
+  '[border-radius:var(--vde-radius-control)]',
   '[border-color:var(--vde-color-input)]',
   '[background:var(--vde-color-background)]',
   '[color:var(--vde-color-foreground)]',

@@ -24,7 +24,8 @@ export const MetricStripSection = React.forwardRef<HTMLElement, MetricStripSecti
       className = '',
       items,
       sectionDescription = 'Single-row or wrapped metric summaries for launch pages.',
-      sectionEyebrow = 'Signal',
+      // No default — see FeatureGridSection.
+      sectionEyebrow,
       sectionTitle = 'Core metrics at a glance',
       ...props
     },

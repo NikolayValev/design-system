@@ -25,7 +25,7 @@ export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
       'bg-[var(--vde-color-surface)]',
       '[border-color:var(--vde-color-border)]',
       '[border-width:var(--vde-border-width)]',
-      '[border-radius:var(--vde-boundary-radius)]',
+      '[border-radius:var(--vde-radius-surface)]',
       isMuseum
         ? '[box-shadow:var(--vde-media-passpartout-shadow,_inset_0_0_0_0.6rem_rgba(255,_253,_246,_0.9),_inset_0_0_2.3rem_rgba(38,_28,_16,_0.2))]'
         : '[box-shadow:var(--vde-shadow-ambient)]',
@@ -49,7 +49,7 @@ export const MediaFrame = React.forwardRef<HTMLDivElement, MediaFrameProps>(
         {isImmersive ? (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 [box-shadow:var(--vde-media-light-leak,_inset_0_0_2.8rem_rgba(146,_92,_255,_0.45),_inset_0_0_1.4rem_rgba(80,_200,_255,_0.32))]"
+            className="pointer-events-none absolute inset-0 [box-shadow:var(--vde-media-light-leak)]"
           />
         ) : null}
         {isY2KChrome ? (

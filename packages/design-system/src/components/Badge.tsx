@@ -10,14 +10,18 @@ const baseClasses = [
   'items-center',
   'gap-1',
   'border',
-  'px-2.5',
-  'py-0.5',
-  'text-xs',
   'font-medium',
   'whitespace-nowrap',
   'align-middle',
+  '[padding-inline:var(--vde-space-xs)]',
+  '[padding-block:var(--vde-space-2xs)]',
+  // Was `text-xs` (12px). Badges routinely carry status a user has to read, and
+  // several are rendered inside links and buttons, so they sit on the interactive
+  // floor rather than below it.
+  '[font-size:var(--vde-font-size-ui)]',
+  '[line-height:var(--vde-line-height-ui)]',
   '[border-width:var(--vde-border-width)]',
-  '[border-radius:var(--vde-boundary-radius)]',
+  '[border-radius:var(--vde-radius-pill)]',
   '[font-family:var(--vde-font-body)]',
   '[letter-spacing:var(--vde-letter-spacing-wide)]',
 ];

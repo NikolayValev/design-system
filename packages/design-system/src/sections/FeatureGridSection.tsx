@@ -25,7 +25,9 @@ export const FeatureGridSection = React.forwardRef<HTMLElement, FeatureGridSecti
       className = '',
       items,
       sectionDescription = 'Composable building blocks that inherit your active token profile.',
-      sectionEyebrow = 'Capabilities',
+      // No default. A placeholder kicker above every feature grid was generic
+      // marketing copy shipped as a component default.
+      sectionEyebrow,
       sectionTitle = 'Production-ready sections',
       ...props
     },

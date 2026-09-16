@@ -49,7 +49,7 @@ export const museumTheme: VisionTheme = {
       border: 'oklch(0.34 0.03 55)',
       input: 'oklch(0.27 0.025 55)',
       ring: 'oklch(0.70 0.12 42)',
-      danger: 'oklch(0.62 0.19 27)',
+      danger: 'oklch(0.56 0.19 27)',
       dangerForeground: 'oklch(0.97 0.01 85)',
       chart1: 'oklch(0.72 0.14 41)',
       chart2: 'oklch(0.68 0.09 175)',
@@ -78,13 +78,17 @@ export const museumTheme: VisionTheme = {
     },
     boundaryLogic: {
       borderWeight: '1px',
-      radius: '0.5rem',
+      radius: {
+        surface: '0.5rem',
+        control: '0.375rem',
+        pill: '9999px',
+      },
       sharpness: '0.25',
     },
     shadowLightEngine: {
       hardOffset: '3px 3px 0 0 rgba(69, 54, 37, 0.18)',
       neonGlow: '0 0 0 rgba(0, 0, 0, 0)',
-      ambientOcclusion: '0 8px 22px -14px rgba(37, 29, 20, 0.3)',
+      ambientOcclusion: '0 2px 5px -2px rgba(37, 29, 20, 0.22)',
     },
     motionSignature: {
       duration: { fast: '130ms', normal: '190ms', slow: '320ms' },
