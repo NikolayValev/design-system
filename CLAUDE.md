@@ -39,9 +39,6 @@ contract workflow.
   changes reach it by publishing, not by local linking.
 - **`second-brain-ui`** validates its generated client against a snapshot synced
   from here; drift reds CI on both sides.
-- The `strata` entry in `.github/dependent-apps.json` points at `kami_times`,
-  which is **archived and no longer on disk**. All its `required*` flags are
-  `false`. If it starts failing, remove the entry.
 
 ## Conventions
 

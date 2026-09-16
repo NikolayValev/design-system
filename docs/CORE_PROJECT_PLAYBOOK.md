@@ -17,7 +17,6 @@ Build one coherent platform with shared primitives and predictable delivery:
 - **Linked product repos** (consume the contracts but live in their own repositories, validated via `.github/dependent-apps.json`):
   - `game` — interactive product surface (`https://github.com/NikolayValev/mandate-zero`)
   - `second-brain` — knowledge workflow product (`https://github.com/NikolayValev/SecondBrain`, `second-brain-ui`)
-  - `strata` — consultancy operations product (`https://github.com/NikolayValev/kami_times`, production: `https://www.strategemalgo.com/`)
 
 ## Engineering Rules
 
