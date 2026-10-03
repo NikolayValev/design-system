@@ -1,5 +1,5 @@
 import fg from 'fast-glob';
-import { statSync, writeFileSync } from 'node:fs';
+import { readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -49,11 +49,31 @@ export async function generateMetrics(repoRoot: string): Promise<Metrics> {
   };
 }
 
+export function sameMetrics(a: Metrics, b: Metrics): boolean {
+  const { generatedAt: _a, ...restA } = a;
+  const { generatedAt: _b, ...restB } = b;
+  return JSON.stringify(restA) === JSON.stringify(restB);
+}
+
+function readPrevious(file: string): Metrics | null {
+  try {
+    return JSON.parse(readFileSync(file, 'utf8')) as Metrics;
+  } catch {
+    return null;
+  }
+}
+
 async function main(): Promise<void> {
   const here = path.dirname(fileURLToPath(import.meta.url));
   const repoRoot = path.resolve(here, '../../../..');
   const metrics = await generateMetrics(repoRoot);
   const out = path.join(here, 'metrics.generated.json');
+  // The file is committed and regenerated on every test/build run. Keep the old
+  // timestamp when nothing else moved, so a run doesn't leave the tree dirty.
+  const previous = readPrevious(out);
+  if (previous && sameMetrics(previous, metrics)) {
+    metrics.generatedAt = previous.generatedAt;
+  }
   writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
   console.log(`metrics written: ${out}`);
 }
