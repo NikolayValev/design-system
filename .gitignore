@@ -6,6 +6,7 @@ dist
 
 # CI-generated source bundles (written by monorepo-deploy before Vercel build)
 packages/mcp-server/design-system-src/
+packages/mcp-server/vendor/
 packages/mcp-server/CONTRIBUTION_GUIDE.md
 .next
 out

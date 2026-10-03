@@ -80,6 +80,25 @@ jobs:
           cp -r packages/design-system/src/pages       packages/mcp-server/design-system-src/
           cp packages/design-system/CONTRIBUTION_GUIDE.md  packages/mcp-server/CONTRIBUTION_GUIDE.md
 
+      - name: Vendor design-system package into MCP server
+        if: steps.check.outputs.exists == 'true' && matrix.app.id == 'design-system-mcp'
+        # The portal renders from @nikolayvalev/design-system (workspace:^), but
+        # Vercel installs packages/mcp-server on its own, where `workspace:` is
+        # EUNSUPPORTEDPROTOCOL. The published version can lag this commit, so
+        # pack the package just built above and point the dependency at it.
+        run: |
+          mkdir -p packages/mcp-server/vendor
+          (cd packages/design-system && pnpm pack --pack-destination ../mcp-server/vendor)
+          node -e "
+            const fs = require('fs');
+            const file = 'packages/mcp-server/package.json';
+            const pkg = JSON.parse(fs.readFileSync(file, 'utf8'));
+            const tgz = fs.readdirSync('packages/mcp-server/vendor').find((f) => f.endsWith('.tgz'));
+            pkg.dependencies['@nikolayvalev/design-system'] = 'file:./vendor/' + tgz;
+            fs.writeFileSync(file, JSON.stringify(pkg, null, 2) + '\n');
+            console.log('design-system dependency ->', pkg.dependencies['@nikolayvalev/design-system']);
+          "
+
       - name: Check deployment secrets
         if: steps.check.outputs.exists == 'true'
         env:
@@ -102,9 +121,9 @@ jobs:
         # completed the build and then failed the deploy with
         #   File does not exist: "packages/mcp-server/node_modules/fast-glob"
         # because the prebuilt output cannot trace dependencies through pnpm's
-        # symlinked workspace store. packages/mcp-server has no workspace
-        # dependencies, so uploading it and letting Vercel install and build is
-        # both simpler and the path that actually works.
+        # symlinked workspace store. Its one workspace dependency is vendored as a
+        # tarball in the step above, so uploading it and letting Vercel install
+        # and build is both simpler and the path that actually works.
         run: |
           pnpm dlx vercel pull --yes --environment=production --token="$VERCEL_TOKEN" --cwd "${{ matrix.app.path }}"
           pnpm dlx vercel deploy --prod --yes --token="$VERCEL_TOKEN" --cwd "${{ matrix.app.path }}"
