@@ -1,6 +1,6 @@
 {
   "name": "@nikolayvalev/design-system-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "MCP server for the Nikolay Valev design system — lets AI agents browse, fetch, and install components, sections, pages, tokens, and themes.",
   "type": "module",

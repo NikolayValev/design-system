@@ -1,5 +1,13 @@
 # @apps/command-panel
 
+## 0.0.2
+
+### Patch Changes
+
+- Updated dependencies [f128948]
+  - @nikolayvalev/design-system@3.0.0
+  - @nikolayvalev/command-panel@2.0.0
+
 ## 0.0.1
 
 ### Patch Changes

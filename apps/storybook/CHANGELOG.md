@@ -1,5 +1,12 @@
 # @apps/storybook
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies [f128948]
+  - @nikolayvalev/design-system@3.0.0
+
 ## 0.1.5
 
 ### Patch Changes
