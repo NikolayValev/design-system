@@ -2,7 +2,7 @@
 
 The reference host for `@nikolayvalev/command-panel`: a Vite + React SPA that mounts
 `<CommandPanel>` and wires it to a read-only `DataRegistry` of this monorepo's own
-metrics (component/section/page counts, the 12 visions across 5 families, Storybook
+metrics (component/section/page counts, the visions across 5 families, Storybook
 story count, design-system bundle sizes).
 
 ## Run locally

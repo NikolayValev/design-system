@@ -129,19 +129,59 @@ jobs:
       - name: Build (with Turbo remote cache)
         run: pnpm turbo run build
 
+      # The per-vision records are generated from the theme objects by `pnpm build`
+      # and committed, so a token change shows up as a documentation change in the
+      # same PR. If the build produced a diff, they were not regenerated.
+      - name: Vision docs are up to date
+        run: git diff --exit-code -- docs/visions
+
       - name: Type check
         run: pnpm turbo run typecheck
 
       - name: Lint
         run: pnpm turbo run lint
 
-      - name: Validate design-system exports
+      # NOTE: `pnpm format:check` is deliberately NOT a gate yet. It has never run
+      # in CI and the repo currently fails it in 276 files, so turning it on here
+      # would either fail every build or force a repo-wide reformat that buries
+      # the diff it is attached to. Reformatting is its own piece of work.
+
+      # Every workspace suite, not just the design system's. The command-panel
+      # packages hold 94 tests between them that had never run in CI — which is
+      # how two of them sat asserting a hardcoded catalog size of 12 and went red
+      # the moment a thirteenth vision landed, with nothing to report it.
+      - name: Unit tests
+        run: pnpm -r --if-present test
+
+      # Exports plus the design floors: WCAG AA contrast across all 13 visions in
+      # both modes, the body line-height and interactive type floors, the radius
+      # scale, edge redundancy, and overshoot on the standard easing.
+      - name: Validate design-system exports and design floors
         run: pnpm --filter @nikolayvalev/design-system validate
+
+      # Agents install component source through the hosted MCP server, so a bundle
+      # that references a file the deploy does not mirror is code that will not
+      # build in a consumer's repo. This assembles every bundle against the same
+      # directory shape the deploy produces and fails on any unresolved import.
+      - name: Validate MCP install bundles are self-contained
+        run: pnpm validate:mcp-bundles
+
+      # Advisory. The source currently reports exactly one anti-pattern —
+      # clay_soft's emphatic spring — and that is a documented divergence, not a
+      # backlog item (see the Motion section of DESIGN.md). The remaining notes
+      # are "colour outside DESIGN.md", which is inherent to a 13-vision catalog
+      # whose records cannot all fit one single-valued frontmatter. Keeping this
+      # advisory is deliberate: the rules we hold to are in eslint and the floor
+      # validator, and this is the wider net that catches what they do not.
+      - name: Design detector (advisory)
+        continue-on-error: true
+        run: npx --yes impeccable detect --json packages/design-system/src apps/storybook/src
 
       - name: Install Playwright browsers
         run: pnpm --filter @apps/storybook exec playwright install --with-deps chromium
 
-      - name: Storybook interaction tests
+      # Runs axe against every story via .storybook/test-runner.ts.
+      - name: Storybook interaction and accessibility tests
         run: pnpm --filter @apps/storybook test:stories:ci
 
   storybook-visual:

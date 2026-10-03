@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import { useEffect, useRef } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Badge,
   Button,
@@ -11,11 +11,11 @@ import {
   Label,
   applyVisionToElement,
   getVisionThemeById,
-} from '@nikolayvalev/design-system';
+} from "@nikolayvalev/design-system";
 
-const editorialTheme = getVisionThemeById('editorial')!;
+const editorialTheme = getVisionThemeById("editorial")!;
 
-function ModePanel({ mode }: { mode: 'light' | 'dark' }): JSX.Element {
+function ModePanel({ mode }: { mode: "light" | "dark" }): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,9 +28,13 @@ function ModePanel({ mode }: { mode: 'light' | 'dark' }): JSX.Element {
     <div
       ref={ref}
       className="flex-1 min-w-[280px] rounded-2xl p-6 space-y-4"
-      style={{ background: 'var(--vde-color-background)', color: 'var(--vde-color-foreground)', border: '1px solid var(--vde-color-border)' }}
+      style={{
+        background: "var(--vde-color-background)",
+        color: "var(--vde-color-foreground)",
+        border: "1px solid var(--vde-color-border)",
+      }}
     >
-      <p className="text-xs uppercase tracking-[0.18em] opacity-60">
+      <p className="[font-size:var(--vde-font-size-ui)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
         Editorial — {mode.charAt(0).toUpperCase() + mode.slice(1)}
       </p>
 
@@ -62,8 +66,8 @@ function ModePanel({ mode }: { mode: 'light' | 'dark' }): JSX.Element {
 
 function ThemeModesComparison(): JSX.Element {
   return (
-    <div className="min-h-screen p-8" style={{ background: '#111' }}>
-      <p className="mb-6 text-xs uppercase tracking-[0.22em] text-white/50">
+    <div className="min-h-screen p-8 [background:var(--vde-color-background)]">
+      <p className="mb-6 [font-size:var(--vde-font-size-ui)] [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
         Editorial vision — light vs dark
       </p>
       <div className="flex flex-wrap gap-6">
@@ -75,14 +79,14 @@ function ThemeModesComparison(): JSX.Element {
 }
 
 const meta = {
-  title: 'Themes/Modes',
+  title: "Themes/Modes",
   component: ThemeModesComparison,
   parameters: {
-    vdeFrame: 'edge',
+    vdeFrame: "edge",
     docs: {
       description: {
         component:
-          'Shows the Editorial vision rendered side by side in light and dark mode. Each panel applies CSS variables directly to its own container via applyVisionToElement.',
+          "Shows the Editorial vision rendered side by side in light and dark mode. Each panel applies CSS variables directly to its own container via applyVisionToElement.",
       },
     },
   },

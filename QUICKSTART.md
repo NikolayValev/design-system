@@ -15,7 +15,7 @@ npx @nikolayvalev/design-system@latest init
 ```
 
 In interactive terminals, the CLI shows an arrow-key selector for modules (`themes`, `components`, `pages`).
-If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 12 visions.
+If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 13 visions.
 For CI/non-interactive usage, pass a vision directly:
 
 ```bash
@@ -44,13 +44,17 @@ Choose a vision and import its CSS. `editorial` is a great starting point for mo
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-system/styles/editorial.css';
-import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
-import type { Metadata } from 'next';
+import "@nikolayvalev/design-system/styles/editorial.css";
+import "@nikolayvalev/design-system/styles/fonts/editorial.css";
+import {
+  VisionProvider,
+  defaultVisionRegistry,
+} from "@nikolayvalev/design-system";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'My App',
-  description: 'Built with design system',
+  title: "My App",
+  description: "Built with design system",
 };
 
 export default function RootLayout({
@@ -61,7 +65,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <VisionProvider registry={defaultVisionRegistry} defaultVisionId="editorial">
+        <VisionProvider
+          registry={defaultVisionRegistry}
+          defaultVisionId="editorial"
+        >
           {children}
         </VisionProvider>
       </body>
@@ -71,6 +78,7 @@ export default function RootLayout({
 ```
 
 **Vision options** (import exactly one):
+
 - `editorial.css` — clean editorial, light with dark variant
 - `museum.css` — refined, gallery-like atmosphere
 - `swiss_international.css` — structured, typographic grid
@@ -102,8 +110,8 @@ Install components through MCP (`get_component_bundle`) and use the generated lo
 
 ```tsx
 // app/page.tsx
-import { Button } from '@/design-system/components/Button';
-import { Card } from '@/design-system/components/Card';
+import { Button } from "@/design-system/components/Button";
+import { Card } from "@/design-system/components/Card";
 
 export default function HomePage() {
   return (
@@ -137,7 +145,7 @@ Visit `http://localhost:3000` and you should see your styled components.
 **Problem:** Components appear unstyled  
 **Solution:** Verify CSS import is in `app/layout.tsx`, not a page file
 
-### Tailwind Classes Not Working  
+### Tailwind Classes Not Working
 
 **Problem:** `bg-primary` has no effect  
 **Solution:** Check your `tailwind.config.ts` includes the preset and correct content paths
@@ -159,13 +167,13 @@ Visit `http://localhost:3000` and you should see your styled components.
 Or toggle dynamically:
 
 ```tsx
-'use client';
+"use client";
 
 export function ThemeToggle() {
   const toggleDark = () => {
-    document.documentElement.classList.toggle('dark');
+    document.documentElement.classList.toggle("dark");
   };
-  
+
   return <button onClick={toggleDark}>Toggle Theme</button>;
 }
 ```

@@ -1,14 +1,14 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import { renderSitePage, sendHtml, sendJson, wantsHtml } from './_lib/site.js';
+import type { IncomingMessage, ServerResponse } from "node:http";
+import { renderSitePage, sendHtml, sendJson, wantsHtml } from "./_lib/site.js";
 
 const ENGINEER_METADATA = {
-  audience: 'engineers',
+  audience: "engineers",
   quickstart: {
-    cli: 'npx @nikolayvalev/design-system@latest init',
-    mcpUrl: 'https://designsystem.nikolayvalev.com/mcp',
-    storybook: 'https://designsystem.nikolayvalev.com/storybook',
+    cli: "npx @nikolayvalev/design-system@latest init",
+    mcpUrl: "https://designsystem.nikolayvalev.com/mcp",
+    storybook: "https://designsystem.nikolayvalev.com/storybook",
   },
-  docs: ['/docs', '/catalog'],
+  docs: ["/docs", "/catalog"],
 };
 
 export default function handler(req: IncomingMessage, res: ServerResponse) {
@@ -22,8 +22,8 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
       <span class="pill">Engineer Quickstart</span>
       <h1 class="hero-title">Get running in 5 minutes</h1>
       <p class="hero-subtitle">
-        Install the token package, pick a CSS profile, configure Tailwind, wire your AI client,
-        then let MCP install components directly into your repo.
+        Install the package, import one vision's tokens and fonts, wrap the app in the
+        provider, wire your AI client, then let MCP install components into your repo.
       </p>
     </section>
 
@@ -33,40 +33,40 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
-          <p class="step-title">Install the tokens package</p>
-          <p>This is the only runtime dependency. Everything else is source-installed.</p>
-          <pre><code>npm install @nikolayvalev/design-tokens</code></pre>
+          <p class="step-title">Install the package</p>
+          <p>This is the only runtime dependency. Components are source-installed.</p>
+          <pre><code>npm install @nikolayvalev/design-system</code></pre>
         </div>
       </div>
 
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
-          <p class="step-title">Pick one CSS profile and import it</p>
-          <p>One profile per app. It sets all CSS variables for the chosen context.</p>
-          <pre><code>// Marketing site — light + dark mode, vibrant
-import '@nikolayvalev/design-tokens/styles/public.css';
-
-// Internal tool — dark only, compact density
-import '@nikolayvalev/design-tokens/styles/dashboard.css';
-
-// Prototype — pure black, high contrast, zero radius
-import '@nikolayvalev/design-tokens/styles/experimental.css';</code></pre>
+          <p class="step-title">Import one vision, and its fonts</p>
+          <p>
+            One vision per app. The stylesheet sets every <code>--vde-*</code> variable for that
+            vision in <em>both</em> light and dark, so you write no override block of your own.
+            The companion font file self-hosts only the faces that vision uses.
+          </p>
+          <pre><code>// app/layout.tsx
+import '@nikolayvalev/design-system/styles/quiet_workshop.css';
+import '@nikolayvalev/design-system/styles/fonts/quiet_workshop.css';</code></pre>
         </div>
       </div>
 
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
-          <p class="step-title">Configure the Tailwind preset</p>
-          <p>The preset maps every token to a semantic utility class (<code>bg-primary</code>, <code>text-foreground</code>, etc.).</p>
-          <pre><code>// tailwind.config.ts
-import { createTailwindPreset, publicProfile } from '@nikolayvalev/design-tokens/tailwind';
+          <p class="step-title">Wrap the app in VisionProvider</p>
+          <p>
+            Mode resolves in this order: an explicit <code>mode</code> prop, then the vision's
+            <code>defaultMode</code>, then the user's <code>prefers-color-scheme</code>.
+          </p>
+          <pre><code>import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
 
-export default {
-  presets: [createTailwindPreset(publicProfile)],
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
-};</code></pre>
+&lt;VisionProvider registry={defaultVisionRegistry} defaultVisionId="quiet_workshop"&gt;
+  {children}
+&lt;/VisionProvider&gt;</code></pre>
         </div>
       </div>
 
@@ -117,20 +117,20 @@ export default {
       <h2 style="margin-top:0">Key imports reference</h2>
       <div class="grid">
         <article class="card">
-          <h3>Runtime theming</h3>
-          <p><code>@nikolayvalev/design-tokens</code></p>
+          <h3>Components &amp; provider</h3>
+          <p><code>@nikolayvalev/design-system</code></p>
         </article>
         <article class="card">
-          <h3>Profiles &amp; types</h3>
-          <p><code>@nikolayvalev/design-tokens/tokens</code></p>
+          <h3>Vision tokens, both modes</h3>
+          <p><code>@nikolayvalev/design-system/styles/[vision].css</code></p>
         </article>
         <article class="card">
-          <h3>Tailwind preset</h3>
-          <p><code>@nikolayvalev/design-tokens/tailwind</code></p>
+          <h3>Self-hosted faces</h3>
+          <p><code>@nikolayvalev/design-system/styles/fonts/[vision].css</code></p>
         </article>
         <article class="card">
           <h3>CSS variables</h3>
-          <p><code>@nikolayvalev/design-tokens/styles/[profile].css</code></p>
+          <p><code>--vde-color-*</code>, <code>--vde-font-size-*</code>, <code>--vde-space-*</code>, <code>--vde-radius-*</code></p>
         </article>
       </div>
     </section>
@@ -139,9 +139,10 @@ export default {
   sendHtml(
     res,
     renderSitePage({
-      title: 'Engineers - Design System Platform',
-      description: 'Engineer-facing setup and integration guide for the design-system platform.',
-      pathname: '/engineers',
+      title: "Engineers - Design System Platform",
+      description:
+        "Engineer-facing setup and integration guide for the design-system platform.",
+      pathname: "/engineers",
       body,
     }),
   );

@@ -1,37 +1,42 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import { renderSitePage, sendHtml, sendJson, wantsHtml } from './_lib/site.js';
+import type { IncomingMessage, ServerResponse } from "node:http";
+import { renderSitePage, sendHtml, sendJson, wantsHtml } from "./_lib/site.js";
+import { getVisionThemeIds } from "@nikolayvalev/design-system";
 
 const DOCS_METADATA = {
-  section: 'docs',
-  topics: ['oklch', 'token-system', 'vde-themes', 'mcp-tooling'],
+  section: "docs",
+  topics: ["oklch", "token-system", "vde-themes", "mcp-tooling"],
   mcpServer: {
-    url: 'https://designsystem.nikolayvalev.com/mcp',
-    transport: 'streamable-http',
+    url: "https://designsystem.nikolayvalev.com/mcp",
+    transport: "streamable-http",
     toolCount: 15,
     resourceCount: 5,
     tools: [
-      { name: 'list_components', category: 'discovery', params: 'query?' },
-      { name: 'list_sections', category: 'discovery', params: 'query?' },
-      { name: 'list_pages', category: 'discovery', params: 'query?' },
-      { name: 'list_artifacts', category: 'discovery', params: 'kind, query?' },
-      { name: 'get_component_source', category: 'source', params: 'name' },
-      { name: 'get_section_source', category: 'source', params: 'name' },
-      { name: 'get_page_source', category: 'source', params: 'name' },
-      { name: 'get_artifact_source', category: 'source', params: 'kind, name' },
-      { name: 'get_component_bundle', category: 'bundle', params: 'names[]' },
-      { name: 'get_section_bundle', category: 'bundle', params: 'names[]' },
-      { name: 'get_page_bundle', category: 'bundle', params: 'names[]' },
-      { name: 'get_artifact_bundle', category: 'bundle', params: 'kind, names[]' },
-      { name: 'list_themes', category: 'themes', params: '' },
-      { name: 'get_theme', category: 'themes', params: 'id' },
-      { name: 'get_contribution_guide', category: 'guide', params: '' },
+      { name: "list_components", category: "discovery", params: "query?" },
+      { name: "list_sections", category: "discovery", params: "query?" },
+      { name: "list_pages", category: "discovery", params: "query?" },
+      { name: "list_artifacts", category: "discovery", params: "kind, query?" },
+      { name: "get_component_source", category: "source", params: "name" },
+      { name: "get_section_source", category: "source", params: "name" },
+      { name: "get_page_source", category: "source", params: "name" },
+      { name: "get_artifact_source", category: "source", params: "kind, name" },
+      { name: "get_component_bundle", category: "bundle", params: "names[]" },
+      { name: "get_section_bundle", category: "bundle", params: "names[]" },
+      { name: "get_page_bundle", category: "bundle", params: "names[]" },
+      {
+        name: "get_artifact_bundle",
+        category: "bundle",
+        params: "kind, names[]",
+      },
+      { name: "list_themes", category: "themes", params: "" },
+      { name: "get_theme", category: "themes", params: "id" },
+      { name: "get_contribution_guide", category: "guide", params: "" },
     ],
     resources: [
-      'design-system://components',
-      'design-system://sections',
-      'design-system://pages',
-      'design-system://themes',
-      'design-system://contribution-guide',
+      "design-system://components",
+      "design-system://sections",
+      "design-system://pages",
+      "design-system://themes",
+      "design-system://contribution-guide",
     ],
   },
 };
@@ -101,7 +106,12 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
         Swapping the theme swaps the entire design language at runtime — no recompile.
       </p>
       <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px">
-        ${['editorial','museum','swiss_international','zen','clay_soft','terminal','brutalist','immersive','synthwave','noir','solarpunk','y2k_chrome'].map(id => `<article class="card" style="padding:8px 10px"><p style="margin:0;font-family:monospace;font-size:11px;color:var(--brand)">${id}</p></article>`).join('')}
+        ${getVisionThemeIds()
+          .map(
+            (id) =>
+              `<article class="card" style="padding:8px 10px"><p style="margin:0;font-family:var(--vde-font-mono);font-size:var(--vde-font-size-caption);color:var(--brand)">${id}</p></article>`,
+          )
+          .join("")}
       </div>
     </section>
 
@@ -178,9 +188,10 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
   sendHtml(
     res,
     renderSitePage({
-      title: 'Architecture — Design System',
-      description: 'Design decisions: OKLCH tokens, profile layers, VDE themes, and MCP-native tooling.',
-      pathname: '/docs',
+      title: "Architecture — Design System",
+      description:
+        "Design decisions: OKLCH tokens, profile layers, VDE themes, and MCP-native tooling.",
+      pathname: "/docs",
       body,
     }),
   );

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "title": "Design System: Visionary Design Engine",
+  "note": "Sidecar for the tokens DESIGN.md frontmatter cannot carry: shadows, motion, focus rings and backdrop filters. Per-vision values are NOT duplicated here — packages/design-system/src/vde-themes/*.theme.ts is the only source of truth for those, and scripts/validate-design-floors.mjs is what holds them to the floors.",
+  "extensions": {
+    "shadows": {
+      "ambient": {
+        "role": "resting",
+        "description": "The resting shadow on a surface. Tightened to a seam in the eleven visions whose hairline defines the edge; left wide in immersive and synthwave, which drop the hairline instead.",
+        "token": "--vde-shadow-ambient"
+      },
+      "hard": {
+        "role": "offset",
+        "description": "An offset shadow with no blur. Brutalist and terminal idiom.",
+        "token": "--vde-shadow-hard"
+      },
+      "neon": {
+        "role": "glow",
+        "description": "A coloured glow. Deliberate character in terminal, immersive, synthwave, solarpunk and y2k_chrome; none in the other eight.",
+        "token": "--vde-shadow-neon"
+      }
+    },
+    "motion": {
+      "durations": ["--vde-motion-duration-fast", "--vde-motion-duration-normal", "--vde-motion-duration-slow"],
+      "easings": ["--vde-motion-easing-standard", "--vde-motion-easing-emphatic"],
+      "rules": [
+        "The standard easing must not overshoot — it drives every Button, Card and Input transition, so a cubic-bezier with a control point above 1 makes routine state changes wobble. Overshoot belongs on emphatic.",
+        "Every ambient or looping animation is disabled under prefers-reduced-motion, enforced globally in global.css rather than per component.",
+        "Transitions name their properties. transition-all animates layout properties and stutters."
+      ]
+    },
+    "focus": {
+      "ring": "2px solid var(--vde-color-ring)",
+      "offset": "2px",
+      "rule": "Every interactive element has a visible focus-visible treatment. Border-colour-only focus is not sufficient; axe asserts this per story in the Storybook test runner."
+    },
+    "backdrop": {
+      "token": "--vde-surface-blur",
+      "rule": "Blur is a vision's choice, not a default. It is 0px in seven visions; immersive at 14px and synthwave at 10px are the ones where layering is the thesis."
+    },
+    "measure": {
+      "token": "--vde-measure",
+      "value": "68ch",
+      "rule": "Prose slots cap here. Inside the 65-75 character readable band."
+    },
+    "floors": {
+      "contrast": "WCAG AA 4.5:1 on seven foreground/background pairs, both modes, all 13 visions",
+      "bodyLineHeight": 1.5,
+      "interactiveFontSize": "0.875rem",
+      "bodyFontSize": "1rem",
+      "enforcedBy": [
+        "packages/design-system/scripts/validate-design-floors.mjs",
+        "apps/storybook/.storybook/test-runner.ts",
+        "packages/config/eslint-plugin-design-system.cjs"
+      ]
+    }
+  }
+}

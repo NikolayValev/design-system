@@ -1,14 +1,30 @@
 # Design System
 
-A production-grade design system and component library by [Nikolay Valev](https://github.com/NikolayValev) — built with OKLCH color tokens, 12 curated visual themes (each with hand-tuned light **and** dark palettes), composable React components, and a hosted MCP server so AI agents can browse and install components directly.
+A production-grade design system and component library by [Nikolay Valev](https://github.com/NikolayValev) — built with OKLCH color tokens, 13 curated visual themes (each with hand-tuned light **and** dark palettes), composable React components, and a hosted MCP server so AI agents can browse and install components directly.
 
 ## Highlights
 
-- **Token-driven theming** in the perceptually-uniform OKLCH color space — colors, spacing, type, and radii expressed as semantic `--vde-*` CSS variables with shadcn-compatible aliases.
-- **12 curated visions across 5 families**, each shipping a native light and dark palette and switchable at runtime.
+- **Token-driven theming** in the perceptually-uniform OKLCH color space — colors, an 8-point spacing scale, a seven-step type scale with enforced floors, and a three-step radius scale, all expressed as semantic `--vde-*` CSS variables with shadcn-compatible aliases.
+- **13 curated visions across 5 families**, each shipping a native light and dark palette, self-hosted fonts, and switchable at runtime.
 - **AI-native distribution** — a hosted Model Context Protocol (MCP) server lets agents like Claude, Cursor, and Windsurf browse, fetch, and install components.
 - **Composable React components** that read entirely from CSS variables, so the same markup re-skins instantly across visions.
 - **Monorepo engineering** — TurboRepo + pnpm workspaces, Storybook with visual regression tests, semantic-versioned releases, and Terraform IaC.
+
+### The floor
+
+Every vision, without exception, and enforced rather than recommended:
+
+- WCAG AA contrast on seven foreground/background pairs, in both modes, checked by `pnpm validate`.
+- Body line-height at or above 1.5; interactive text at or above 14px, clamped in the token emitter so a theme cannot opt out.
+- A visible `focus-visible` ring on every control, asserted by axe in the Storybook test runner.
+- `prefers-reduced-motion` honoured — no vision expresses itself through motion a user cannot stop.
+- Accessible names on graphics; charts require a `title`.
+
+Range is the point of the system; the floor is what makes range safe. See
+[DESIGN.md](DESIGN.md) for the contract and the rules, and
+[docs/visions/](docs/visions/) for each vision's full record — palettes in both
+modes, type, shape, depth and motion, generated from the theme source so they
+cannot drift from it.
 
 ## Live Demo
 
@@ -40,6 +56,7 @@ npm install @nikolayvalev/design-system
 ```tsx
 // app/layout.tsx
 import "@nikolayvalev/design-system/styles/editorial.css";
+import "@nikolayvalev/design-system/styles/fonts/editorial.css";
 ```
 
 ### 2. Wrap the app in VisionProvider
@@ -87,7 +104,7 @@ import { Card } from "@/design-system/components/Card";
 npx @nikolayvalev/design-system@latest init
 ```
 
-The CLI offers an arrow-key selector (`themes`, `components`, `pages`) in TTY terminals; selecting `themes` opens a vision picker with color swatches and vibe descriptions for all 12 visions. You can also run it non-interactively:
+The CLI offers an arrow-key selector (`themes`, `components`, `pages`) in TTY terminals; selecting `themes` opens a vision picker with color swatches and vibe descriptions for all 13 visions. You can also run it non-interactively:
 
 ```bash
 npx @nikolayvalev/design-system@latest init --modules themes,components --vision editorial
@@ -145,10 +162,11 @@ Colors, spacing, typography, radii defined as semantic tokens using **OKLCH colo
 
 ### Vision Themes
 
-12 curated visions across five families. Import one per-vision CSS file and wrap the tree in `VisionProvider`:
+13 curated visions across five families. Import the vision's tokens and its faces, then wrap the tree in `VisionProvider`:
 
 ```tsx
 import "@nikolayvalev/design-system/styles/synthwave.css";
+import "@nikolayvalev/design-system/styles/fonts/synthwave.css";
 import {
   VisionProvider,
   defaultVisionRegistry,
@@ -258,9 +276,9 @@ All components read from CSS variables and update through `VisionProvider`/`useV
 
 ## Vision Registry
 
-The registry ships **12 curated visions** across five families:
+The registry ships **13 curated visions** across five families — each with a full record in [docs/visions/](docs/visions/):
 
-- **Editorial & Print** — `editorial`, `museum`
+- **Editorial & Print** — `editorial`, `quiet_workshop`, `museum`
 - **Minimal & Structured** — `swiss_international`, `zen`, `clay_soft`
 - **Technical & Utility** — `terminal`, `brutalist`
 - **Atmospheric & Luminous** — `immersive`, `synthwave`, `noir`

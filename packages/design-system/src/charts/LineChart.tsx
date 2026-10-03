@@ -1,12 +1,24 @@
-import React from 'react';
-import { scaleLinear, extent, buildLinePath, type Point } from './geometry';
-import type { CartesianChartProps } from './types';
+import React from "react";
+import { scaleLinear, extent, buildLinePath, type Point } from "./geometry";
+import type { CartesianChartProps } from "./types";
 
 const PAD = 8;
 
 /** LineChart - single-series SVG line, colored by a --chart-N token. */
 export const LineChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
-  ({ data, width = 320, height = 180, colorIndex = 1, className = '', ...props }, ref) => {
+  (
+    {
+      data,
+      width = 320,
+      height = 180,
+      colorIndex = 1,
+      title,
+      description,
+      className = "",
+      ...props
+    },
+    ref,
+  ) => {
     const innerW = width - PAD * 2;
     const innerH = height - PAD * 2;
     const [, yMax] = extent(data.map((d) => d.value));
@@ -16,7 +28,15 @@ export const LineChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
     const points: Point[] = data.map((d, i) => ({ x: sx(i), y: sy(d.value) }));
     const d = buildLinePath(points);
     return (
-      <svg ref={ref} viewBox={`0 0 ${width} ${height}`} role="img" className={className} {...props}>
+      <svg
+        ref={ref}
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        className={className}
+        {...props}
+      >
+        <title>{title}</title>
+        {description ? <desc>{description}</desc> : null}
         <path
           d={d}
           fill="none"
@@ -30,4 +50,4 @@ export const LineChart = React.forwardRef<SVGSVGElement, CartesianChartProps>(
   },
 );
 
-LineChart.displayName = 'LineChart';
+LineChart.displayName = "LineChart";

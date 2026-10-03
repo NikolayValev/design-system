@@ -30,28 +30,51 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "tsup && pnpm run build:css",
+    "build": "tsup && pnpm run build:css && pnpm run build:fonts && pnpm run build:vision-docs",
     "build:css": "node scripts/build-css.js",
+    "build:fonts": "node scripts/build-fonts.js",
+    "build:vision-docs": "node scripts/build-vision-docs.mjs",
     "test:vision-registry": "pnpm run build && node scripts/verify-expanded-visions.mjs",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vitest run",
     "test:watch": "vitest",
-    "validate": "node scripts/validate-exports.js"
+    "validate": "node scripts/validate-exports.js && node scripts/validate-design-floors.mjs"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
+    "@fontsource-variable/baloo-2": "^5.3.0",
+    "@fontsource-variable/cormorant-garamond": "^5.3.0",
+    "@fontsource-variable/fira-code": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/fredoka": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/noto-sans": "^5.3.0",
+    "@fontsource-variable/noto-serif": "^5.3.0",
+    "@fontsource-variable/nunito-sans": "^5.3.0",
+    "@fontsource-variable/orbitron": "^5.3.0",
+    "@fontsource-variable/playfair-display": "^5.3.0",
+    "@fontsource-variable/sora": "^5.3.0",
+    "@fontsource-variable/source-sans-3": "^5.3.0",
+    "@fontsource-variable/source-serif-4": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@fontsource/archivo-black": "^5.3.0",
+    "@fontsource/dm-serif-display": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/vt323": "^5.3.0",
     "@repo/config": "workspace:*",
     "@types/node": "^24.3.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwindcss": "^3.4.0",
+    "tailwindcss": "^4.1.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^2.1.0"
@@ -67,8 +90,5 @@
     "typescript",
     "tailwind",
     "design-tokens"
-  ],
-  "eslintConfig": {
-    "extends": "@repo/config/eslint-design-system.config.js"
-  }
+  ]
 }

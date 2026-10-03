@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -23,9 +23,42 @@
   --vde-font-mono: var(--font-family-mono, monospace);
   --vde-typography-scale-body: 1;
   --vde-typography-scale-display: 1;
+  /*
+   * The type scale. Themes do not author these directly — `vde-core/css.ts`
+   * multiplies the core scale by the theme's body/display multipliers and clamps
+   * the result to a floor, so no theme can shrink interactive text below 14px or
+   * body copy below 16px. The values here are the unmultiplied defaults.
+   */
+  --vde-font-size-caption: 0.8125rem;
+  --vde-font-size-ui: 0.875rem;
+  --vde-font-size-body: 1rem;
+  --vde-font-size-lead: 1.125rem;
+  --vde-font-size-title: 1.5rem;
+  --vde-font-size-headline: 2.25rem;
+  --vde-font-size-display: 3rem;
+  /* The enforced interactive minimum. Controls never resolve smaller than this. */
+  --vde-font-size-min-interactive: 0.875rem;
+  --vde-line-height-ui: 1.25;
   --vde-line-height-tight: 1.25;
   --vde-line-height-normal: 1.5;
   --vde-line-height-relaxed: 1.75;
+  /*
+   * Line length. Prose slots cap at this so a wide container does not produce
+   * 140-character lines; 68ch sits inside the 65-75 readable band.
+   */
+  --vde-measure: 68ch;
+  /*
+   * Spacing is structural, not identity — it is the same in every vision, which
+   * is why it lives here rather than in the theme contract. Eight steps, 4px base.
+   */
+  --vde-space-2xs: 0.25rem;
+  --vde-space-xs: 0.5rem;
+  --vde-space-sm: 0.75rem;
+  --vde-space-md: 1rem;
+  --vde-space-lg: 1.5rem;
+  --vde-space-xl: 2rem;
+  --vde-space-2xl: 3rem;
+  --vde-space-3xl: 4rem;
   --vde-letter-spacing-tight: -0.01em;
   --vde-letter-spacing-normal: 0em;
   --vde-letter-spacing-wide: 0.03em;
@@ -34,7 +67,11 @@
   --vde-surface-texture: none;
   --vde-surface-grain: 0;
   --vde-border-width: 1px;
-  --vde-boundary-radius: 0.5rem;
+  --vde-radius-surface: 0.5rem;
+  --vde-radius-control: 0.375rem;
+  --vde-radius-pill: 9999px;
+  /* Retained alias for the single pre-v3 radius token; resolves to the surface step. */
+  --vde-boundary-radius: var(--vde-radius-surface);
   --vde-boundary-sharpness: 0.5;
   --vde-shadow-hard: none;
   --vde-shadow-neon: none;
@@ -49,6 +86,14 @@
   --vde-editorial-margin-block: clamp(1.2rem, 4vw, 3rem);
   --vde-editorial-margin-inline: 0rem;
   --vde-editorial-glow: 0 0 0 rgba(0, 0, 0, 0);
+  --vde-editorial-color: var(--vde-color-foreground);
+  --vde-editorial-background: transparent;
+  --vde-editorial-padding-inline: 0;
+  --vde-editorial-padding-block: 0;
+  --vde-editorial-text-transform: none;
+  --vde-editorial-weight: 600;
+  --vde-editorial-tracking: var(--vde-letter-spacing-tight);
+  --vde-gallery-halo: none;
   --vde-gallery-material-background: var(--vde-color-surface);
   --vde-gallery-paper-overlay-opacity: 0;
   --vde-gallery-offset-shadow: var(--vde-shadow-ambient);
@@ -60,8 +105,17 @@
   --vde-atmosphere-archive-opacity: 0.08;
   --vde-atmosphere-noise-opacity: 0.04;
   --vde-atmosphere-nexus-opacity: 0.35;
-  --vde-atmosphere-mesh-gradient: radial-gradient(circle at 18% 14%, rgba(100, 100, 100, 0.2), transparent 45%),
-    radial-gradient(circle at 84% 76%, rgba(140, 140, 140, 0.14), transparent 40%);
+  --vde-atmosphere-mesh-gradient:
+    radial-gradient(
+      circle at 18% 14%,
+      rgba(100, 100, 100, 0.2),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 84% 76%,
+      rgba(140, 140, 140, 0.14),
+      transparent 40%
+    );
   --vde-atmosphere-motion: none;
   --vde-card-bob-animation: none;
   --vde-component-tilt: -1deg;
@@ -75,6 +129,13 @@
 @theme inline {
   --font-sans: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
+  /*
+   * So `font-serif` resolves to the active vision's display face rather than to
+   * the browser's default serif. Visions whose display face is a sans (swiss,
+   * brutalist, synthwave) simply get that sans, which is the correct answer for
+   * them — the utility means "the display face", not "a serif".
+   */
+  --font-serif: var(--vde-font-display);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -99,10 +160,11 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: var(--vde-radius-control);
+  --radius-md: var(--vde-radius-control);
+  --radius-lg: var(--vde-radius-surface);
+  --radius-xl: var(--vde-radius-surface);
+  --radius-full: var(--vde-radius-pill);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -111,6 +173,14 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --spacing-2xs: var(--vde-space-2xs);
+  --spacing-xs: var(--vde-space-xs);
+  --spacing-sm: var(--vde-space-sm);
+  --spacing-md: var(--vde-space-md);
+  --spacing-lg: var(--vde-space-lg);
+  --spacing-xl: var(--vde-space-xl);
+  --spacing-2xl: var(--vde-space-2xl);
+  --spacing-3xl: var(--vde-space-3xl);
 }
 
 @layer base {
@@ -144,5 +214,30 @@
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+/*
+ * No vision may express itself through motion a user cannot stop. This kills the
+ * ambient drift and card bob outright and collapses every transition token, so a
+ * theme cannot reintroduce looping motion by setting a token.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --vde-atmosphere-motion: none;
+    --vde-card-bob-animation: none;
+    --vde-motion-duration-fast: 1ms;
+    --vde-motion-duration-normal: 1ms;
+    --vde-motion-duration-slow: 1ms;
+    --vde-nav-orb-bounce-duration: 1ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
   }
 }

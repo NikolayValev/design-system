@@ -1,5 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import { dataSources } from './sources';
+import { describe, it, expect } from "vitest";
+import { visionThemes } from "@nikolayvalev/design-system";
+import { dataSources } from "./sources";
+
+/*
+ * Derived from the catalog, never hardcoded. These assertions used to say 12,
+ * which meant adding a thirteenth vision broke two tests that had nothing to do
+ * with the change — and because this package's tests did not run in CI, nothing
+ * noticed. The count is not the contract; the shape is.
+ */
+const VISION_COUNT = visionThemes.length;
 
 const byId = (id: string) => {
   const s = dataSources.find((x) => x.id === id);
@@ -11,56 +20,71 @@ const isSeries = (v: unknown): v is { label: string; value: number }[] =>
   Array.isArray(v) &&
   v.every((d) => {
     const o = d as { label?: unknown; value?: unknown };
-    return typeof o.label === 'string' && typeof o.value === 'number';
+    return typeof o.label === "string" && typeof o.value === "number";
   });
 
-describe('reference data sources', () => {
-  it('exposes the expected ids, each with a description', () => {
+describe("reference data sources", () => {
+  it("exposes the expected ids, each with a description", () => {
     const ids = dataSources.map((s) => s.id).sort();
     expect(ids).toEqual(
       [
-        'bundle.sizes',
-        'catalog.counts',
-        'components.count',
-        'pages.count',
-        'sections.count',
-        'stories.count',
-        'visions.byFamily',
-        'visions.list',
+        "bundle.sizes",
+        "catalog.counts",
+        "components.count",
+        "pages.count",
+        "sections.count",
+        "stories.count",
+        "visions.byFamily",
+        "visions.list",
       ].sort(),
     );
     dataSources.forEach((s) => expect(s.description.length).toBeGreaterThan(0));
   });
 
-  it('catalog.counts returns a chart-ready series', async () => {
-    const out = await byId('catalog.counts').load();
+  it("catalog.counts returns a chart-ready series", async () => {
+    const out = await byId("catalog.counts").load();
     expect(isSeries(out)).toBe(true);
-    expect((out as { label: string }[]).map((d) => d.label)).toEqual(['Components', 'Sections', 'Pages']);
+    expect((out as { label: string }[]).map((d) => d.label)).toEqual([
+      "Components",
+      "Sections",
+      "Pages",
+    ]);
   });
 
-  it('components.count returns a positive count object', async () => {
-    expect(await byId('components.count').load()).toMatchObject({ count: expect.any(Number) });
-    expect(((await byId('components.count').load()) as { count: number }).count).toBeGreaterThan(0);
+  it("components.count returns a positive count object", async () => {
+    expect(await byId("components.count").load()).toMatchObject({
+      count: expect.any(Number),
+    });
+    expect(
+      ((await byId("components.count").load()) as { count: number }).count,
+    ).toBeGreaterThan(0);
   });
 
-  it('visions.list returns all 12 visions with id/name/family', async () => {
-    const out = (await byId('visions.list').load()) as { id: string; name: string; family: string }[];
-    expect(out.length).toBe(12);
+  it("visions.list returns every vision with id/name/family", async () => {
+    const out = (await byId("visions.list").load()) as {
+      id: string;
+      name: string;
+      family: string;
+    }[];
+    expect(out.length).toBe(VISION_COUNT);
     out.forEach((v) => {
-      expect(typeof v.id).toBe('string');
-      expect(typeof v.name).toBe('string');
-      expect(typeof v.family).toBe('string');
+      expect(typeof v.id).toBe("string");
+      expect(typeof v.name).toBe("string");
+      expect(typeof v.family).toBe("string");
     });
   });
 
-  it('visions.byFamily returns a chart-ready series summing to 12', async () => {
-    const out = (await byId('visions.byFamily').load()) as { label: string; value: number }[];
+  it("visions.byFamily returns a chart-ready series summing to the catalog size", async () => {
+    const out = (await byId("visions.byFamily").load()) as {
+      label: string;
+      value: number;
+    }[];
     expect(isSeries(out)).toBe(true);
-    expect(out.reduce((n, d) => n + d.value, 0)).toBe(12);
+    expect(out.reduce((n, d) => n + d.value, 0)).toBe(VISION_COUNT);
   });
 
-  it('bundle.sizes returns a non-empty chart-ready series', async () => {
-    const out = await byId('bundle.sizes').load();
+  it("bundle.sizes returns a non-empty chart-ready series", async () => {
+    const out = await byId("bundle.sizes").load();
     expect(isSeries(out)).toBe(true);
     expect((out as unknown[]).length).toBeGreaterThan(0);
   });

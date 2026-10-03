@@ -51,3 +51,8 @@ crash.log
 .storybook-dev.log
 .storybook-dev.err.log
 docs/linked-contract-readiness.md
+
+# Impeccable runtime state (the design record itself is committed)
+.impeccable/live/sessions/
+.impeccable/live/roots.json
+.impeccable/live/inject-journal.json

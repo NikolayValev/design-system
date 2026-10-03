@@ -1,32 +1,37 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@nikolayvalev/design-system';
-import { ArrowUpRight, Sparkles, Trash2, Check } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@nikolayvalev/design-system";
+import { ArrowUpRight, Sparkles, Trash2, Check } from "lucide-react";
 
 const meta = {
-  title: 'Components/Button',
+  title: "Components/Button",
   component: Button,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     storyCaption:
-      'Token-driven primitive. Hover, focus, and shadow physics shift across visions — switch the toolbar to feel each archetype.',
-    docs: { description: { component: 'Token-driven action primitive with five variants (default, secondary, destructive, outline, ghost) and three sizes. All visual properties derive from the active VDE theme.' } },
+      "Token-driven primitive. Hover, focus, and shadow physics shift across visions — switch the toolbar to feel each archetype.",
+    docs: {
+      description: {
+        component:
+          "Token-driven action primitive with five variants (default, secondary, destructive, outline, ghost) and three sizes. All visual properties derive from the active VDE theme.",
+      },
+    },
   },
   args: {
-    children: 'Action',
-    variant: 'default',
-    size: 'md',
+    children: "Action",
+    variant: "default",
+    size: "md",
   },
   argTypes: {
     variant: {
-      control: 'radio',
-      options: ['default', 'secondary', 'destructive', 'outline', 'ghost'],
+      control: "radio",
+      options: ["default", "secondary", "destructive", "outline", "ghost"],
     },
     size: {
-      control: 'radio',
-      options: ['sm', 'md', 'lg'],
+      control: "radio",
+      options: ["sm", "md", "lg"],
     },
     loading: {
-      control: 'boolean',
+      control: "boolean",
     },
   },
 } satisfies Meta<typeof Button>;
@@ -35,16 +40,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const sectionLabel =
-  'text-[10px] uppercase tracking-[0.28em] opacity-60 [font-family:var(--vde-font-mono)]';
+  "[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)] [font-family:var(--vde-font-mono)]";
 const sectionTitle =
-  'text-xl md:text-2xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]';
+  "text-xl md:text-2xl [font-family:var(--vde-font-display)] [letter-spacing:var(--vde-letter-spacing-tight)]";
 const card =
-  'relative rounded-[var(--vde-boundary-radius)] border [border-color:var(--vde-color-border)] bg-[var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 md:p-8';
+  "relative [border-radius:var(--vde-radius-surface)] border [border-color:var(--vde-color-border)] bg-[var(--vde-color-surface)] [color:var(--vde-color-surface-foreground)] p-6 md:p-8";
 
 export const Playground: Story = {};
 
 export const Gallery: Story = {
-  render: args => (
+  render: (args) => (
     <div className="space-y-10">
       <section className={card}>
         <div className="flex items-end justify-between gap-4 border-b pb-4 [border-color:var(--vde-color-border)]">
@@ -52,17 +57,22 @@ export const Gallery: Story = {
             <p className={sectionLabel}>01 — Variants</p>
             <h3 className={`${sectionTitle} mt-1`}>Five tones, one contract</h3>
           </div>
-          <p className="hidden max-w-[28ch] text-xs leading-relaxed opacity-70 md:block">
-            Each variant maps to a different semantic token pair — never a hardcoded color.
+          <p className="hidden max-w-[28ch] [font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)] md:block">
+            Each variant maps to a different semantic token pair — never a
+            hardcoded color.
           </p>
         </div>
         <div className="mt-6 grid gap-4 md:grid-cols-5">
-          {(['default', 'secondary', 'destructive', 'outline', 'ghost'] as const).map(variant => (
+          {(
+            ["default", "secondary", "destructive", "outline", "ghost"] as const
+          ).map((variant) => (
             <div key={variant} className="space-y-3">
               <Button {...args} variant={variant} className="w-full">
                 {variant.charAt(0).toUpperCase() + variant.slice(1)}
               </Button>
-              <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">{variant}</p>
+              <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+                {variant}
+              </p>
             </div>
           ))}
         </div>
@@ -72,10 +82,13 @@ export const Gallery: Story = {
         <div className="flex items-end justify-between gap-4 border-b pb-4 [border-color:var(--vde-color-border)]">
           <div>
             <p className={sectionLabel}>02 — Scale</p>
-            <h3 className={`${sectionTitle} mt-1`}>Three weights of presence</h3>
+            <h3 className={`${sectionTitle} mt-1`}>
+              Three weights of presence
+            </h3>
           </div>
-          <p className="hidden max-w-[28ch] text-xs leading-relaxed opacity-70 md:block">
-            Sizes track the typography scale so density stays harmonious across surfaces.
+          <p className="hidden max-w-[28ch] [font-size:var(--vde-font-size-ui)] leading-relaxed [color:var(--vde-color-muted-foreground)] md:block">
+            Sizes track the typography scale so density stays harmonious across
+            surfaces.
           </p>
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-5">
@@ -118,7 +131,9 @@ export const Gallery: Story = {
         <div className="flex items-end justify-between gap-4 border-b pb-4 [border-color:var(--vde-color-border)]">
           <div>
             <p className={sectionLabel}>04 — States</p>
-            <h3 className={`${sectionTitle} mt-1`}>Quiet states, deliberate motion</h3>
+            <h3 className={`${sectionTitle} mt-1`}>
+              Quiet states, deliberate motion
+            </h3>
           </div>
         </div>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -126,19 +141,25 @@ export const Gallery: Story = {
             <Button {...args} className="w-full">
               Idle
             </Button>
-            <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">rest</p>
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              rest
+            </p>
           </div>
           <div className="space-y-2">
             <Button {...args} disabled className="w-full">
               Disabled
             </Button>
-            <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">disabled</p>
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              disabled
+            </p>
           </div>
           <div className="space-y-2">
             <Button {...args} className="w-full" loading>
               Loading
             </Button>
-            <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">pending</p>
+            <p className="[font-size:var(--vde-font-size-caption)] uppercase [letter-spacing:var(--vde-letter-spacing-wide)] [color:var(--vde-color-muted-foreground)]">
+              pending
+            </p>
           </div>
         </div>
       </section>
@@ -147,7 +168,7 @@ export const Gallery: Story = {
 };
 
 export const VariantSet: Story = {
-  render: args => (
+  render: (args) => (
     <div className="flex flex-wrap gap-3">
       <Button {...args} variant="default">
         Default

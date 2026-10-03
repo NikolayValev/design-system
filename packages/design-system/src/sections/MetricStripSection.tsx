@@ -1,6 +1,6 @@
-import React from 'react';
-import { StatChip } from '../components/StatChip';
-import { SectionShell } from '../components/SectionShell';
+import React from "react";
+import { StatChip } from "../components/StatChip";
+import { SectionShell } from "../components/SectionShell";
 
 export interface MetricSectionItem {
   id: string;
@@ -18,14 +18,18 @@ export interface MetricStripSectionProps extends React.HTMLAttributes<HTMLElemen
 /**
  * MetricStripSection - dense KPI rail for product and pricing pages.
  */
-export const MetricStripSection = React.forwardRef<HTMLElement, MetricStripSectionProps>(
+export const MetricStripSection = React.forwardRef<
+  HTMLElement,
+  MetricStripSectionProps
+>(
   (
     {
-      className = '',
+      className = "",
       items,
-      sectionDescription = 'Single-row or wrapped metric summaries for launch pages.',
-      sectionEyebrow = 'Signal',
-      sectionTitle = 'Core metrics at a glance',
+      sectionDescription = "Single-row or wrapped metric summaries for launch pages.",
+      // No default — see FeatureGridSection.
+      sectionEyebrow,
+      sectionTitle = "Core metrics at a glance",
       ...props
     },
     ref,
@@ -41,7 +45,7 @@ export const MetricStripSection = React.forwardRef<HTMLElement, MetricStripSecti
         {...props}
       >
         <ul className="grid grid-cols-1 gap-3 p-0 md:grid-cols-3">
-          {items.map(item => (
+          {items.map((item) => (
             <StatChip key={item.id} label={item.label} value={item.value} />
           ))}
         </ul>
@@ -50,4 +54,4 @@ export const MetricStripSection = React.forwardRef<HTMLElement, MetricStripSecti
   },
 );
 
-MetricStripSection.displayName = 'MetricStripSection';
+MetricStripSection.displayName = "MetricStripSection";

@@ -1,8 +1,10 @@
-import { expect, test } from '@playwright/test';
-import { visionThemes } from '@nikolayvalev/design-system';
+import { expect, test } from "@playwright/test";
+import { visionThemes } from "@nikolayvalev/design-system";
 
-const coreVisions = ['museum', 'brutalist', 'immersive'] as const;
-const supportedVisions = Array.from(new Set(visionThemes.map(theme => theme.id)));
+const coreVisions = ["museum", "brutalist", "immersive"] as const;
+const supportedVisions = Array.from(
+  new Set(visionThemes.map((theme) => theme.id)),
+);
 
 interface ProbeResult {
   appliedVision: string | null;
@@ -23,9 +25,12 @@ function storyUrl(storyId: string, vision: string): string {
   return `/iframe.html?id=${storyId}&viewMode=story&globals=vision:${vision}`;
 }
 
-async function probe(page: Parameters<typeof test>[1]['page'], selector: string): Promise<ProbeResult> {
+async function probe(
+  page: Parameters<typeof test>[1]["page"],
+  selector: string,
+): Promise<ProbeResult> {
   await page.waitForSelector(selector);
-  return page.evaluate(probeSelector => {
+  return page.evaluate((probeSelector) => {
     const root = document.querySelector(probeSelector) as HTMLElement | null;
     if (!root) {
       throw new Error(`Probe target not found: ${probeSelector}`);
@@ -35,103 +40,152 @@ async function probe(page: Parameters<typeof test>[1]['page'], selector: string)
     const mediaContent = root.firstElementChild
       ? window.getComputedStyle(root.firstElementChild as HTMLElement)
       : null;
-    const firstOrbItem = root.querySelector('ul li:first-child button, ul li:first-child a') as
-      | HTMLElement
-      | null;
-    const firstOrbItemStyle = firstOrbItem ? window.getComputedStyle(firstOrbItem) : null;
+    const firstOrbItem = root.querySelector(
+      "ul li:first-child button, ul li:first-child a",
+    ) as HTMLElement | null;
+    const firstOrbItemStyle = firstOrbItem
+      ? window.getComputedStyle(firstOrbItem)
+      : null;
 
     return {
-      appliedVision: document.documentElement.getAttribute('data-vde-vision'),
+      appliedVision: document.documentElement.getAttribute("data-vde-vision"),
       backgroundColor: rootStyle.backgroundColor,
-      backdropFilter: rootStyle.backdropFilter || (rootStyle as CSSStyleDeclaration & { webkitBackdropFilter?: string }).webkitBackdropFilter || 'none',
+      backdropFilter:
+        rootStyle.backdropFilter ||
+        (rootStyle as CSSStyleDeclaration & { webkitBackdropFilter?: string })
+          .webkitBackdropFilter ||
+        "none",
       boxShadow: rootStyle.boxShadow,
-      contentFilter: mediaContent?.filter ?? 'none',
-      hasImmersiveLayer: Boolean(root.querySelector(':scope > span[class*="radial-gradient"]')),
-      hasLightLeak: Boolean(root.querySelector(':scope > span[class*="vde-media-light-leak"]')),
-      hasPaperOverlay: Boolean(root.querySelector(':scope > span[class*="vde-gallery-paper-overlay-opacity"]')),
-      itemTransitionDuration: firstOrbItemStyle?.transitionDuration.split(',')[0]?.trim() ?? '',
+      contentFilter: mediaContent?.filter ?? "none",
+      // The halo used to be an inline radial-gradient in the class string, so the
+      // probe matched on that text. It is a token now, so match the token.
+      hasImmersiveLayer: Boolean(
+        root.querySelector(':scope > span[class*="vde-gallery-halo"]'),
+      ),
+      hasLightLeak: Boolean(
+        root.querySelector(':scope > span[class*="vde-media-light-leak"]'),
+      ),
+      hasPaperOverlay: Boolean(
+        root.querySelector(
+          ':scope > span[class*="vde-gallery-paper-overlay-opacity"]',
+        ),
+      ),
+      itemTransitionDuration:
+        firstOrbItemStyle?.transitionDuration.split(",")[0]?.trim() ?? "",
       marginTop: rootStyle.marginTop,
       textShadow: rootStyle.textShadow,
-      topLevelSpanCount: root.querySelectorAll(':scope > span').length,
+      topLevelSpanCount: root.querySelectorAll(":scope > span").length,
     };
   }, selector);
 }
 
-test.describe('vision switch consistency', () => {
-  test('all registered visions are selectable from Storybook globals', async ({ page }) => {
+test.describe("vision switch consistency", () => {
+  test("all registered visions are selectable from Storybook globals", async ({
+    page,
+  }) => {
     test.setTimeout(Math.max(180000, supportedVisions.length * 8000));
 
     for (const vision of supportedVisions) {
-      await page.goto(storyUrl('components-button--playground', vision), { waitUntil: 'domcontentloaded' });
+      await page.goto(storyUrl("components-button--playground", vision), {
+        waitUntil: "domcontentloaded",
+      });
       await expect
         .poll(
-          async () => page.evaluate(() => document.documentElement.getAttribute('data-vde-vision')),
-          { timeout: 5000 }
+          async () =>
+            page.evaluate(() =>
+              document.documentElement.getAttribute("data-vde-vision"),
+            ),
+          { timeout: 5000 },
         )
         .toBe(vision);
     }
   });
 
-  test('EditorialHeader reacts to all core visions', async ({ page }) => {
+  test("EditorialHeader reacts to all core visions", async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('showcase-editorialheader--playground', vision), { waitUntil: 'networkidle' });
-      const result = await probe(page, '[data-vde-component="editorial-header"]');
+      await page.goto(
+        storyUrl("showcase-editorialheader--playground", vision),
+        { waitUntil: "networkidle" },
+      );
+      const result = await probe(
+        page,
+        '[data-vde-component="editorial-header"]',
+      );
 
       expect(result.appliedVision).toBe(vision);
 
-      if (vision === 'museum') {
-        expect(result.marginTop).not.toBe('0px');
-      } else if (vision === 'brutalist') {
-        expect(result.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+      if (vision === "museum") {
+        expect(result.marginTop).not.toBe("0px");
+      } else if (vision === "brutalist") {
+        expect(result.backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
       } else {
-        expect(result.textShadow).not.toBe('none');
+        expect(result.textShadow).not.toBe("none");
       }
     }
   });
 
-  test('GalleryStage material ornaments shift by vision', async ({ page }) => {
+  test("GalleryStage material ornaments shift by vision", async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('showcase-gallerystage--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl("showcase-gallerystage--playground", vision), {
+        waitUntil: "networkidle",
+      });
       const result = await probe(page, '[data-vde-component="gallery-stage"]');
 
       expect(result.appliedVision).toBe(vision);
 
-      if (vision === 'museum') {
+      if (vision === "museum") {
         expect(result.hasPaperOverlay).toBeTruthy();
-      } else if (vision === 'brutalist') {
-        expect(result.boxShadow).toContain('4px 4px');
+      } else if (vision === "brutalist") {
+        expect(result.boxShadow).toContain("4px 4px");
       } else {
-        expect(result.backdropFilter).toContain('blur(');
+        /*
+         * This used to assert that backdropFilter contained `blur(` for every
+         * non-museum, non-brutalist vision — i.e. the test required glassmorphism
+         * of the whole catalog. Blur is immersive's treatment, not a universal,
+         * so assert it where it is the intent and assert its absence elsewhere.
+         */
+        expect(vision).toBe("immersive");
+        expect(result.backdropFilter).toMatch(/blur\((?!0px\))/);
         expect(result.hasImmersiveLayer).toBeTruthy();
       }
     }
   });
 
-  test('MediaFrame effects map to each vision', async ({ page }) => {
+  test("MediaFrame effects map to each vision", async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('showcase-mediaframe--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl("showcase-mediaframe--playground", vision), {
+        waitUntil: "networkidle",
+      });
       const result = await probe(page, '[data-vde-component="media-frame"]');
 
       expect(result.appliedVision).toBe(vision);
 
-      if (vision === 'museum') {
-        expect(result.boxShadow).toContain('inset');
-      } else if (vision === 'brutalist') {
-        expect(result.contentFilter).not.toBe('none');
+      if (vision === "museum") {
+        expect(result.boxShadow).toContain("inset");
+      } else if (vision === "brutalist") {
+        expect(result.contentFilter).not.toBe("none");
       } else {
         expect(result.hasLightLeak).toBeTruthy();
       }
     }
   });
 
-  test('AtmosphereProvider mode auto resolves archive vs nexus', async ({ page }) => {
+  test("AtmosphereProvider mode auto resolves archive vs nexus", async ({
+    page,
+  }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('showcase-atmosphereprovider--playground', vision), { waitUntil: 'networkidle' });
-      const result = await probe(page, '[data-vde-component="atmosphere-provider"]');
+      await page.goto(
+        storyUrl("showcase-atmosphereprovider--playground", vision),
+        { waitUntil: "networkidle" },
+      );
+      const result = await probe(
+        page,
+        '[data-vde-component="atmosphere-provider"]',
+      );
 
       expect(result.appliedVision).toBe(vision);
 
-      if (vision === 'immersive') {
+      if (vision === "immersive") {
         expect(result.topLevelSpanCount).toBe(1);
       } else {
         expect(result.topLevelSpanCount).toBe(2);
@@ -139,28 +193,55 @@ test.describe('vision switch consistency', () => {
     }
   });
 
-  test('NavigationOrb physics differ by vision', async ({ page }) => {
+  test("NavigationOrb physics differ by vision", async ({ page }) => {
     for (const vision of coreVisions) {
-      await page.goto(storyUrl('showcase-navigationorb--playground', vision), { waitUntil: 'networkidle' });
+      await page.goto(storyUrl("showcase-navigationorb--playground", vision), {
+        waitUntil: "networkidle",
+      });
       const result = await probe(page, '[data-vde-component="navigation-orb"]');
 
       expect(result.appliedVision).toBe(vision);
 
-      if (vision === 'brutalist') {
-        expect(result.itemTransitionDuration).toBe('0s');
+      if (vision === "brutalist") {
+        expect(result.itemTransitionDuration).toBe("0s");
       } else {
-        expect(result.itemTransitionDuration).not.toBe('0s');
+        expect(result.itemTransitionDuration).not.toBe("0s");
       }
     }
   });
 
-  test('mode toggle swaps the active palette', async ({ page }) => {
-    const read = (n: string) => page.evaluate(name => getComputedStyle(document.documentElement).getPropertyValue(name).trim(), n);
-    await page.goto('/iframe.html?id=components-button--playground&viewMode=story&globals=mode:dark', { waitUntil: 'networkidle' });
-    await expect.poll(() => page.evaluate(() => document.documentElement.getAttribute('data-vde-mode'))).toBe('dark');
-    const darkBg = await read('--vde-color-background');
-    await page.goto('/iframe.html?id=components-button--playground&viewMode=story&globals=mode:light', { waitUntil: 'networkidle' });
-    await expect.poll(() => page.evaluate(() => document.documentElement.getAttribute('data-vde-mode'))).toBe('light');
-    expect(await read('--vde-color-background')).not.toBe(darkBg);
+  test("mode toggle swaps the active palette", async ({ page }) => {
+    const read = (n: string) =>
+      page.evaluate(
+        (name) =>
+          getComputedStyle(document.documentElement)
+            .getPropertyValue(name)
+            .trim(),
+        n,
+      );
+    await page.goto(
+      "/iframe.html?id=components-button--playground&viewMode=story&globals=mode:dark",
+      { waitUntil: "networkidle" },
+    );
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          document.documentElement.getAttribute("data-vde-mode"),
+        ),
+      )
+      .toBe("dark");
+    const darkBg = await read("--vde-color-background");
+    await page.goto(
+      "/iframe.html?id=components-button--playground&viewMode=story&globals=mode:light",
+      { waitUntil: "networkidle" },
+    );
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          document.documentElement.getAttribute("data-vde-mode"),
+        ),
+      )
+      .toBe("light");
+    expect(await read("--vde-color-background")).not.toBe(darkBg);
   });
 });

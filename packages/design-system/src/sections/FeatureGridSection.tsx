@@ -1,6 +1,6 @@
-import React from 'react';
-import { FeatureTile } from '../components/FeatureTile';
-import { SectionShell } from '../components/SectionShell';
+import React from "react";
+import { FeatureTile } from "../components/FeatureTile";
+import { SectionShell } from "../components/SectionShell";
 
 export interface FeatureGridItem {
   description: React.ReactNode;
@@ -19,14 +19,19 @@ export interface FeatureGridSectionProps extends React.HTMLAttributes<HTMLElemen
 /**
  * FeatureGridSection - responsive section for value proposition blocks.
  */
-export const FeatureGridSection = React.forwardRef<HTMLElement, FeatureGridSectionProps>(
+export const FeatureGridSection = React.forwardRef<
+  HTMLElement,
+  FeatureGridSectionProps
+>(
   (
     {
-      className = '',
+      className = "",
       items,
-      sectionDescription = 'Composable building blocks that inherit your active token profile.',
-      sectionEyebrow = 'Capabilities',
-      sectionTitle = 'Production-ready sections',
+      sectionDescription = "Composable building blocks that inherit your active token profile.",
+      // No default. A placeholder kicker above every feature grid was generic
+      // marketing copy shipped as a component default.
+      sectionEyebrow,
+      sectionTitle = "Production-ready sections",
       ...props
     },
     ref,
@@ -42,8 +47,13 @@ export const FeatureGridSection = React.forwardRef<HTMLElement, FeatureGridSecti
         {...props}
       >
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {items.map(item => (
-            <FeatureTile key={item.id} icon={item.icon} summary={item.description} heading={item.title} />
+          {items.map((item) => (
+            <FeatureTile
+              key={item.id}
+              icon={item.icon}
+              summary={item.description}
+              heading={item.title}
+            />
           ))}
         </div>
       </SectionShell>
@@ -51,4 +61,4 @@ export const FeatureGridSection = React.forwardRef<HTMLElement, FeatureGridSecti
   },
 );
 
-FeatureGridSection.displayName = 'FeatureGridSection';
+FeatureGridSection.displayName = "FeatureGridSection";

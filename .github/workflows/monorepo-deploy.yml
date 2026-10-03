@@ -68,6 +68,12 @@ jobs:
       - name: Bundle design-system sources into MCP server
         if: steps.check.outputs.exists == 'true' && matrix.app.id == 'design-system-mcp'
         run: |
+          # vde-core has to be here: AestheticOrnaments imports it, Card and Layout
+          # import AestheticOrnaments, so without it every Card bundle the hosted
+          # MCP hands an agent contains an import that does not resolve. Verified
+          # by scripts/ci/validate-mcp-bundles.mjs, which builds every bundle
+          # against exactly this directory shape.
+          cp -r packages/design-system/src/vde-core    packages/mcp-server/design-system-src/
           cp -r packages/design-system/src/vde-themes  packages/mcp-server/design-system-src/
           cp -r packages/design-system/src/components  packages/mcp-server/design-system-src/
           cp -r packages/design-system/src/sections    packages/mcp-server/design-system-src/

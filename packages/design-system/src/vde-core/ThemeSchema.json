@@ -85,7 +85,19 @@
         },
         "boundaryLogic": {
           "type": "object",
-          "required": ["borderWeight", "radius", "sharpness"]
+          "required": ["borderWeight", "radius", "sharpness"],
+          "properties": {
+            "radius": {
+              "type": "object",
+              "required": ["surface", "control", "pill"],
+              "additionalProperties": false,
+              "properties": {
+                "surface": { "type": "string" },
+                "control": { "type": "string" },
+                "pill": { "type": "string" }
+              }
+            }
+          }
         },
         "shadowLightEngine": {
           "type": "object",

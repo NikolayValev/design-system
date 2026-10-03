@@ -1,0 +1,21 @@
+# Build output
+dist/
+.next/
+.turbo/
+**/dist/
+**/.next/
+**/.turbo/
+node_modules/
+
+# Generated, and formatted by their generator rather than by prettier. Running
+# prettier over these risks producing output that differs from a fresh build,
+# which would fail the "Vision docs are up to date" check in CI for no reason.
+docs/visions/
+docs/linked-contract-readiness.md
+apps/command-panel/src/data/metrics.generated.json
+packages/mcp-server/design-system-src/
+
+# Playwright artifacts
+**/test-results/
+**/playwright-report/
+**/*.snap

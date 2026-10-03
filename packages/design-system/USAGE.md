@@ -15,7 +15,7 @@ npx @nikolayvalev/design-system@latest init
 ```
 
 In interactive terminals, the CLI shows an arrow-key module selector (`themes`, `components`, `pages`).
-If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 12 visions.
+If `themes` is selected, it opens a vision picker with color swatches and vibe descriptions for all 13 visions.
 For non-interactive runs, pass a vision directly:
 
 ```bash
@@ -33,15 +33,22 @@ Install components separately as source files through MCP `get_component_bundle`
 
 ```tsx
 // app/layout.tsx
-import '@nikolayvalev/design-system/styles/editorial.css';
+import "@nikolayvalev/design-system/styles/editorial.css";
+import "@nikolayvalev/design-system/styles/fonts/editorial.css";
 // Choose one vision — see Vision IDs section below for all options
-import { VisionProvider, defaultVisionRegistry } from '@nikolayvalev/design-system';
+import {
+  VisionProvider,
+  defaultVisionRegistry,
+} from "@nikolayvalev/design-system";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <VisionProvider registry={defaultVisionRegistry} defaultVisionId="editorial">
+        <VisionProvider
+          registry={defaultVisionRegistry}
+          defaultVisionId="editorial"
+        >
           {children}
         </VisionProvider>
       </body>
@@ -66,9 +73,14 @@ The vision CSS emits `--primary`, `--background`, `--foreground`, and other shad
 
 ```tsx
 // app/page.tsx
-import { Button } from '@/design-system/components/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/design-system/components/Card';
-import { Input } from '@/design-system/components/Input';
+import { Button } from "@/design-system/components/Button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/design-system/components/Card";
+import { Input } from "@/design-system/components/Input";
 
 export default function HomePage() {
   return (
@@ -96,13 +108,13 @@ export default function HomePage() {
 
 ```tsx
 // app/page.tsx
-import { AtmosphereProvider } from '@/design-system/components/AtmosphereProvider';
-import { EditorialHeader } from '@/design-system/components/EditorialHeader';
-import { GalleryStage } from '@/design-system/components/GalleryStage';
-import { MediaFrame } from '@/design-system/components/MediaFrame';
-import { NavigationOrb } from '@/design-system/components/NavigationOrb';
-import { VisionProvider } from '@/design-system/vde-core/context';
-import { defaultVisionRegistry } from '@/design-system/vde-themes';
+import { AtmosphereProvider } from "@/design-system/components/AtmosphereProvider";
+import { EditorialHeader } from "@/design-system/components/EditorialHeader";
+import { GalleryStage } from "@/design-system/components/GalleryStage";
+import { MediaFrame } from "@/design-system/components/MediaFrame";
+import { NavigationOrb } from "@/design-system/components/NavigationOrb";
+import { VisionProvider } from "@/design-system/vde-core/context";
+import { defaultVisionRegistry } from "@/design-system/vde-themes";
 
 export default function VisionaryPage() {
   return (
@@ -120,9 +132,9 @@ export default function VisionaryPage() {
 
         <NavigationOrb
           items={[
-            { id: 'intro', label: 'Intro' },
-            { id: 'gallery', label: 'Gallery' },
-            { id: 'contact', label: 'Contact' },
+            { id: "intro", label: "Intro" },
+            { id: "gallery", label: "Gallery" },
+            { id: "contact", label: "Contact" },
           ]}
         />
       </AtmosphereProvider>
@@ -135,7 +147,7 @@ export default function VisionaryPage() {
 
 ```tsx
 // app/launch/page.tsx
-import { MarketingLandingPage } from '@/design-system/pages/MarketingLandingPage';
+import { MarketingLandingPage } from "@/design-system/pages/MarketingLandingPage";
 
 export default function LaunchPage() {
   return (
@@ -163,8 +175,8 @@ Visions are token-driven, so you override by setting CSS variables — no build 
 // Override a couple of tokens for a subtree
 <div
   style={{
-    ['--vde-color-accent' as string]: 'oklch(0.6 0.25 280)',
-    ['--primary' as string]: 'oklch(0.6 0.25 280)',
+    ["--vde-color-accent" as string]: "oklch(0.6 0.25 280)",
+    ["--primary" as string]: "oklch(0.6 0.25 280)",
   }}
 >
   {children}
@@ -186,16 +198,16 @@ No preset is required — the active vision's CSS emits the shadcn-compatible al
 
 ```ts
 // tailwind.config.ts
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        brand: { coral: 'hsl(16 100% 66%)', navy: 'hsl(216 100% 12%)' },
+        brand: { coral: "hsl(16 100% 66%)", navy: "hsl(216 100% 12%)" },
       },
-      spacing: { '128': '32rem' },
+      spacing: { "128": "32rem" },
     },
   },
 };
@@ -209,16 +221,17 @@ Import a different per-vision CSS, or switch at runtime with `setVision`:
 
 ```tsx
 // Compile-time: import the vision you want
-import '@nikolayvalev/design-system/styles/terminal.css';
+import "@nikolayvalev/design-system/styles/terminal.css";
+import "@nikolayvalev/design-system/styles/fonts/terminal.css";
 ```
 
 ```tsx
 // Runtime: switch via the hook — the active vision's variables update live
-import { useVision } from '@nikolayvalev/design-system';
+import { useVision } from "@nikolayvalev/design-system";
 
 function VisionSwitcher() {
   const { setVision } = useVision();
-  return <button onClick={() => setVision('synthwave')}>Synthwave</button>;
+  return <button onClick={() => setVision("synthwave")}>Synthwave</button>;
 }
 ```
 
@@ -227,7 +240,7 @@ function VisionSwitcher() {
 Every vision has a `light` and a `dark` palette plus a native `defaultMode`. Read and control the mode through `useVision()`:
 
 ```tsx
-import { useVision } from '@nikolayvalev/design-system';
+import { useVision } from "@nikolayvalev/design-system";
 
 function ModeToggle() {
   const { mode, setMode, toggleMode } = useVision();
@@ -235,7 +248,7 @@ function ModeToggle() {
     <div>
       <span>Mode: {mode}</span>
       <button onClick={toggleMode}>Toggle</button>
-      <button onClick={() => setMode('dark')}>Force dark</button>
+      <button onClick={() => setMode("dark")}>Force dark</button>
     </div>
   );
 }
@@ -246,7 +259,9 @@ function ModeToggle() {
 For non-React / compile-time consumers, the per-vision CSS exposes both modes — set the attribute or class to switch:
 
 ```html
-<html data-vde-mode="dark"> … </html>
+<html data-vde-mode="dark">
+  …
+</html>
 <!-- or use the .dark / .light alias classes the vision CSS also emits -->
 ```
 
@@ -255,7 +270,11 @@ For non-React / compile-time consumers, the per-vision CSS exposes both modes �
 Visions are `VisionTheme` objects defined in the design-system source (`src/vde-themes`). To add one to the shared catalog, propose it there (see CONTRIBUTING). Advanced consumers can build a `VisionTheme` and register it locally:
 
 ```ts
-import { VisionRegistry, visionThemes, type VisionTheme } from '@nikolayvalev/design-system';
+import {
+  VisionRegistry,
+  visionThemes,
+  type VisionTheme,
+} from "@nikolayvalev/design-system";
 
 const myVision = {
   /* id, name, family, tagline, summary, bestFor, mood, colors, artisticPillars, ornaments */
@@ -282,4 +301,3 @@ Lock to a specific major version to prevent unexpected visual changes:
   }
 }
 ```
-
