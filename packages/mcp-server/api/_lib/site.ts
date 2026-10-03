@@ -126,12 +126,14 @@ export function renderSitePage({
     <style>
       :root {
 ${portalTokens("light")}
-        /* The portal's own names, mapped onto the vision's tokens. */
+        /* The portal's own names, mapped onto the vision's tokens. They must not
+           reuse a name the vision emits (--muted is a surface colour there), or
+           the dark-mode block below re-declares it and silently wins. */
         --bg: var(--vde-color-background);
         --panel: var(--vde-color-surface);
         --panel-alt: var(--vde-color-muted);
         --text: var(--vde-color-foreground);
-        --muted: var(--vde-color-muted-foreground);
+        --text-muted: var(--vde-color-muted-foreground);
         --brand: var(--vde-color-accent);
         --brand-2: var(--vde-color-secondary-foreground);
         --line: var(--vde-color-border);
@@ -215,7 +217,7 @@ ${portalTokens("dark")}
         padding: 7px 10px;
         border-radius: 6px;
         font-size: 13px;
-        color: var(--muted);
+        color: var(--text-muted);
         text-decoration: none;
         margin-bottom: 2px;
         border-left: 2px solid transparent;
@@ -263,7 +265,7 @@ ${portalTokens("dark")}
 
       .hero-subtitle {
         margin: 0;
-        color: var(--muted);
+        color: var(--text-muted);
         max-width: 76ch;
         line-height: 1.55;
         font-size: 14px;
@@ -283,7 +285,7 @@ ${portalTokens("dark")}
       }
 
       .card h3 { margin: 0 0 5px; font-size: 14px; }
-      .card p { margin: 0; color: var(--muted); line-height: 1.45; font-size: 13px; }
+      .card p { margin: 0; color: var(--text-muted); line-height: 1.45; font-size: 13px; }
 
       .pill {
         display: inline-block;
@@ -350,7 +352,7 @@ ${portalTokens("dark")}
       }
 
       .step-body { flex: 1; }
-      .step-body p { margin: 3px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+      .step-body p { margin: 3px 0 0; color: var(--text-muted); font-size: 13px; line-height: 1.45; }
       .step-title { font-weight: 600; font-size: 13px; }
 
       .endpoints {
