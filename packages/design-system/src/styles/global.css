@@ -181,6 +181,50 @@
   --spacing-xl: var(--vde-space-xl);
   --spacing-2xl: var(--vde-space-2xl);
   --spacing-3xl: var(--vde-space-3xl);
+  /*
+   * The spacing scale above shares its names with Tailwind's container scale,
+   * and Tailwind resolves the width utilities against `--spacing-*` *before*
+   * `--container-*`. Without the lines below, `max-w-3xl` compiles to 4rem
+   * instead of 48rem in every consumer, and a prose column collapses to one
+   * word per line. Each width utility checks its own namespace first, so
+   * pointing those back at the container scale restores standard Tailwind
+   * widths while `p-md`, `gap-lg` and friends keep reading the spacing scale.
+   *
+   * `inline-*`, `min-inline-*` and `max-inline-*` have no namespace of their
+   * own and stay shadowed; write `max-inline-(--container-3xl)` if you need one.
+   */
+  --max-width-2xs: var(--container-2xs);
+  --max-width-xs: var(--container-xs);
+  --max-width-sm: var(--container-sm);
+  --max-width-md: var(--container-md);
+  --max-width-lg: var(--container-lg);
+  --max-width-xl: var(--container-xl);
+  --max-width-2xl: var(--container-2xl);
+  --max-width-3xl: var(--container-3xl);
+  --min-width-2xs: var(--container-2xs);
+  --min-width-xs: var(--container-xs);
+  --min-width-sm: var(--container-sm);
+  --min-width-md: var(--container-md);
+  --min-width-lg: var(--container-lg);
+  --min-width-xl: var(--container-xl);
+  --min-width-2xl: var(--container-2xl);
+  --min-width-3xl: var(--container-3xl);
+  --width-2xs: var(--container-2xs);
+  --width-xs: var(--container-xs);
+  --width-sm: var(--container-sm);
+  --width-md: var(--container-md);
+  --width-lg: var(--container-lg);
+  --width-xl: var(--container-xl);
+  --width-2xl: var(--container-2xl);
+  --width-3xl: var(--container-3xl);
+  --flex-basis-2xs: var(--container-2xs);
+  --flex-basis-xs: var(--container-xs);
+  --flex-basis-sm: var(--container-sm);
+  --flex-basis-md: var(--container-md);
+  --flex-basis-lg: var(--container-lg);
+  --flex-basis-xl: var(--container-xl);
+  --flex-basis-2xl: var(--container-2xl);
+  --flex-basis-3xl: var(--container-3xl);
 }
 
 @layer base {
