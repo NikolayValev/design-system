@@ -194,6 +194,8 @@ Sections are constrained to `max-w-6xl` by default (`SectionShell`), with `clamp
 
 **The Structure Is Not Identity Rule.** If a proposed token would let one vision lay things out differently from another, it probably belongs in the consuming application, not here. `ARCHITECTURE.md` says it as a component principle — _no layout opinions_ — and the spacing scale is where that principle is enforced.
 
+**The Spacing Is Not A Width Rule.** The spacing scale is exposed to Tailwind under the same names as Tailwind's container scale (`2xs` … `3xl`), and Tailwind resolves `w-*`, `min-w-*`, `max-w-*` and `basis-*` against `--spacing-*` before `--container-*`. Left alone, `max-w-3xl` compiles to 4rem instead of 48rem in every consumer, and a prose column collapses to one word per line. `global.css` therefore maps `--width-*`, `--min-width-*`, `--max-width-*` and `--flex-basis-*` back to the container scale, and `src/styles/global.test.ts` compiles the stylesheet with Tailwind to keep it that way. Adding a step to the spacing scale means adding its four width twins in the same edit. `inline-*`, `min-inline-*` and `max-inline-*` have no namespace of their own and stay shadowed — write `max-inline-(--container-3xl)` when one is needed.
+
 ## Elevation & Depth
 
 Three shadow tokens: `--vde-shadow-hard` (offset, no blur), `--vde-shadow-neon` (glow), `--vde-shadow-ambient` (the resting shadow).
